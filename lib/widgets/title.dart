@@ -19,14 +19,14 @@ class TitleWidget extends StatelessWidget {
             width: 3,
             height: size,
             margin: EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(color: ColorConstants.PRIMARY),
+            decoration: BoxDecoration(color: ColorConstants.TEXT_PRIMARY),
           ),
           Text(
             title,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: size,
-                color: ColorConstants.PRIMARY),
+                color: ColorConstants.TEXT_PRIMARY),
           )
         ],
       ),

@@ -6,10 +6,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile/welcome_page.dart';
+import 'package:mobile/app_structure.dart';
+import 'package:mobile/models/auth_service.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AuthService(),
+      child: MyApp(),
+    ),
+  );
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -22,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Triphub',
-      home: Scaffold(body: WelcomePage()),
+      home: Scaffold(body: AppStructure()),
       theme: ThemeData(
           // Add the 3 lines from here...
           primaryColor: Colors.white,

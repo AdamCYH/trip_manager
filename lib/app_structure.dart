@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
-import 'constants/colors.dart';
-import 'constants/constants.dart';
-import 'pages/home_page.dart';
-import 'pages/product_page.dart';
+import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/constants/colors.dart';
+import 'package:mobile/constants/constants.dart';
+import 'package:mobile/pages/home_page.dart';
+import 'package:mobile/pages/login_page.dart';
+import 'package:mobile/pages/me_page.dart';
+import 'package:mobile/pages/product_page.dart';
+import 'package:provider/provider.dart';
 
 class AppStructure extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class AppStructure extends StatefulWidget {
 
 class _AppStructureState extends State<AppStructure> {
   int _selectedIndex = 0;
+  bool isWelcomePageShown = true;
 
   final itemNames = <_Item>[
     _Item('首页', Icons.home),
@@ -29,14 +33,11 @@ class _AppStructureState extends State<AppStructure> {
         .toList();
   }
 
-
   List<Widget> _pages = <Widget>[
     HomePage(),
     ProductsPage(),
     Text('Journey'),
-    Text(
-      'Profile',
-    ),
+    MePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -47,24 +48,57 @@ class _AppStructureState extends State<AppStructure> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-//        title: Image.asset(Constants.STATIC_IMG + 'logo-icon.png', width: 80),
-        title: Image.asset(Constants.STATIC_IMG + 'logo.jpg', width: 120,),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: _pages.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: _itemList,
-        currentIndex: _selectedIndex,
-        selectedItemColor: ColorConstants.ACTIVE,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: ColorConstants.NORMAL,
-      ),
-      backgroundColor: Colors.white,
-    );
+    return Consumer<AuthService>(builder: (context, authService, child) {
+      return Stack(
+        children: <Widget>[
+          Offstage(
+            child: Scaffold(
+              appBar: AppBar(
+                title: Image.asset(Constants.STATIC_IMG + 'logo-icon.png',
+                    width: 80),
+//              title: Image.asset(
+//                Constants.STATIC_IMG + 'logo.jpg',
+//                width: 120,
+//              ),
+                centerTitle: true,
+                elevation: 0,
+              ),
+              body: _pages.elementAt(_selectedIndex),
+              bottomNavigationBar: BottomNavigationBar(
+                items: _itemList,
+                currentIndex: _selectedIndex,
+                selectedItemColor: ColorConstants.ACTIVE,
+                onTap: _onItemTapped,
+                showUnselectedLabels: true,
+                unselectedItemColor: ColorConstants.NORMAL,
+              ),
+              backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
+            ),
+            offstage: isWelcomePageShown,
+          ),
+          Offstage(
+            child: Container(
+              child: Stack(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      setState(() => isWelcomePageShown = false);
+                    },
+                  ),
+                  Center(child: Text('Welcome to Triphub')),
+                ],
+              ),
+            ),
+            offstage: !isWelcomePageShown,
+          ),
+          Offstage(
+            child: authService.isLoginPageHidden ? Container() : LoginPage(),
+            offstage: authService.isLoginPageHidden,
+          )
+        ],
+      );
+    });
   }
 }
 
@@ -73,4 +107,11 @@ class _Item {
   IconData icon;
 
   _Item(this.name, this.icon);
+}
+
+class AppContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

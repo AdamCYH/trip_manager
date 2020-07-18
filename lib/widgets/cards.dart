@@ -50,13 +50,13 @@ class SquareCardWidget extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: SquareIcon(
-                          color: ColorConstants.SECONDARY, width: 10),
+                          color: ColorConstants.TEXT_SECONDARY, width: 10),
                       margin: EdgeInsets.only(left: 3, top: 5, right: 5),
                     ),
                     Expanded(
                         child: Text(
                       itinerary.locations.join(' / '),
-                      style: TextStyle(color: ColorConstants.SECONDARY),
+                      style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ))
@@ -185,7 +185,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: ColorConstants.PRIMARY),
+                              color: ColorConstants.TEXT_PRIMARY),
                         ),
                         Row(
                           children: [
@@ -207,11 +207,11 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                         Row(
                           children: [
                             SquareIcon(
-                                color: ColorConstants.PRIMARY, width: 10),
+                                color: ColorConstants.TEXT_PRIMARY, width: 10),
                             Container(
                               child: Text(
                                 itinerary.locations.join(' / '),
-                                style: TextStyle(color: ColorConstants.PRIMARY),
+                                style: TextStyle(color: ColorConstants.TEXT_PRIMARY),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

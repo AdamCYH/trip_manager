@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 typedef RequestCallBack = void Function(Map data);
 
-class HttpRequest {
+class MyHttpClient {
   static requestGET (
       String authority, String unEncodedPath, RequestCallBack callBack,
       [Map<String, String> queryParameters]) async {
@@ -24,7 +24,7 @@ class HttpRequest {
 
   final baseUrl;
 
-  HttpRequest(this.baseUrl);
+  MyHttpClient(this.baseUrl);
 
   Future<dynamic> get(String uri, {Map<String, String> headers}) async {
     try {
