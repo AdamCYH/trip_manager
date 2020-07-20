@@ -8,14 +8,9 @@ class AppState with ChangeNotifier {
     this.authService = AuthService(this);
   }
 
-  bool _isLoginPageShown = false;
-
   bool _isErrorMessageShown = false;
 
-  get isLoginPageShown => _isLoginPageShown;
-
-  set isLoginPageShown(bool val) {
-    _isLoginPageShown = val;
+  void notifyChanges() {
     notifyListeners();
   }
 

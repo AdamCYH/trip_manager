@@ -92,10 +92,6 @@ class _AppStructureState extends State<AppStructure> {
               ),
             ),
             offstage: !isWelcomePageShown,
-          ),
-          Offstage(
-            child: appState.isLoginPageShown ? LoginPage() : Container(),
-            offstage: !appState.isLoginPageShown,
           )
         ],
       );

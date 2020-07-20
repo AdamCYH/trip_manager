@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/pages/Itinerary_detail_page.dart';
 import 'package:mobile/pages/home_page.dart';
+import 'package:mobile/pages/login_page.dart';
+import 'package:mobile/pages/me_page.dart';
 import 'package:mobile/pages/product_page.dart';
 
 ///https://www.jianshu.com/p/b9d6ec92926f
@@ -10,6 +12,8 @@ class Router {
   static const homePage = 'app://';
   static const productsPage = 'app://products';
   static const itineraryPage = 'app://itinerary';
+  static const loginPage = 'app://login';
+  static const settingPage = 'app://setting';
 
   Widget _getPage(String url, dynamic params) {
     if (url.startsWith('https://') || url.startsWith('http://')) {
@@ -22,6 +26,10 @@ class Router {
           return ProductsPage();
         case itineraryPage:
           return ItineraryPage(params);
+        case loginPage:
+          return LoginPage();
+        case settingPage:
+          return SettingPage();
       }
     }
     return null;

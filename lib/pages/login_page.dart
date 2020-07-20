@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/app_state.dart';
+import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
 
@@ -68,8 +69,10 @@ class LoginPage extends StatelessWidget {
                       '登录',
                       style: TextStyle(color: ColorConstants.TEXT_WHITE),
                     ),
-                    onPressed: () async {
-                      appState.authService.login(username: username, password: password);
+                    onPressed: () {
+                      appState.authService
+                          .login(username: username, password: password);
+                      Navigator.pop(context);
                     },
                     color: ColorConstants.BUTTON_PRIMARY,
                     minWidth: ScreenUtils.screenWidth(context) - 20,
@@ -81,7 +84,7 @@ class LoginPage extends StatelessWidget {
                   child: MaterialButton(
                     child: Text('取消'),
                     onPressed: () {
-                      appState.isLoginPageShown = false;
+                      Navigator.pop(context);
                     },
                     color: ColorConstants.BUTTON_WHITE,
                     minWidth: ScreenUtils.screenWidth(context) - 20,

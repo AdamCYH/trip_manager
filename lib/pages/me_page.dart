@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Router.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/app_state.dart';
-import 'package:mobile/pages/login_page.dart';
+import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
-
-import 'package:mobile/models/auth_service.dart';
 
 class MePage extends StatefulWidget {
   @override
@@ -17,40 +16,24 @@ class _MePageState extends State<MePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-//      print('build me page');
-//      if (appState.authService.tokensAvailable) {
-//        return Container(
-//            child: Column(
-//          children: [
-//            Text('logged in'),
-//            MaterialButton(
-//              child: Text('Logout'),
-//              onPressed: () {
-//                appState.authService.logout();
-//                setState(() {
-//                  appState.isLoginPageHidden = true;
-//                });
-//              },
-//            )
-//          ],
-//        ));
-//      } else {
-//
       return Column(children: [
         Container(
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 55,
+              Container(
                 child: CircleAvatar(
-                  radius: 53,
-                  backgroundImage: AssetImage(
-                    Constants.STATIC_IMG + 'default_user.png',
+                  radius: 50,
+                  child: CircleAvatar(
+                    radius: 48,
+                    backgroundImage: AssetImage(
+                      Constants.STATIC_IMG + 'default_user.png',
+                    ),
                   ),
+                  backgroundColor: ColorConstants.BACKGROUND_LIGHT_BLUE,
                 ),
-                backgroundColor: ColorConstants.BACKGROUND_LIGHT_BLUE,
+                margin: EdgeInsets.all(10),
               ),
-              appState.authService.tokensAvailable
+              appState.authService.authStatus == AuthStatus.AUTHENTICATED
                   ? Text(
                       '${appState.authService.currentUser.firstName}  ${appState.authService.currentUser.lastName}')
                   : MaterialButton(
@@ -59,9 +42,7 @@ class _MePageState extends State<MePage> {
                         style: TextStyle(fontSize: 16),
                       ),
                       onPressed: () {
-                        setState(() {
-                          appState.isLoginPageShown = true;
-                        });
+                        Router.push(context, Router.loginPage, {});
                       },
                     )
             ],
@@ -77,20 +58,14 @@ class _MePageState extends State<MePage> {
               OptionRow(
                 icon: Icons.bookmark_border,
                 text: '我的收藏',
+                toPage: Router.settingPage,
               ),
               OptionRow(
                 icon: Icons.settings,
                 text: '设置',
+                toPage: Router.settingPage,
+                requireLogin: true,
               ),
-              MaterialButton(
-                child: Text('Logout'),
-                onPressed: () {
-                  appState.authService.logout();
-                  setState(() {
-                    appState.isLoginPageShown = false;
-                  });
-                },
-              )
             ],
           ),
           color: ColorConstants.BUTTON_WHITE,
@@ -103,39 +78,95 @@ class _MePageState extends State<MePage> {
 }
 
 class OptionRow extends StatelessWidget {
-  const OptionRow({Key key, @required this.icon, @required this.text})
+  const OptionRow(
+      {Key key,
+      @required this.icon,
+      @required this.text,
+      this.toPage,
+      this.requireLogin = false})
       : assert(icon != null),
         assert(text != null),
         super(key: key);
 
   final IconData icon;
   final String text;
+  final String toPage;
+  final bool requireLogin;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            child: Icon(
-              icon,
-              color: ColorConstants.BUTTON_PRIMARY,
-            ),
-            margin: EdgeInsets.only(left: 10, right: 20),
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return InkWell(
+        child: Container(
+          child: Row(
+            children: [
+              Container(
+                child: Icon(
+                  icon,
+                  color: ColorConstants.BUTTON_PRIMARY,
+                ),
+                margin: EdgeInsets.only(left: 10, right: 20),
+              ),
+              Text(
+                text,
+                style: TextStyle(fontSize: 16),
+              )
+            ],
           ),
-          Text(
-            text,
-            style: TextStyle(fontSize: 16),
-          )
-        ],
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: Divider.createBorderSide(context,
-              color: ColorConstants.DIVIDER_PRIMARY),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: Divider.createBorderSide(context,
+                  color: ColorConstants.DIVIDER_PRIMARY),
+            ),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         ),
-      ),
-      padding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 20),
-    );
+        onTap: () {
+          if (requireLogin) {
+            if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
+              Router.push(context, toPage, {});
+            } else {
+              Router.push(context, Router.loginPage, {});
+            }
+          } else {
+            Router.push(context, toPage, {});
+          }
+        },
+      );
+    });
+  }
+}
+
+class SettingPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('设置'),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: Column(
+          children: [
+            InkWell(
+              child: Container(
+                child: Center(
+                  child: Text('Logout'),
+                ),
+                color: ColorConstants.BUTTON_WHITE,
+                width: ScreenUtils.screenWidth(context),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              ),
+              onTap: () {
+                appState.authService.logout();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+        backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
+      );
+    });
   }
 }

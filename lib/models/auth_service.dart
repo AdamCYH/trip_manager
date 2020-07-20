@@ -4,7 +4,7 @@ import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService with ChangeNotifier {
+class AuthService {
   static const String ACCESS_TOKEN_STORAGE_KEY = 'access';
   static const String REFRESH_TOKEN_STORAGE_KEY = 'refresh';
 
@@ -15,9 +15,10 @@ class AuthService with ChangeNotifier {
   final API _api = API();
   final AppState appState;
 
-  bool tokensAvailable = false;
   String accessToken;
   String refreshToken;
+
+  AuthStatus authStatus = AuthStatus.UNAUTHENTICATED;
 
   AuthService(this.appState) {
     _getStorage().then((value) => _getTokensFromStorage());
@@ -25,7 +26,6 @@ class AuthService with ChangeNotifier {
 
   Future<void> _getStorage() async {
     _prefs = await SharedPreferences.getInstance();
-    print('got storage');
   }
 
   Future getUser() {
@@ -38,42 +38,35 @@ class AuthService with ChangeNotifier {
       String email,
       String password}) async {}
 
-  User login({String username, String password}) {
+  Future login({String username, String password}) {
     _api.login(username, password, (user) {
       if (user.userId != null) {
         currentUser = user;
         _prefs.setString(ACCESS_TOKEN_STORAGE_KEY, user.accessToken);
         _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, user.refreshToken);
+        authStatus = AuthStatus.AUTHENTICATED;
       } else {
         currentUser = null;
+        authStatus = AuthStatus.UNAUTHORIZED;
       }
-      // TODO if successful, hide login page
       _getTokensFromStorage();
-      notifyListeners();
-      appState.isLoginPageShown = false;
+      appState.notifyChanges();
     });
 
-    return currentUser;
+    return Future.value(currentUser);
   }
 
   Future logout() async {
     this.currentUser = null;
     _removeTokens();
-    notifyListeners();
+    authStatus = AuthStatus.UNAUTHENTICATED;
+    appState.notifyChanges();
     return Future.value(currentUser);
   }
 
   void _getTokensFromStorage() {
-    print('getting token');
     accessToken = _prefs.get(ACCESS_TOKEN_STORAGE_KEY);
     refreshToken = _prefs.get(REFRESH_TOKEN_STORAGE_KEY);
-    if (accessToken != null && refreshToken != null) {
-      print('Token available');
-      tokensAvailable = true;
-    } else {
-      print('Token not available');
-      tokensAvailable = false;
-    }
   }
 
   void _removeTokens() {
@@ -81,10 +74,16 @@ class AuthService with ChangeNotifier {
     _prefs.remove(REFRESH_TOKEN_STORAGE_KEY);
     accessToken = null;
     refreshToken = null;
-    tokensAvailable = false;
   }
 
   Future authenticate() {
     return null;
   }
+}
+
+enum AuthStatus {
+  UNAUTHENTICATED, // -> Login
+  AUTHENTICATING, // -> Profile page
+  AUTHENTICATED,
+  UNAUTHORIZED
 }
