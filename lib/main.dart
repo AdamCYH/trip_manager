@@ -7,13 +7,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/app_structure.dart';
-import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AuthService(),
+      create: (context) => AppState(),
       child: MyApp(),
     ),
   );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/constants/colors.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +9,8 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var username;
     var password;
-    return Consumer<AuthService>(
-      builder: (context, authService, child) {
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
         return Scaffold(
           appBar: AppBar(
             title: Text('登录'),
@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(color: ColorConstants.TEXT_WHITE),
                     ),
                     onPressed: () async {
-                      authService.login(username: username, password: password);
+                      appState.authService.login(username: username, password: password);
                     },
                     color: ColorConstants.BUTTON_PRIMARY,
                     minWidth: ScreenUtils.screenWidth(context) - 20,
@@ -81,7 +81,7 @@ class LoginPage extends StatelessWidget {
                   child: MaterialButton(
                     child: Text('取消'),
                     onPressed: () {
-                      authService.isLoginPageHidden = true;
+                      appState.isLoginPageShown = false;
                     },
                     color: ColorConstants.BUTTON_WHITE,
                     minWidth: ScreenUtils.screenWidth(context) - 20,

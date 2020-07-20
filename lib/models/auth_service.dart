@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/http/API.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,20 +13,13 @@ class AuthService with ChangeNotifier {
 
   User currentUser;
   final API _api = API();
+  final AppState appState;
 
   bool tokensAvailable = false;
   String accessToken;
   String refreshToken;
-  bool _isLoginPageHidden = true;
 
-  get isLoginPageHidden => _isLoginPageHidden;
-
-  set isLoginPageHidden(bool val) {
-    _isLoginPageHidden = val;
-    notifyListeners();
-  }
-
-  AuthService() {
+  AuthService(this.appState) {
     _getStorage().then((value) => _getTokensFromStorage());
   }
 
@@ -38,7 +32,6 @@ class AuthService with ChangeNotifier {
     return Future.value(currentUser);
   }
 
-  // wrapping the firebase calls
   Future createUser(
       {String firstName,
       String lastName,
@@ -57,6 +50,7 @@ class AuthService with ChangeNotifier {
       // TODO if successful, hide login page
       _getTokensFromStorage();
       notifyListeners();
+      appState.isLoginPageShown = false;
     });
 
     return currentUser;

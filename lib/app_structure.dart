@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
@@ -48,7 +49,7 @@ class _AppStructureState extends State<AppStructure> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthService>(builder: (context, authService, child) {
+    return Consumer<AppState>(builder: (context, appState, child) {
       return Stack(
         children: <Widget>[
           Offstage(
@@ -93,8 +94,8 @@ class _AppStructureState extends State<AppStructure> {
             offstage: !isWelcomePageShown,
           ),
           Offstage(
-            child: authService.isLoginPageHidden ? Container() : LoginPage(),
-            offstage: authService.isLoginPageHidden,
+            child: appState.isLoginPageShown ? LoginPage() : Container(),
+            offstage: !appState.isLoginPageShown,
           )
         ],
       );
