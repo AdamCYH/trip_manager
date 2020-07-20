@@ -11,19 +11,29 @@ class API {
     'Content-Type': 'application/json; charset=UTF-8',
   };
 
-  static const BASE_URL = 'http://mytriphub.net/api';
+  static const BASE_URL = 'http://mytriphub.net';
+
 
   static const LOG_IN = '/token-auth/';
 
-  var _httpClient = MyHttpClient(BASE_URL);
+  var _httpClient = MyHttpClient('$BASE_URL/api');
 
   void login(
       String username, String password, RequestCallBack requestCallBack) async {
     final response = await _httpClient.post(
         LOG_IN, jsonEncode({'username': username, 'password': password}),
         headers: DEFAULT_JSON_CONTENT_TYPE);
-    requestCallBack(User.fromJson(response));
+    requestCallBack(Auth.fromJson(response));
   }
 
-  void authenticate(String token) {}
+  Future<User> getUser(
+      String accessToken, String refreshToken, String userId) async {
+    final response = await _httpClient.get('/user/$userId',
+        headers: getAuthenticationHeader(accessToken));
+    return User.fromJson(response);
+  }
+
+  Map<String, String> getAuthenticationHeader(String token) {
+    return {'Authorization': 'Token $token'};
+  }
 }

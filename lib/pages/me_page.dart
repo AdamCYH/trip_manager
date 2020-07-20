@@ -25,13 +25,17 @@ class _MePageState extends State<MePage> {
                   radius: 50,
                   child: CircleAvatar(
                     radius: 48,
-                    backgroundImage: AssetImage(
-                      Constants.STATIC_IMG + 'default_user.png',
-                    ),
+                    backgroundImage: appState.authService.currentUser == null ||
+                            appState.authService.currentUser.picture == ''
+                        ? AssetImage(
+                            Constants.STATIC_IMG + 'default_user.png',
+                          )
+                        : NetworkImage(
+                            appState.authService.currentUser.picture),
                   ),
                   backgroundColor: ColorConstants.BACKGROUND_LIGHT_BLUE,
                 ),
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.only(top: 10, bottom: 20),
               ),
               appState.authService.authStatus == AuthStatus.AUTHENTICATED
                   ? Text(

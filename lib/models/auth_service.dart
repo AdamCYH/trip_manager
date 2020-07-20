@@ -12,6 +12,8 @@ class AuthService {
   SharedPreferences _prefs;
 
   User currentUser;
+  Auth currentAuth;
+
   final API _api = API();
   final AppState appState;
 
@@ -28,28 +30,29 @@ class AuthService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future getUser() {
-    return Future.value(currentUser);
+  Future getUser(String userId) async {
+    return await _api.getUser(accessToken, refreshToken, userId);
   }
 
-  Future createUser(
-      {String firstName,
-      String lastName,
-      String email,
-      String password}) async {}
+  Future createUser({String firstName,
+    String lastName,
+    String email,
+    String password}) async {}
 
   Future login({String username, String password}) {
-    _api.login(username, password, (user) {
-      if (user.userId != null) {
-        currentUser = user;
-        _prefs.setString(ACCESS_TOKEN_STORAGE_KEY, user.accessToken);
-        _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, user.refreshToken);
+    _api.login(username, password, (auth) async {
+      if (auth.userId != null) {
+        currentAuth = auth;
+        accessToken = auth.accessToken;
+        refreshToken = auth.refreshToken;
+        _prefs.setString(ACCESS_TOKEN_STORAGE_KEY, auth.accessToken);
+        _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, auth.refreshToken);
         authStatus = AuthStatus.AUTHENTICATED;
+
+        currentUser = await getUser(auth.userId);
       } else {
-        currentUser = null;
         authStatus = AuthStatus.UNAUTHORIZED;
       }
-      _getTokensFromStorage();
       appState.notifyChanges();
     });
 
