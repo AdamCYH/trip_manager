@@ -8,6 +8,8 @@ class AppState with ChangeNotifier {
 
   List<Featured> featuredList;
 
+  List<Itinerary> hotList;
+
   AppState() {
     this.authService = AuthService(this);
   }
@@ -18,11 +20,17 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Featured>> getFeaturedList({Key key, forceGet=false}) async {
+  Future<List<Featured>> getFeaturedList({Key key, forceGet = false}) async {
     if (forceGet || featuredList == null) {
-      featuredList = await API().getFeatured();
+      featuredList = await API().getFeaturedItineraries();
     }
     return featuredList;
   }
 
+  Future<List<Itinerary>> getHotList({Key key, forceGet = false}) async {
+    if (forceGet || hotList == null) {
+      hotList = await API().getHotItineraries();
+    }
+    return hotList;
+  }
 }

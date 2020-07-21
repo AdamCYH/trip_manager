@@ -80,7 +80,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
       : assert(itinerary != null),
         super(key: key);
 
-  final ItinerarySample itinerary;
+  final Itinerary itinerary;
 
   @override
   Widget build(BuildContext context) {
@@ -89,10 +89,9 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               FittedBox(
-                child: Image(
-                    image: AssetImage(
-                  Constants.STATIC_IMG + itinerary.imgName,
-                )),
+                child: Image.network(
+                  itinerary.image,
+                ),
                 fit: BoxFit.cover,
               ),
               Container(
@@ -102,7 +101,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      itinerary.name,
+                      itinerary.title,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -119,7 +118,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
                     ),
                     Container(
                       child: Text(
-                        itinerary.locations.join(' / '),
+                        itinerary.cities.join(' / '),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -142,7 +141,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
           height: 250,
           width: ScreenUtils.screenWidth(context)),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.name);
+        Router.push(context, Router.itineraryPage, itinerary.id);
       },
     );
   }
@@ -154,7 +153,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
       : assert(itinerary != null),
         super(key: key);
 
-  final ItinerarySample itinerary;
+  final Itinerary itinerary;
 
   @override
   Widget build(BuildContext context) {
@@ -164,10 +163,9 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
           children: [
             Container(
               child: FittedBox(
-                child: Image(
-                        image: AssetImage(
-                      Constants.STATIC_IMG + itinerary.imgName,
-                    )),
+                child: Image.network(
+                  itinerary.image,
+                ),
                 fit: BoxFit.cover,
               ),
               height: 230,
@@ -180,7 +178,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          itinerary.name,
+                          itinerary.title,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -188,10 +186,15 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Icon(Icons.location_on),
-                            Text(
-                              itinerary.country,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Icon(
+                              Icons.remove_red_eye,
+                              size: 15,
+                            ),
+                            Container(
+                              child: Text(
+                                itinerary.view.toString(),
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
                             )
                           ],
                         )
@@ -209,8 +212,9 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                                 color: ColorConstants.TEXT_PRIMARY, width: 10),
                             Container(
                               child: Text(
-                                itinerary.locations.join(' / '),
-                                style: TextStyle(color: ColorConstants.TEXT_PRIMARY),
+                                itinerary.cities.join(' / '),
+                                style: TextStyle(
+                                    color: ColorConstants.TEXT_PRIMARY),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
@@ -218,8 +222,23 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                               margin: EdgeInsets.symmetric(horizontal: 10),
                             )
                           ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.thumb_up,
+                              size: 15
+                            ),
+                            Container(
+                              child: Text(
+                                itinerary.like.toString(),
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                            )
+                          ],
                         )
                       ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
                     margin: EdgeInsets.all(5),
                   )
@@ -231,7 +250,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.name);
+        Router.push(context, Router.itineraryPage, itinerary.id);
       },
     );
   }

@@ -54,41 +54,39 @@ class FeaturedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(builder: (context, appState, child) {
-      return Container(
-        child: Column(
-          children: <Widget>[
-            TitleWidget(
-              title: '热门行程',
-              size: Constants.TITLE_FONT_SIZE,
-            ),
-            Container(
-              child: FutureBuilder<List<Featured>>(
-                  future: appState.getFeaturedList(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Featured>> snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView(
-                        children: snapshot.data
-                            .map((featured) => SquareCardWidget(
-                                width: cardWidth,
-                                itinerary: featured.itinerary))
-                            .toList(),
-                        scrollDirection: Axis.horizontal,
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }),
-              height: 280,
-            )
-          ],
-        ),
-        height: 350,
-        color: ColorConstants.BACKGROUND_WHITE,
-        margin: EdgeInsets.symmetric(vertical: 5),
-      );
-    });
+    return Container(
+      child: Column(
+        children: <Widget>[
+          TitleWidget(
+            title: '热门行程',
+            size: Constants.TITLE_FONT_SIZE,
+          ),
+          Container(
+            child: FutureBuilder<List<Featured>>(
+                future: Provider.of<AppState>(context, listen: false)
+                    .getFeaturedList(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Featured>> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView(
+                      children: snapshot.data
+                          .map((featured) => SquareCardWidget(
+                              width: cardWidth, itinerary: featured.itinerary))
+                          .toList(),
+                      scrollDirection: Axis.horizontal,
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
+            height: 280,
+          )
+        ],
+      ),
+      height: 350,
+      color: ColorConstants.BACKGROUND_WHITE,
+      margin: EdgeInsets.symmetric(vertical: 5),
+    );
   }
 }
 

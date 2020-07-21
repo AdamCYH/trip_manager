@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/http/sample_data.dart';
+import 'package:mobile/models/app_state.dart';
+import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
+import 'package:provider/provider.dart';
 
 class ProductsPage extends StatefulWidget {
   @override
@@ -44,7 +47,7 @@ class _ProductsPageState extends State<ProductsPage>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [HotItineraryWidget(), PickedItineraryWidget()],
+        children: [HotItineraryWidget(), FeaturedItineraryWidget()],
       ),
     );
   }
@@ -53,27 +56,41 @@ class _ProductsPageState extends State<ProductsPage>
 class HotItineraryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: SampleData.itinerariesSet1.values
-          .map(
-            (itinerary) =>
-                ImageWithCenteredTextCardWidget(itinerary: itinerary),
-          )
-          .toList(),
-    );
+    return FutureBuilder<List<Featured>>(
+        future: Provider.of<AppState>(context, listen: false).getFeaturedList(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Featured>> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: snapshot.data
+                  .map((featured) => ImageWithCenteredTextCardWidget(
+                      itinerary: featured.itinerary))
+                  .toList(),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
-class PickedItineraryWidget extends StatelessWidget {
+class FeaturedItineraryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: SampleData.itinerariesSet1.values
-          .map(
-            (itinerary) =>
-                ImageWithSeparateBottomTextCardWidget(itinerary: itinerary),
-          )
-          .toList(),
-    );
+    return FutureBuilder<List<Itinerary>>(
+        future: Provider.of<AppState>(context, listen: false).getHotList(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Itinerary>> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: snapshot.data
+                  .map((itinerary) => ImageWithSeparateBottomTextCardWidget(
+                      itinerary: itinerary))
+                  .toList(),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }

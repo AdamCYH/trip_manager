@@ -13,7 +13,6 @@ class API {
 
   static const BASE_URL = 'http://mytriphub.net';
 
-
   static const LOG_IN = '/token-auth/';
 
   var _httpClient = MyHttpClient('$BASE_URL/api');
@@ -33,10 +32,17 @@ class API {
     return User.fromJson(response);
   }
 
-
-  Future<List<Featured>> getFeatured() async{
+  Future<List<Featured>> getFeaturedItineraries() async {
     final response = await _httpClient.get('/featured/');
-    return Future.value(response.map<Featured>((json) => Featured.fromJson(json)).toList());
+    return Future.value(
+        response.map<Featured>((json) => Featured.fromJson(json)).toList());
+  }
+
+  Future<List<Itinerary>> getHotItineraries() async {
+    final response =
+        await _httpClient.get('/itinerary/?allPublic=true&sortBy=view');
+    return Future.value(
+        response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
   }
 
   Map<String, String> getAuthenticationHeader(String token) {
