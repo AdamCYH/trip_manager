@@ -1,7 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/constants/constants.dart';
-import 'package:mobile/http/sample_data.dart';
+import 'package:mobile/http/API.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 
@@ -15,13 +13,12 @@ class ItineraryPage extends StatefulWidget {
 }
 
 class _ItineraryPageState extends State<ItineraryPage> {
-  ItinerarySample itinerary;
+  Itinerary itinerary;
 
   @override
   void initState() {
     super.initState();
-    print(widget.itineraryId);
-    itinerary = SampleData.itinerariesSet1[widget.itineraryId];
+    getItineraryDetail();
   }
 
   @override
@@ -29,24 +26,35 @@ class _ItineraryPageState extends State<ItineraryPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("套餐详情", style: TextStyle(color: Colors.white),),
+        title: Text(
+          "套餐详情",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.transparent,
-        elevation: 8,
+        elevation: 4,
         centerTitle: true,
         brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Container(
-        child: FittedBox(
-          child: Image(
-              image: AssetImage(
-            Constants.STATIC_IMG + itinerary.imgName,
-          )),
-          fit: BoxFit.cover,
-        ),
-        height: 350,
-        width: ScreenUtils.screenWidth(context),
-      ),
+      body: itinerary == null
+          ? Container()
+          : Container(
+              child: FittedBox(
+                child: Image.network(
+                  itinerary.image,
+                ),
+                fit: BoxFit.cover,
+              ),
+              height: 350,
+              width: ScreenUtils.screenWidth(context),
+            ),
     );
+  }
+
+  void getItineraryDetail() async {
+    var iti = await API().getItineraryDetail(widget.itineraryId);
+    setState(() {
+      itinerary = iti;
+    });
   }
 }

@@ -91,14 +91,19 @@ class Featured {
         itinerary = Itinerary.fromJson(json['itinerary']);
 }
 
-class ItinerarySample {
-  final String name;
-  final String country;
-  final List<String> locations;
-  final String description;
-  final String imgName;
-  final String author;
+class Comment {
+  final String id;
+  final String content;
+  final DateTime postedOn;
+  final String itineraryId;
+  final String owner;
 
-  const ItinerarySample(this.name, this.country, this.locations,
-      this.description, this.imgName, this.author);
+  Comment(this.id, this.content, this.postedOn, this.itineraryId, this.owner);
+
+  Comment.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        content = json['comment'],
+        postedOn = json['posted_on'],
+        itineraryId = json['itinerary'],
+        owner = json['owner'];
 }

@@ -45,6 +45,11 @@ class API {
         response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
   }
 
+  Future<Itinerary> getItineraryDetail(String id) async {
+    final response = await _httpClient.get('/itinerary/$id');
+    return Itinerary.fromJson(response);
+  }
+
   Map<String, String> getAuthenticationHeader(String token) {
     return {'Authorization': 'Token $token'};
   }

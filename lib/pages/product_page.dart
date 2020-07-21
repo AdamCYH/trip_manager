@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
-import 'package:mobile/http/sample_data.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
