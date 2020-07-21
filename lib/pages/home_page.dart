@@ -52,7 +52,6 @@ class FeaturedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var featuredList = API().getFeatured();
     return Container(
       child: Column(
         children: <Widget>[
@@ -61,13 +60,13 @@ class FeaturedWidget extends StatelessWidget {
             size: Constants.TITLE_FONT_SIZE,
           ),
           Container(
-            child: FutureBuilder<FeaturedList>(
+            child: FutureBuilder<List<Featured>>(
                 future: API().getFeatured(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<FeaturedList> snapshot) {
+                    AsyncSnapshot<List<Featured>> snapshot) {
                   if (snapshot.hasData) {
                     return ListView(
-                      children: snapshot.data.featuredList
+                      children: snapshot.data
                           .map((featured) => SquareCardWidget(
                               width: cardWidth, itinerary: featured.itinerary))
                           .toList(),

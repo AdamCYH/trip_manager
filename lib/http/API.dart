@@ -34,9 +34,9 @@ class API {
   }
 
 
-  Future<FeaturedList> getFeatured() async{
+  Future<List<Featured>> getFeatured() async{
     final response = await _httpClient.get('/featured/');
-    return FeaturedList.fromJson(response);
+    return Future.value(response.map<Featured>((json) => Featured.fromJson(json)).toList());
   }
 
   Map<String, String> getAuthenticationHeader(String token) {

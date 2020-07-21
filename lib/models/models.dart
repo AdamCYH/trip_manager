@@ -91,15 +91,6 @@ class Featured {
         itinerary = Itinerary.fromJson(json['itinerary']);
 }
 
-class FeaturedList {
-  final List<Featured> featuredList;
-
-  FeaturedList(this.featuredList);
-
-  FeaturedList.fromJson(List<dynamic> jsonList)
-      : featuredList = jsonList.map((json) => Featured.fromJson(json)).toList();
-}
-
 class ItinerarySample {
   final String name;
   final String country;

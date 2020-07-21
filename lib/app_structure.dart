@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/constants/colors.dart';
@@ -55,12 +56,12 @@ class _AppStructureState extends State<AppStructure> {
           Offstage(
             child: Scaffold(
               appBar: AppBar(
-                title: Image.asset(Constants.STATIC_IMG + 'logo-icon.png',
-                    width: 80),
-//              title: Image.asset(
-//                Constants.STATIC_IMG + 'logo.jpg',
-//                width: 120,
-//              ),
+//                title: Image.asset(Constants.STATIC_IMG + 'logo-icon.png',
+//                    width: 80),
+                title: Image.asset(
+                  Constants.STATIC_IMG + 'logo.jpg',
+                  width: 120,
+                ),
                 centerTitle: true,
                 elevation: 0,
               ),
