@@ -4,6 +4,7 @@ import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/pages/Itinerary_detail_page.dart';
 import 'package:mobile/util/screen_utl.dart';
+import 'package:mobile/widgets/icons.dart';
 
 import '../Router.dart';
 
@@ -49,13 +50,13 @@ class SquareCardWidget extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: SquareIcon(
-                          color: ColorConstants.TEXT_SECONDARY, width: 10),
+                          color: ColorConstants.TEXT_BRIGHT_MAIN, width: 10),
                       margin: EdgeInsets.only(left: 3, top: 5, right: 5),
                     ),
                     Expanded(
                         child: Text(
                       itinerary.cities.join(' / '),
-                      style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
+                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT_MAIN),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ))
@@ -225,10 +226,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Icon(
-                              Icons.thumb_up,
-                              size: 15
-                            ),
+                            Icon(Icons.thumb_up, size: 15),
                             Container(
                               child: Text(
                                 itinerary.like.toString(),
@@ -252,25 +250,6 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
       onTap: () {
         Router.push(context, Router.itineraryPage, itinerary.id);
       },
-    );
-  }
-}
-
-class SquareIcon extends StatelessWidget {
-  const SquareIcon({Key key, @required this.color, @required this.width})
-      : assert(color != null),
-        assert(width != null),
-        super(key: key);
-
-  final Color color;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: width,
-      decoration: BoxDecoration(color: color),
     );
   }
 }

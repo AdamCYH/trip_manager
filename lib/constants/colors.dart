@@ -5,7 +5,8 @@ class ColorConstants {
   static const Color NORMAL = Color.fromRGBO(125, 125, 125, 1);
 
   static const Color TEXT_PRIMARY = Color.fromRGBO(25, 34, 46, 1);
-  static const Color TEXT_SECONDARY = Color.fromRGBO(63, 179, 173, 1);
+  static const Color TEXT_SECONDARY = Color.fromRGBO(145, 154, 157, 1);
+  static const Color TEXT_BRIGHT_MAIN = Color.fromRGBO(63, 179, 173, 1);
   static const Color TEXT_WHITE = Color.fromRGBO(255, 255, 255, 1);
 
   static const Color BUTTON_PRIMARY = Color.fromRGBO(57, 66, 84, 1);
