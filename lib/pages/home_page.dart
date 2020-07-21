@@ -4,9 +4,11 @@ import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/http/API.dart';
 import 'package:mobile/http/sample_data.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:mobile/widgets/title.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -52,38 +54,41 @@ class FeaturedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          TitleWidget(
-            title: '热门行程',
-            size: Constants.TITLE_FONT_SIZE,
-          ),
-          Container(
-            child: FutureBuilder<List<Featured>>(
-                future: API().getFeatured(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Featured>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView(
-                      children: snapshot.data
-                          .map((featured) => SquareCardWidget(
-                              width: cardWidth, itinerary: featured.itinerary))
-                          .toList(),
-                      scrollDirection: Axis.horizontal,
-                    );
-                  } else {
-                    return Container();
-                  }
-                }),
-            height: 280,
-          )
-        ],
-      ),
-      height: 350,
-      color: ColorConstants.BACKGROUND_WHITE,
-      margin: EdgeInsets.symmetric(vertical: 5),
-    );
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            TitleWidget(
+              title: '热门行程',
+              size: Constants.TITLE_FONT_SIZE,
+            ),
+            Container(
+              child: FutureBuilder<List<Featured>>(
+                  future: appState.getFeaturedList(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Featured>> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView(
+                        children: snapshot.data
+                            .map((featured) => SquareCardWidget(
+                                width: cardWidth,
+                                itinerary: featured.itinerary))
+                            .toList(),
+                        scrollDirection: Axis.horizontal,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
+              height: 280,
+            )
+          ],
+        ),
+        height: 350,
+        color: ColorConstants.BACKGROUND_WHITE,
+        margin: EdgeInsets.symmetric(vertical: 5),
+      );
+    });
   }
 }
 

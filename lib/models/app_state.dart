@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/http/API.dart';
 import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/models/models.dart';
 
 class AppState with ChangeNotifier {
   AuthService authService;
+
+  List<Featured> featuredList;
 
   AppState() {
     this.authService = AuthService(this);
@@ -12,6 +16,13 @@ class AppState with ChangeNotifier {
 
   void notifyChanges() {
     notifyListeners();
+  }
+
+  Future<List<Featured>> getFeaturedList({Key key, forceGet=false}) async {
+    if (forceGet || featuredList == null) {
+      featuredList = await API().getFeatured();
+    }
+    return featuredList;
   }
 
 }
