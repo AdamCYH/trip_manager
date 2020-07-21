@@ -6,7 +6,7 @@ class ColorConstants {
 
   static const Color TEXT_PRIMARY = Color.fromRGBO(25, 34, 46, 1);
   static const Color TEXT_SECONDARY = Color.fromRGBO(145, 154, 157, 1);
-  static const Color TEXT_BRIGHT_MAIN = Color.fromRGBO(63, 179, 173, 1);
+  static const Color TEXT_BRIGHT = Color.fromRGBO(63, 179, 173, 1);
   static const Color TEXT_WHITE = Color.fromRGBO(255, 255, 255, 1);
 
   static const Color BUTTON_PRIMARY = Color.fromRGBO(57, 66, 84, 1);
@@ -15,6 +15,7 @@ class ColorConstants {
   static const Color BACKGROUND_PRIMARY = Color.fromRGBO(244, 245, 249, 1);
   static const Color BACKGROUND_WHITE = Color.fromRGBO(255, 255, 255, 1);
   static const Color BACKGROUND_LIGHT_BLUE = Color.fromRGBO(173, 183, 195, 1);
+  static const Color BACKGROUND_DARK_BLUE = Color.fromRGBO(57, 66, 84, 1);
 
 
   static const Color DIVIDER_PRIMARY = Color.fromRGBO(239, 239, 239, 1);

@@ -26,36 +26,38 @@ class _ItineraryPageState extends State<ItineraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: Text(
-            "套餐详情",
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 4,
-          centerTitle: true,
-          brightness: Brightness.dark,
-          iconTheme: IconThemeData(color: Colors.white),
-          actions: [
-            Container(
-              child: Icon(Icons.favorite_border),
-              margin: EdgeInsets.only(right: 20),
-            )
-          ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(
+          "套餐详情",
+          style: TextStyle(color: Colors.white),
         ),
-        body: itinerary == null
-            ? Container()
-            : Column(
-                children: [
-                  ItinerarySummaryWidget(
-                    itinerary: itinerary,
-                  ),
-                  ItineraryHighlightWidget(
-                    itinerary: itinerary,
-                  )
-                ],
-              ));
+        backgroundColor: Colors.transparent,
+        elevation: 4,
+        centerTitle: true,
+        brightness: Brightness.dark,
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          Container(
+            child: Icon(Icons.favorite_border),
+            margin: EdgeInsets.zero,
+          )
+        ],
+      ),
+      body: itinerary == null
+          ? Container()
+          : ListView(children: [
+              ItinerarySummaryWidget(
+                itinerary: itinerary,
+              ),
+              ItineraryHighlightWidget(
+                itinerary: itinerary,
+              ),
+              DayTripsWidget(
+                itinerary: itinerary,
+              ),
+            ]),
+    );
   }
 
   void getItineraryDetail() async {
@@ -165,14 +167,73 @@ class ItineraryHighlightWidget extends StatelessWidget {
         ],
       ),
       width: ScreenUtils.screenWidth(context),
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 30),
     );
   }
 }
 
-class DayTrips extends StatelessWidget {
+class DayTripsWidget extends StatefulWidget {
+  final Itinerary itinerary;
+
+  const DayTripsWidget({Key key, this.itinerary})
+      : assert(itinerary != null),
+        super(key: key);
+
+  @override
+  _DayTripsWidgetState createState() => _DayTripsWidgetState();
+}
+
+class _DayTripsWidgetState extends State<DayTripsWidget>
+    with SingleTickerProviderStateMixin {
+  int _tabIndex = 0;
+
+  final List<Tab> tabs = <Tab>[
+    Tab(
+      text: '详情',
+    ),
+    Tab(
+      text: '评价',
+    ),
+  ];
+
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: tabs.length);
+    _tabController.addListener(_onItemTapped);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  _onItemTapped() {
+    setState(() {
+      _tabIndex = _tabController.index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Column(
+        children: [
+          TabBar(
+            indicatorColor: ColorConstants.TEXT_PRIMARY,
+            labelColor: ColorConstants.TEXT_PRIMARY,
+            controller: _tabController,
+            tabs: tabs,
+          ),
+          [
+            Text('haha'),
+            Text('hehe'),
+          ][_tabIndex],
+        ],
+      ),
+    );
   }
 }

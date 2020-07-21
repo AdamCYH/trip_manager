@@ -50,13 +50,13 @@ class SquareCardWidget extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: SquareIcon(
-                          color: ColorConstants.TEXT_BRIGHT_MAIN, width: 10),
+                          color: ColorConstants.TEXT_BRIGHT, width: 10),
                       margin: EdgeInsets.only(left: 3, top: 5, right: 5),
                     ),
                     Expanded(
                         child: Text(
                       itinerary.cities.join(' / '),
-                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT_MAIN),
+                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ))
