@@ -41,6 +41,66 @@ class User {
 }
 
 class Itinerary {
+  final String id;
+  final String image;
+  final bool isLiked;
+  final String title;
+  final DateTime postedOn;
+  final int view;
+  final bool isPublic;
+  final String description;
+  final int like;
+  final String owner;
+  final List<dynamic> cities;
+
+  Itinerary(
+      this.id,
+      this.image,
+      this.isLiked,
+      this.title,
+      this.postedOn,
+      this.view,
+      this.isPublic,
+      this.description,
+      this.like,
+      this.owner,
+      this.cities);
+
+  Itinerary.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        image = json['image'],
+        isLiked = json['is_liked'],
+        title = json['title'],
+        postedOn = DateTime.parse(json['posted_on']),
+        view = json['view'],
+        isPublic = json['is_public'],
+        description = json['description'],
+        like = json['like'],
+        owner = json['owner'],
+        cities = json['locations'];
+}
+
+class Featured {
+  final String id;
+  final Itinerary itinerary;
+
+  Featured(this.id, this.itinerary);
+
+  Featured.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        itinerary = Itinerary.fromJson(json['itinerary']);
+}
+
+class FeaturedList {
+  final List<Featured> featuredList;
+
+  FeaturedList(this.featuredList);
+
+  FeaturedList.fromJson(List<dynamic> jsonList)
+      : featuredList = jsonList.map((json) => Featured.fromJson(json)).toList();
+}
+
+class ItinerarySample {
   final String name;
   final String country;
   final List<String> locations;
@@ -48,6 +108,6 @@ class Itinerary {
   final String imgName;
   final String author;
 
-  const Itinerary(this.name, this.country, this.locations, this.description,
-      this.imgName, this.author);
+  const ItinerarySample(this.name, this.country, this.locations,
+      this.description, this.imgName, this.author);
 }

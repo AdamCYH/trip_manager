@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
+import 'package:mobile/http/API.dart';
 import 'package:mobile/http/sample_data.dart';
+import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:mobile/widgets/title.dart';
 
@@ -50,6 +52,7 @@ class FeaturedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var featuredList = API().getFeatured();
     return Container(
       child: Column(
         children: <Widget>[
@@ -58,15 +61,22 @@ class FeaturedWidget extends StatelessWidget {
             size: Constants.TITLE_FONT_SIZE,
           ),
           Container(
-            child: ListView(
-              children: SampleData.itinerariesSet1.values
-                  .map(
-                    (itinerary) => SquareCardWidget(
-                        width: cardWidth, itinerary: itinerary),
-                  )
-                  .toList(),
-              scrollDirection: Axis.horizontal,
-            ),
+            child: FutureBuilder<FeaturedList>(
+                future: API().getFeatured(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<FeaturedList> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView(
+                      children: snapshot.data.featuredList
+                          .map((featured) => SquareCardWidget(
+                              width: cardWidth, itinerary: featured.itinerary))
+                          .toList(),
+                      scrollDirection: Axis.horizontal,
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
             height: 280,
           )
         ],

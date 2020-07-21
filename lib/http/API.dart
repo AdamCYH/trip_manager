@@ -33,6 +33,12 @@ class API {
     return User.fromJson(response);
   }
 
+
+  Future<FeaturedList> getFeatured() async{
+    final response = await _httpClient.get('/featured/');
+    return FeaturedList.fromJson(response);
+  }
+
   Map<String, String> getAuthenticationHeader(String token) {
     return {'Authorization': 'Token $token'};
   }

@@ -15,7 +15,7 @@ class ItineraryPage extends StatefulWidget {
 }
 
 class _ItineraryPageState extends State<ItineraryPage> {
-  Itinerary itinerary;
+  ItinerarySample itinerary;
 
   @override
   void initState() {

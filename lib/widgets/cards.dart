@@ -27,10 +27,9 @@ class SquareCardWidget extends StatelessWidget {
             Container(
               child: ClipRRect(
                 child: FittedBox(
-                  child: Image(
-                      image: AssetImage(
-                    Constants.STATIC_IMG + itinerary.imgName,
-                  )),
+                  child: Image.network(
+                    itinerary.image,
+                  ),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(8.0),
@@ -39,7 +38,7 @@ class SquareCardWidget extends StatelessWidget {
               height: width,
             ),
             Container(
-              child: Text(itinerary.name,
+              child: Text(itinerary.title,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: Constants.PRIMARY_FONT_SIZE)),
@@ -55,7 +54,7 @@ class SquareCardWidget extends StatelessWidget {
                     ),
                     Expanded(
                         child: Text(
-                      itinerary.locations.join(' / '),
+                      itinerary.cities.join(' / '),
                       style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -70,7 +69,7 @@ class SquareCardWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 15),
       ),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.name);
+        Router.push(context, Router.itineraryPage, itinerary.id);
       },
     );
   }
@@ -81,7 +80,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
       : assert(itinerary != null),
         super(key: key);
 
-  final Itinerary itinerary;
+  final ItinerarySample itinerary;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +154,7 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
       : assert(itinerary != null),
         super(key: key);
 
-  final Itinerary itinerary;
+  final ItinerarySample itinerary;
 
   @override
   Widget build(BuildContext context) {
