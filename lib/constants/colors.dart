@@ -17,6 +17,8 @@ class ColorConstants {
   static const Color BACKGROUND_LIGHT_BLUE = Color.fromRGBO(173, 183, 195, 1);
   static const Color BACKGROUND_DARK_BLUE = Color.fromRGBO(57, 66, 84, 1);
 
+  static const Color ICON_BRIGHTER = Color.fromRGBO(201, 208, 217, 1);
+  static const Color ICON_MEDIUM = Color.fromRGBO(145, 154, 167, 1);
 
   static const Color DIVIDER_PRIMARY = Color.fromRGBO(239, 239, 239, 1);
 

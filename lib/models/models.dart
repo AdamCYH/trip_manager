@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/http/API.dart';
 
 enum SiteCategory { Restaurant, Attraction, Hotel }
@@ -141,6 +142,34 @@ class Site {
         address = json['address'],
         description = json['description'],
         photo = API.BASE_URL + json['photo'];
+
+  getCategory() {
+    switch (siteCategory) {
+      case SiteCategory.Restaurant:
+        return "餐厅";
+        break;
+      case SiteCategory.Attraction:
+        return "活动";
+        break;
+      case SiteCategory.Hotel:
+        return "住宿";
+        break;
+    }
+  }
+
+  getIcon() {
+    switch (siteCategory) {
+      case SiteCategory.Restaurant:
+        return Icons.restaurant;
+        break;
+      case SiteCategory.Attraction:
+        return Icons.flag;
+        break;
+      case SiteCategory.Hotel:
+        return Icons.hotel;
+        break;
+    }
+  }
 }
 
 class City {
