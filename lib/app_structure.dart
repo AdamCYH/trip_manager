@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/http/API.dart';
-import 'package:mobile/models/app_state.dart';
-import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/pages/home_page.dart';
-import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/me_page.dart';
 import 'package:mobile/pages/product_page.dart';
 import 'package:provider/provider.dart';

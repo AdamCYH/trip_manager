@@ -1,5 +1,7 @@
 import 'package:mobile/http/API.dart';
 
+enum SiteCategory { Restaurant, Attraction, Hotel }
+
 class Auth {
   final String userId;
   final String accessToken;
@@ -50,7 +52,7 @@ class Itinerary {
   final bool isPublic;
   final String description;
   final int like;
-  final String owner;
+  final String ownerId;
   final List<dynamic> cities;
 
   Itinerary(
@@ -63,7 +65,7 @@ class Itinerary {
       this.isPublic,
       this.description,
       this.like,
-      this.owner,
+      this.ownerId,
       this.cities);
 
   Itinerary.fromJson(Map<String, dynamic> json)
@@ -76,8 +78,84 @@ class Itinerary {
         isPublic = json['is_public'],
         description = json['description'],
         like = json['like'],
-        owner = json['owner'],
+        ownerId = json['owner'],
         cities = json['locations'];
+}
+
+class DayTrip {
+  final String id;
+  final int day;
+  final String ownerId;
+  final String itineraryId;
+  final List<DayTripSite> sites;
+
+  DayTrip(this.id, this.day, this.ownerId, this.itineraryId, this.sites);
+
+  DayTrip.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        day = json['day'],
+        ownerId = json['owner'],
+        itineraryId = json['itinerary'].toString(),
+        sites = json['sites']
+            .map<DayTripSite>((site) => DayTripSite.fromJson(site))
+            .toList();
+}
+
+class DayTripSite {
+  final String id;
+  final String dayTripId;
+  final Site site;
+  final int order;
+
+  DayTripSite(this.id, this.dayTripId, this.site, this.order);
+
+  DayTripSite.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        dayTripId = json['day_trip'].toString(),
+        site = Site.fromJson(json['site']),
+        order = json['order'];
+}
+
+class Site {
+  final String id;
+  final City city;
+  final String name;
+  final SiteCategory siteCategory;
+  final String url;
+  final String address;
+  final String description;
+  final String photo;
+
+  Site(this.id, this.city, this.name, this.siteCategory, this.url, this.address,
+      this.description, this.photo);
+
+  Site.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        city = City.fromJson(json['city']),
+        name = json['name'],
+        siteCategory = SiteCategory.values.firstWhere((category) {
+          var categoryValue = 'SiteCategory.${json['site_category']}';
+          return category.toString() == categoryValue;
+        }),
+        url = json['url'],
+        address = json['address'],
+        description = json['description'],
+        photo = API.BASE_URL + json['photo'];
+}
+
+class City {
+  final String id;
+  final String photo;
+  final String country;
+  final String name;
+
+  City(this.id, this.photo, this.country, this.name);
+
+  City.fromJson(Map<String, dynamic> json)
+      : id = json['id'].toString(),
+        photo = json['photo'],
+        country = json['country_name'],
+        name = json['city_name'];
 }
 
 class Featured {
@@ -96,14 +174,14 @@ class Comment {
   final String content;
   final DateTime postedOn;
   final String itineraryId;
-  final String owner;
+  final String ownerId;
 
-  Comment(this.id, this.content, this.postedOn, this.itineraryId, this.owner);
+  Comment(this.id, this.content, this.postedOn, this.itineraryId, this.ownerId);
 
   Comment.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
         content = json['comment'],
         postedOn = json['posted_on'],
         itineraryId = json['itinerary'],
-        owner = json['owner'];
+        ownerId = json['owner'];
 }

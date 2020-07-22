@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert' as Convert;
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
 typedef RequestCallBack = void Function(Map data);
 
 class MyHttpClient {
+  Utf8Decoder decode = new Utf8Decoder();
+
   static requestGET (
       String authority, String unEncodedPath, RequestCallBack callBack,
       [Map<String, String> queryParameters]) async {
@@ -30,9 +33,9 @@ class MyHttpClient {
     try {
       http.Response response = await http.get(baseUrl + uri, headers: headers);
       final statusCode = response.statusCode;
-      final body = response.body;
+      final body = response;
       print('[uri=$uri][statusCode=$statusCode][response=$body]');
-      var result = Convert.jsonDecode(body);
+      var result = Convert.jsonDecode(decode.convert(body.bodyBytes));
       return result;
     } on Exception catch (e) {
       print('[uri=$uri]exception e=${e.toString()}');

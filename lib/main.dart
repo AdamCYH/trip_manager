@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/app_structure.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,11 @@ class MyApp extends StatelessWidget {
           // Add the 3 lines from here...
           primaryColor: Colors.white,
           fontFamily: 'PingFang'),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [const Locale('zh', 'CH')],
     );
   }
 }

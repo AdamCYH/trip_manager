@@ -50,6 +50,12 @@ class API {
     return Itinerary.fromJson(response);
   }
 
+  Future<List<DayTrip>> getDayTrips(String id) async {
+    final response = await _httpClient.get('/day-trip/?itinerary=$id');
+    return Future.value(
+        response.map<DayTrip>((json) => DayTrip.fromJson(json)).toList());
+  }
+
   Map<String, String> getAuthenticationHeader(String token) {
     return {'Authorization': 'Token $token'};
   }

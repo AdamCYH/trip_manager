@@ -16,11 +16,13 @@ class ItineraryPage extends StatefulWidget {
 
 class _ItineraryPageState extends State<ItineraryPage> {
   Itinerary itinerary;
+  List<DayTrip> dayTripsList;
 
   @override
   void initState() {
     super.initState();
     getItineraryDetail();
+    getDayTripsList();
   }
 
   @override
@@ -46,24 +48,35 @@ class _ItineraryPageState extends State<ItineraryPage> {
       ),
       body: itinerary == null
           ? Container()
-          : ListView(children: [
-              ItinerarySummaryWidget(
-                itinerary: itinerary,
-              ),
-              ItineraryHighlightWidget(
-                itinerary: itinerary,
-              ),
-              DayTripsWidget(
-                itinerary: itinerary,
-              ),
-            ]),
+          : ListView(
+              children: [
+                ItinerarySummaryWidget(
+                  itinerary: itinerary,
+                ),
+                ItineraryHighlightWidget(
+                  itinerary: itinerary,
+                ),
+                ItineraryDetailsWidget(
+                  itinerary: itinerary,
+                  dayTripsList: dayTripsList,
+                ),
+              ],
+              padding: EdgeInsets.zero,
+            ),
     );
   }
 
   void getItineraryDetail() async {
-    var iti = await API().getItineraryDetail(widget.itineraryId);
+    var data = await API().getItineraryDetail(widget.itineraryId);
     setState(() {
-      itinerary = iti;
+      itinerary = data;
+    });
+  }
+
+  void getDayTripsList() async {
+    var data = await API().getDayTrips(widget.itineraryId);
+    setState(() {
+      dayTripsList = data;
     });
   }
 }
@@ -172,18 +185,19 @@ class ItineraryHighlightWidget extends StatelessWidget {
   }
 }
 
-class DayTripsWidget extends StatefulWidget {
+class ItineraryDetailsWidget extends StatefulWidget {
   final Itinerary itinerary;
+  final List<DayTrip> dayTripsList;
 
-  const DayTripsWidget({Key key, this.itinerary})
+  const ItineraryDetailsWidget({Key key, this.itinerary, this.dayTripsList})
       : assert(itinerary != null),
         super(key: key);
 
   @override
-  _DayTripsWidgetState createState() => _DayTripsWidgetState();
+  _ItineraryDetailsWidgetState createState() => _ItineraryDetailsWidgetState();
 }
 
-class _DayTripsWidgetState extends State<DayTripsWidget>
+class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
     with SingleTickerProviderStateMixin {
   int _tabIndex = 0;
 
@@ -229,11 +243,73 @@ class _DayTripsWidgetState extends State<DayTripsWidget>
             tabs: tabs,
           ),
           [
-            Text('haha'),
-            Text('hehe'),
+            widget.dayTripsList == null
+                ? Container()
+                : DayTripsListWidget(
+                    dayTripsList: widget.dayTripsList,
+                  ),
+            ItineraryCommentWidget(),
           ][_tabIndex],
         ],
       ),
     );
+  }
+}
+
+class DayTripsListWidget extends StatelessWidget {
+  final List<DayTrip> dayTripsList;
+
+  const DayTripsListWidget({Key key, this.dayTripsList})
+      : assert(dayTripsList != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: dayTripsList.map((dayTrip) {
+        return DayTripCard(
+          dayTrip: dayTrip,
+        );
+      }).toList(),
+    );
+  }
+}
+
+class DayTripCard extends StatelessWidget {
+  final DayTrip dayTrip;
+
+  const DayTripCard({Key key, this.dayTrip})
+      : assert(dayTrip != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+      children: [
+        Container(child: Text(dayTrip.day.toString())),
+        Container(
+          child: Column(
+            children: dayTrip.sites
+                .map((dayTripSite) => Row(
+                      children: [Text(dayTripSite.site.name)],
+                    ))
+                .toList(),
+          ),
+        )
+      ],
+    ));
+  }
+}
+
+class ItineraryCommentWidget extends StatefulWidget {
+  @override
+  _ItineraryCommentWidgetState createState() => _ItineraryCommentWidgetState();
+}
+
+class _ItineraryCommentWidgetState extends State<ItineraryCommentWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text('lots of comments'));
   }
 }

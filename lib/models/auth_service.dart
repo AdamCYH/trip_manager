@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
