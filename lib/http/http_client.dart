@@ -33,9 +33,9 @@ class MyHttpClient {
     try {
       http.Response response = await http.get(baseUrl + uri, headers: headers);
       final statusCode = response.statusCode;
-      final body = response;
+      final body = response.body;
       print('[uri=$uri][statusCode=$statusCode][response=$body]');
-      var result = Convert.jsonDecode(decode.convert(body.bodyBytes));
+      var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
       return result;
     } on Exception catch (e) {
       print('[uri=$uri]exception e=${e.toString()}');

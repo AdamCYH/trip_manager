@@ -63,6 +63,10 @@ class _ItineraryPageState extends State<ItineraryPage> {
                     ItineraryHighlightWidget(
                       itinerary: itinerary,
                     ),
+                    Divider(
+                      thickness: 5,
+                      color: ColorConstants.BACKGROUND_PRIMARY,
+                    ),
                     ItineraryDetailsWidget(
                       itinerary: itinerary,
                       dayTripsList: dayTripsList,
