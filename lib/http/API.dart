@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/models/exceptions.dart';
 import 'package:mobile/models/models.dart';
 
 import 'http_client.dart';
@@ -25,11 +27,20 @@ class API {
     requestCallBack(Auth.fromJson(response));
   }
 
-  Future<User> getUser(
-      String accessToken, String refreshToken, String userId) async {
-    final response = await _httpClient.get('/user/$userId',
-        headers: getAuthenticationHeader(accessToken));
-    return User.fromJson(response);
+  Future<User> getUser(String accessToken, String refreshToken, String userId,
+      AuthService authService) async {
+    try {
+      final response = await _httpClient.get('/user/$userId',
+          headers: getAuthenticationHeader(accessToken));
+      return User.fromJson(response);
+    } on UnauthorisedException catch (e) {
+      print(e);
+      authService.authStatus = AuthStatus.UNAUTHORIZED;
+      return null;
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   Future<List<Featured>> getFeaturedItineraries() async {

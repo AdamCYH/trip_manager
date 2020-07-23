@@ -31,8 +31,8 @@ class User {
         firstName = json['first_name'],
         lastName = json['last_name'],
         isStaff = json['is_staff'],
-        picture = API.BASE_URL + json['profile_pic'],
-        alias = json['first_name'] + ' ' + json['last_name'];
+        picture = API.BASE_URL + (json['profile_pic'] ?? '/media/default.jpeg'),
+        alias = (json['first_name'] ?? '') + ' ' + (json['last_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'user_id': userId,
@@ -141,7 +141,7 @@ class Site {
         url = json['url'],
         address = json['address'],
         description = json['description'],
-        photo = API.BASE_URL + json['photo'];
+        photo = API.BASE_URL + (json['photo'] ?? '/media/default.jpeg');
 
   getCategory() {
     switch (siteCategory) {

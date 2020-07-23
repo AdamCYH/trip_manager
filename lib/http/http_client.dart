@@ -3,13 +3,14 @@ import 'dart:convert' as Convert;
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:mobile/models/exceptions.dart';
 
 typedef RequestCallBack = void Function(Map data);
 
 class MyHttpClient {
   Utf8Decoder decode = new Utf8Decoder();
 
-  static requestGET (
+  static requestGET(
       String authority, String unEncodedPath, RequestCallBack callBack,
       [Map<String, String> queryParameters]) async {
     try {
@@ -33,43 +34,49 @@ class MyHttpClient {
     try {
       http.Response response = await http.get(baseUrl + uri, headers: headers);
       final statusCode = response.statusCode;
+      if (response.statusCode != 200) {
+        return handleExceptions(response);
+      }
       final body = response.body;
       print('[uri=$uri][statusCode=$statusCode][response=$body]');
       var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
       return result;
-    } on Exception catch (e) {
-      print('[uri=$uri]exception e=${e.toString()}');
+    } on SocketException catch (e) {
+      print('[uri=$uri] exception e=${e.toString()}');
       return '';
     }
   }
 
-  Future<dynamic> getResponseBody(String uri, {Map<String, String> headers}) async {
+  Future<dynamic> post(String uri, dynamic body,
+      {Map<String, String> headers}) async {
     try {
-      http.Response response = await http.get(baseUrl + uri, headers: headers);
+      http.Response response =
+          await http.post(baseUrl + uri, body: body, headers: headers);
       final statusCode = response.statusCode;
-      final body = response.body;
-//      var result = Convert.jsonDecode(body);
-      print('[uri=$uri][statusCode=$statusCode][response=$body]');
-      return body;
-    } on Exception catch (e) {
-      print('[uri=$uri]exception e=${e.toString()}');
-      return null;
-    }
-  }
-
-  Future<dynamic> post(String uri, dynamic body, {Map<String, String> headers}) async {
-    try {
-      http.Response response = await http.post(baseUrl + uri, body: body, headers: headers);
-      final statusCode = response.statusCode;
+      if (response.statusCode != 200) {
+        return handleExceptions(response);
+      }
       final responseBody = response.body;
       var result = Convert.jsonDecode(responseBody);
       print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
-    } on Exception catch (e) {
-      print('[uri=$uri]exception e=${e.toString()}');
+    } on SocketException catch (e) {
+      print('[uri=$uri] exception e=${e.toString()}');
       return '';
     }
   }
+
+  void handleExceptions(http.Response response) {
+    switch (response.statusCode) {
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 500:
+      default:
+        throw FetchDataException(
+            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+    }
+  }
 }
-
-

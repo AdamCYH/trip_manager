@@ -31,7 +31,7 @@ class AuthService {
 
   Future getUser(String userId) async {
     var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk1Mzc1NDI5LCJqdGkiOiJkNGM5YmVkYWUzNDQ0YjBiYmJhMzQwNjZkODAyMzhhNSIsInVzZXJfaWQiOiI2ZDBmNjU1ZS0xNmZjLTRhY2ItODgzOS1mMjRjYzkwZTQ5NTQifQ.rZfSxpb7dJUapsyKHsFZLqG9vDefnivrmotTQVb9UcM';
-    return await _api.getUser(token, refreshToken, userId);
+    return await _api.getUser(token, refreshToken, userId, this);
   }
 
   Future createUser({String firstName,
