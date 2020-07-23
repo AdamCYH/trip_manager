@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   static const String ACCESS_TOKEN_STORAGE_KEY = 'access';
   static const String REFRESH_TOKEN_STORAGE_KEY = 'refresh';
+  static const String USER_ID_STORAGE_KEY = 'userId';
 
   // TODO: Should be replaced by secure keystore
   SharedPreferences _prefs;
@@ -16,14 +18,11 @@ class AuthService {
   final API _api = API();
   final AppState appState;
 
-  String accessToken;
-  String refreshToken;
-
   AuthStatus authStatus = AuthStatus.UNAUTHENTICATED;
 
   AuthService(this.appState) {
     _getStorage()
-        .then((value) => _getTokensFromStorage())
+        .then((value) => _getAuthFromStorage())
         .then((value) => refreshNewToken());
   }
 
@@ -31,10 +30,13 @@ class AuthService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future getUser(String userId) async {
-    var token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk1Mzc1NDI5LCJqdGkiOiJkNGM5YmVkYWUzNDQ0YjBiYmJhMzQwNjZkODAyMzhhNSIsInVzZXJfaWQiOiI2ZDBmNjU1ZS0xNmZjLTRhY2ItODgzOS1mMjRjYzkwZTQ5NTQifQ.rZfSxpb7dJUapsyKHsFZLqG9vDefnivrmotTQVb9UcM';
-    return await _api.getUser(token, refreshToken, userId, this);
+  Future getUser({Key key, userId, forceGet = false}) async {
+    if (forceGet || currentUser == null) {
+      currentUser = await _api.getUser(
+          currentAuth.accessToken, currentAuth.refreshToken, userId, this);
+    }
+    appState.notifyChanges();
+    return currentUser;
   }
 
   Future createUser(
@@ -47,13 +49,13 @@ class AuthService {
     _api.login(username, password, (auth) async {
       if (auth != null) {
         currentAuth = auth;
-        accessToken = auth.accessToken;
-        refreshToken = auth.refreshToken;
+
         _prefs.setString(ACCESS_TOKEN_STORAGE_KEY, auth.accessToken);
         _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, auth.refreshToken);
+        _prefs.setString(USER_ID_STORAGE_KEY, auth.userId);
         authStatus = AuthStatus.AUTHENTICATED;
 
-        currentUser = await getUser(auth.userId);
+        currentUser = await getUser(userId: auth.userId);
       } else {
         authStatus = AuthStatus.UNAUTHENTICATED;
       }
@@ -65,31 +67,41 @@ class AuthService {
 
   Future logout() async {
     this.currentUser = null;
-    _removeTokens();
+    _removeAuth();
     authStatus = AuthStatus.UNAUTHENTICATED;
     appState.notifyChanges();
     return Future.value(currentUser);
   }
 
   Future refreshNewToken() async {
-    _api.refreshToken(refreshToken, (token) {
-      token == null
-          ? authStatus = AuthStatus.UNAUTHENTICATED
-          : authStatus = AuthStatus.AUTHENTICATED;
-      accessToken = token;
-    });
+    if (currentAuth != null) {
+      _api.refreshToken(currentAuth.refreshToken, (token) {
+        token == null
+            ? authStatus = AuthStatus.UNAUTHENTICATED
+            : authStatus = AuthStatus.AUTHENTICATED;
+        currentAuth.accessToken = token;
+      });
+    }
   }
 
-  void _getTokensFromStorage() {
-    accessToken = _prefs.get(ACCESS_TOKEN_STORAGE_KEY);
-    refreshToken = _prefs.get(REFRESH_TOKEN_STORAGE_KEY);
+  void _getAuthFromStorage() {
+    var acc = _prefs.get(ACCESS_TOKEN_STORAGE_KEY);
+    var ref = _prefs.get(REFRESH_TOKEN_STORAGE_KEY);
+    var uid = _prefs.get(USER_ID_STORAGE_KEY);
+    if (acc != null && ref != null && uid != null) {
+      currentAuth = Auth.fromJson({
+        'access': acc,
+        'refresh': ref,
+        'user_id': uid
+      });
+    }
   }
 
-  void _removeTokens() {
+  void _removeAuth() {
     _prefs.remove(ACCESS_TOKEN_STORAGE_KEY);
     _prefs.remove(REFRESH_TOKEN_STORAGE_KEY);
-    accessToken = null;
-    refreshToken = null;
+    _prefs.remove(USER_ID_STORAGE_KEY);
+    currentAuth = null;
   }
 
   Future authenticate() {

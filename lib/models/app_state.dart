@@ -33,4 +33,5 @@ class AppState with ChangeNotifier {
     }
     return hotList;
   }
+
 }

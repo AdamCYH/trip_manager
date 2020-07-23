@@ -37,18 +37,7 @@ class _MePageState extends State<MePage> {
                 ),
                 margin: EdgeInsets.only(top: 10, bottom: 20),
               ),
-              appState.authService.authStatus == AuthStatus.AUTHENTICATED
-                  ? Text(
-                      '${appState.authService.currentUser.firstName}  ${appState.authService.currentUser.lastName}')
-                  : MaterialButton(
-                      child: Text(
-                        '点击登录',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      onPressed: () {
-                        Router.push(context, Router.loginPage, {});
-                      },
-                    )
+              getAuthComponent(appState)
             ],
           ),
           color: ColorConstants.BUTTON_WHITE,
@@ -78,6 +67,28 @@ class _MePageState extends State<MePage> {
         ),
       ]);
     });
+  }
+
+  Widget getAuthComponent(AppState appState) {
+    if (appState.authService.authStatus == AuthStatus.AUTHENTICATED &&
+        appState.authService.currentUser != null) {
+      return Text(
+          '${appState.authService.currentUser.firstName}  ${appState.authService.currentUser.lastName}');
+    } else {
+      if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
+        appState.authService.getUser(
+            userId: '123', forceGet: true);
+      }
+      return MaterialButton(
+        child: Text(
+          '点击登录',
+          style: TextStyle(fontSize: 16),
+        ),
+        onPressed: () {
+          Router.push(context, Router.loginPage, {});
+        },
+      );
+    }
   }
 }
 

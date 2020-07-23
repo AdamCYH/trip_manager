@@ -5,8 +5,8 @@ enum SiteCategory { Restaurant, Attraction, Hotel }
 
 class Auth {
   final String userId;
-  final String accessToken;
-  final String refreshToken;
+  String accessToken;
+  String refreshToken;
 
   Auth(this.userId, this.accessToken, this.refreshToken);
 

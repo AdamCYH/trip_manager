@@ -50,12 +50,14 @@ class API {
     try {
       final response = await _httpClient.get('/user/$userId',
           headers: getAuthenticationHeader(accessToken));
+      authService.authStatus = AuthStatus.AUTHENTICATED;
       return User.fromJson(response);
     } on UnauthorisedException catch (e) {
       print(e);
       authService.authStatus = AuthStatus.UNAUTHENTICATED;
       return null;
     } on Exception catch (e) {
+      authService.authStatus = AuthStatus.UNAUTHENTICATED;
       print(e);
       return null;
     }
