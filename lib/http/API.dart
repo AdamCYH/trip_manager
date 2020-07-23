@@ -16,15 +16,33 @@ class API {
   static const BASE_URL = 'http://mytriphub.net';
 
   static const LOG_IN = '/token-auth/';
+  static const REFRESH_TOKEN = '/token-auth/refresh/';
 
   var _httpClient = MyHttpClient('$BASE_URL/api');
 
   void login(
       String username, String password, RequestCallBack requestCallBack) async {
-    final response = await _httpClient.post(
-        LOG_IN, jsonEncode({'username': username, 'password': password}),
-        headers: DEFAULT_JSON_CONTENT_TYPE);
-    requestCallBack(Auth.fromJson(response));
+    try {
+      final response = await _httpClient.post(
+          LOG_IN, jsonEncode({'username': username, 'password': password}),
+          headers: DEFAULT_JSON_CONTENT_TYPE);
+      requestCallBack(Auth.fromJson(response));
+    } on Exception catch (e) {
+      print(e);
+      requestCallBack(null);
+    }
+  }
+
+  void refreshToken(String token, RequestCallBack requestCallBack) async {
+    try {
+      final response = await _httpClient.post(
+          REFRESH_TOKEN, jsonEncode({'refresh': token}),
+          headers: DEFAULT_JSON_CONTENT_TYPE);
+      requestCallBack(response['access']);
+    } on Exception catch (e) {
+      print(e);
+      requestCallBack(null);
+    }
   }
 
   Future<User> getUser(String accessToken, String refreshToken, String userId,
@@ -35,7 +53,7 @@ class API {
       return User.fromJson(response);
     } on UnauthorisedException catch (e) {
       print(e);
-      authService.authStatus = AuthStatus.UNAUTHORIZED;
+      authService.authStatus = AuthStatus.UNAUTHENTICATED;
       return null;
     } on Exception catch (e) {
       print(e);

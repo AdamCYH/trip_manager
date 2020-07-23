@@ -75,6 +75,7 @@ class MyHttpClient {
         throw UnauthorisedException(response.body.toString());
       case 500:
       default:
+        print(response.body);
         throw FetchDataException(
             'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }

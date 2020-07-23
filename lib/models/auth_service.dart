@@ -22,7 +22,9 @@ class AuthService {
   AuthStatus authStatus = AuthStatus.UNAUTHENTICATED;
 
   AuthService(this.appState) {
-    _getStorage().then((value) => _getTokensFromStorage());
+    _getStorage()
+        .then((value) => _getTokensFromStorage())
+        .then((value) => refreshNewToken());
   }
 
   Future<void> _getStorage() async {
@@ -30,18 +32,20 @@ class AuthService {
   }
 
   Future getUser(String userId) async {
-    var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk1Mzc1NDI5LCJqdGkiOiJkNGM5YmVkYWUzNDQ0YjBiYmJhMzQwNjZkODAyMzhhNSIsInVzZXJfaWQiOiI2ZDBmNjU1ZS0xNmZjLTRhY2ItODgzOS1mMjRjYzkwZTQ5NTQifQ.rZfSxpb7dJUapsyKHsFZLqG9vDefnivrmotTQVb9UcM';
+    var token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk1Mzc1NDI5LCJqdGkiOiJkNGM5YmVkYWUzNDQ0YjBiYmJhMzQwNjZkODAyMzhhNSIsInVzZXJfaWQiOiI2ZDBmNjU1ZS0xNmZjLTRhY2ItODgzOS1mMjRjYzkwZTQ5NTQifQ.rZfSxpb7dJUapsyKHsFZLqG9vDefnivrmotTQVb9UcM';
     return await _api.getUser(token, refreshToken, userId, this);
   }
 
-  Future createUser({String firstName,
-    String lastName,
-    String email,
-    String password}) async {}
+  Future createUser(
+      {String firstName,
+      String lastName,
+      String email,
+      String password}) async {}
 
   Future login({String username, String password}) {
     _api.login(username, password, (auth) async {
-      if (auth.userId != null) {
+      if (auth != null) {
         currentAuth = auth;
         accessToken = auth.accessToken;
         refreshToken = auth.refreshToken;
@@ -51,7 +55,7 @@ class AuthService {
 
         currentUser = await getUser(auth.userId);
       } else {
-        authStatus = AuthStatus.UNAUTHORIZED;
+        authStatus = AuthStatus.UNAUTHENTICATED;
       }
       appState.notifyChanges();
     });
@@ -65,6 +69,15 @@ class AuthService {
     authStatus = AuthStatus.UNAUTHENTICATED;
     appState.notifyChanges();
     return Future.value(currentUser);
+  }
+
+  Future refreshNewToken() async {
+    _api.refreshToken(refreshToken, (token) {
+      token == null
+          ? authStatus = AuthStatus.UNAUTHENTICATED
+          : authStatus = AuthStatus.AUTHENTICATED;
+      accessToken = token;
+    });
   }
 
   void _getTokensFromStorage() {
@@ -87,6 +100,5 @@ class AuthService {
 enum AuthStatus {
   UNAUTHENTICATED, // -> Login
   AUTHENTICATING, // -> Profile page
-  AUTHENTICATED,
-  UNAUTHORIZED
+  AUTHENTICATED
 }
