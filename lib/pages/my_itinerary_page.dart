@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Router.dart';
+import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/models/models.dart';
@@ -16,11 +17,23 @@ class MyItinerariesPage extends StatelessWidget {
             builder: (BuildContext context,
                 AsyncSnapshot<List<Itinerary>> snapshot) {
               if (snapshot.hasData) {
-                return ListView(
-                  children: snapshot.data
-                      .map((itinerary) =>
-                          ImageLeftTextRightWidget(itinerary: itinerary))
-                      .toList(),
+                return Stack(
+                  children: [
+                    ListView(
+                      children: snapshot.data
+                          .map((itinerary) =>
+                              ImageLeftTextRightWidget(itinerary: itinerary))
+                          .toList(),
+                    ),
+                    Positioned(
+                        child: FloatingActionButton(
+                          child: Icon(Icons.add),
+                          backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
+                          onPressed: null,
+                        ),
+                        bottom: 30,
+                        right: 30),
+                  ],
                 );
               } else {
                 return Container();
