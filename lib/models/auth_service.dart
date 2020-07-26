@@ -30,10 +30,10 @@ class AuthService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future getUser({Key key, userId, forceGet = false}) async {
+  Future getUser({Key key, forceGet = false}) async {
     if (forceGet || currentUser == null) {
       currentUser = await _api.getUser(
-          currentAuth.accessToken, currentAuth.refreshToken, userId, this);
+          currentAuth.accessToken, currentAuth.refreshToken, currentAuth.userId, this);
     }
     appState.notifyChanges();
     return currentUser;
@@ -55,7 +55,7 @@ class AuthService {
         _prefs.setString(USER_ID_STORAGE_KEY, auth.userId);
         authStatus = AuthStatus.AUTHENTICATED;
 
-        currentUser = await getUser(userId: auth.userId);
+        currentUser = await getUser(forceGet: true);
       } else {
         authStatus = AuthStatus.UNAUTHENTICATED;
       }

@@ -10,6 +10,8 @@ class AppState with ChangeNotifier {
 
   List<Itinerary> hotList;
 
+  List<Itinerary> myItinerariesList;
+
   AppState() {
     this.authService = AuthService(this);
   }
@@ -32,6 +34,13 @@ class AppState with ChangeNotifier {
       hotList = await API().getHotItineraries();
     }
     return hotList;
+  }
+
+  Future<List<Itinerary>> getMyItinerariesList({Key key, forceGet = false}) async {
+    if (forceGet || myItinerariesList == null) {
+      myItinerariesList = await API().getMyItineraries(authService.currentAuth.accessToken);
+    }
+    return myItinerariesList;
   }
 
 }

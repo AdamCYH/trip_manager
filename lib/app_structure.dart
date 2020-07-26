@@ -4,7 +4,9 @@ import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/pages/home_page.dart';
 import 'package:mobile/pages/me_page.dart';
+import 'package:mobile/pages/my_itinerary_page.dart';
 import 'package:mobile/pages/product_page.dart';
+import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
 
 class AppStructure extends StatefulWidget {
@@ -18,8 +20,9 @@ class _AppStructureState extends State<AppStructure> {
 
   final itemNames = <_Item>[
     _Item('首页', Icons.home),
-    _Item('产品', Icons.language),
-    _Item('行程', Icons.trip_origin),
+    _Item('社区', Icons.language),
+    _Item('创建', Icons.create),
+    _Item('旅途', Icons.trip_origin),
     _Item('我的', Icons.face),
   ];
 
@@ -35,6 +38,7 @@ class _AppStructureState extends State<AppStructure> {
   List<Widget> _pages = <Widget>[
     HomePage(),
     ProductsPage(),
+    MyItineraryPage(),
     Text('Journey'),
     MePage(),
   ];
@@ -79,13 +83,22 @@ class _AppStructureState extends State<AppStructure> {
             child: Container(
               child: Stack(
                 children: <Widget>[
+                  OverflowBox(
+                      maxWidth: ScreenUtils.screenWidth(context) * 2,
+                      child: FittedBox(
+                          child: Image.asset(
+                            Constants.STATIC_IMG + 'splash-1.png',
+                            width: ScreenUtils.screenWidth(context) * 2,
+                            height: ScreenUtils.screenHeight(context),
+                          ),
+                          fit: BoxFit.fill)),
                   IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
                       setState(() => isWelcomePageShown = false);
                     },
+                    padding: EdgeInsets.symmetric(vertical: 30),
                   ),
-                  Center(child: Text('Welcome to Triphub')),
                 ],
               ),
             ),

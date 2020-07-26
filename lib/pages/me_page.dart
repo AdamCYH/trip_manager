@@ -76,8 +76,7 @@ class _MePageState extends State<MePage> {
           '${appState.authService.currentUser.firstName}  ${appState.authService.currentUser.lastName}');
     } else {
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-        appState.authService.getUser(
-            userId: '123', forceGet: true);
+        appState.authService.getUser(forceGet: true);
       }
       return MaterialButton(
         child: Text(
