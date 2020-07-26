@@ -8,6 +8,7 @@ class ColorConstants {
   static const Color TEXT_SECONDARY = Color.fromRGBO(145, 154, 157, 1);
   static const Color TEXT_BRIGHT = Color.fromRGBO(63, 179, 173, 1);
   static const Color TEXT_WHITE = Color.fromRGBO(255, 255, 255, 1);
+  static const Color TEXT_RED = Color.fromRGBO(255, 66, 100, 1);
 
   static const Color BUTTON_PRIMARY = Color.fromRGBO(57, 66, 84, 1);
   static const Color BUTTON_WHITE = Color.fromRGBO(255, 255, 255, 1);

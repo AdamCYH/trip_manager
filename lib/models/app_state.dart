@@ -22,6 +22,13 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
+  String getAccessToken() {
+    return authService.currentAuth == null ||
+            authService.currentAuth.accessToken == null
+        ? ''
+        : authService.currentAuth.accessToken;
+  }
+
   Future<List<Featured>> getFeaturedList({Key key, forceGet = false}) async {
     if (forceGet || featuredList == null) {
       featuredList = await API().getFeaturedItineraries();
@@ -36,11 +43,12 @@ class AppState with ChangeNotifier {
     return hotList;
   }
 
-  Future<List<Itinerary>> getMyItinerariesList({Key key, forceGet = false}) async {
+  Future<List<Itinerary>> getMyItinerariesList(
+      {Key key, forceGet = false}) async {
     if (forceGet || myItinerariesList == null) {
-      myItinerariesList = await API().getMyItineraries(authService.currentAuth.accessToken);
+      myItinerariesList =
+          await API().getMyItineraries(authService.currentAuth.accessToken);
     }
     return myItinerariesList;
   }
-
 }

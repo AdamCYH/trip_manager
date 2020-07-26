@@ -4,6 +4,7 @@ import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:mobile/widgets/icons.dart';
+import 'package:intl/intl.dart';
 
 import '../Router.dart';
 
@@ -250,5 +251,104 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
         Router.push(context, Router.itineraryPage, itinerary.id);
       },
     );
+  }
+}
+
+class ImageLeftTextRightWidget extends StatelessWidget {
+  const ImageLeftTextRightWidget({Key key, @required this.itinerary})
+      : assert(itinerary != null),
+        super(key: key);
+
+  final Itinerary itinerary;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        child: Container(
+          child: Row(
+            children: [
+              Container(
+                child: ClipRRect(
+                  child: FittedBox(
+                    child: Image.network(
+                      itinerary.image,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                width: 150,
+                height: 150,
+              ),
+              Expanded(
+                  child: Container(
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          child: Text(
+                            itinerary.title,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                        ),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: ColorConstants.TEXT_PRIMARY,
+                                  size: 15,
+                                ),
+                                margin: EdgeInsets.all(3),
+                              ),
+                              Expanded(
+                                  child: Text(
+                                itinerary.cities.join('  |  '),
+                                style: TextStyle(
+                                    color: ColorConstants.TEXT_SECONDARY),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ))
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                        )
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    Row(children: [
+                      Text(
+                        DateFormat('yy-MM-dd')
+                            .format(itinerary.postedOn)
+                            .toString(),
+                        style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
+                      ),
+                      itinerary.isPublic
+                          ? Text('Public',
+                              style:
+                                  TextStyle(color: ColorConstants.TEXT_BRIGHT))
+                          : Text('Private',
+                              style: TextStyle(color: ColorConstants.TEXT_RED))
+                    ], mainAxisAlignment: MainAxisAlignment.spaceBetween)
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+              ))
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          color: ColorConstants.BACKGROUND_WHITE,
+          padding: EdgeInsets.all(10),
+          height: 170,
+        ),
+        onTap: () {
+          Router.push(context, Router.itineraryPage, itinerary.id);
+        });
   }
 }

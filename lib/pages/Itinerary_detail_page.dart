@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/Router.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/http/API.dart';
+import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:mobile/widgets/icons.dart';
+import 'package:provider/provider.dart';
 
 class ItineraryPage extends StatefulWidget {
   ItineraryPage(this.itineraryId, {Key key}) : super(key: key);
@@ -50,50 +52,51 @@ class _ItineraryPageState extends State<ItineraryPage> {
       body: itinerary == null
           ? Container()
           : Stack(
-              children: [
-                ListView(
-                  children: [
-                    ItinerarySummaryWidget(
-                      itinerary: itinerary,
-                    ),
-                    Divider(
-                      thickness: 5,
-                      color: ColorConstants.BACKGROUND_PRIMARY,
-                    ),
-                    ItineraryHighlightWidget(
-                      itinerary: itinerary,
-                    ),
-                    Divider(
-                      thickness: 5,
-                      color: ColorConstants.BACKGROUND_PRIMARY,
-                    ),
-                    ItineraryDetailsWidget(
-                      itinerary: itinerary,
-                      dayTripsList: dayTripsList,
-                    )
-                  ],
-                  padding: EdgeInsets.only(bottom: 100),
-                ),
-                Positioned(
-                  bottom: 0,
-                  width: ScreenUtils.screenWidth(context),
-                  child: FlatButton(
-                    child: Text('开始行程'),
-                    onPressed: () {
-                      Router.push(context, Router.loginPage, {});
-                    },
-                    color: ColorConstants.BUTTON_PRIMARY,
-                    textColor: ColorConstants.TEXT_WHITE,
-                    padding: EdgeInsets.all(15),
-                  ),
-                )
-              ],
+        children: [
+          ListView(
+            children: [
+              ItinerarySummaryWidget(
+                itinerary: itinerary,
+              ),
+              Divider(
+                thickness: 5,
+                color: ColorConstants.BACKGROUND_PRIMARY,
+              ),
+              ItineraryHighlightWidget(
+                itinerary: itinerary,
+              ),
+              Divider(
+                thickness: 5,
+                color: ColorConstants.BACKGROUND_PRIMARY,
+              ),
+              ItineraryDetailsWidget(
+                itinerary: itinerary,
+                dayTripsList: dayTripsList,
+              )
+            ],
+            padding: EdgeInsets.only(bottom: 100),
+          ),
+          Positioned(
+            bottom: 0,
+            width: ScreenUtils.screenWidth(context),
+            child: FlatButton(
+              child: Text('开始行程'),
+              onPressed: () {
+                Router.push(context, Router.loginPage, {});
+              },
+              color: ColorConstants.BUTTON_PRIMARY,
+              textColor: ColorConstants.TEXT_WHITE,
+              padding: EdgeInsets.all(15),
             ),
+          )
+        ],
+      ),
     );
   }
 
   void getItineraryDetail() async {
-    var data = await API().getItineraryDetail(widget.itineraryId);
+    var data = await API().getItineraryDetail(widget.itineraryId,
+        Provider.of<AppState>(context, listen: false).getAccessToken());
     setState(() {
       itinerary = data;
     });
@@ -272,8 +275,8 @@ class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
             widget.dayTripsList == null
                 ? Container()
                 : DayTripsListWidget(
-                    dayTripsList: widget.dayTripsList,
-                  ),
+              dayTripsList: widget.dayTripsList,
+            ),
             ItineraryCommentWidget(),
           ][_tabIndex],
         ],
@@ -315,52 +318,53 @@ class DayTripCard extends StatelessWidget {
         children: [
           Container(
               child: Row(children: [
-            CircleIcon(color: ColorConstants.ICON_BRIGHTER, diameter: 10),
-            Container(
-              child: Center(
-                  child: Text(
-                'D${dayTrip.day.toString()}',
-                style: TextStyle(color: ColorConstants.TEXT_WHITE),
-              )),
-              decoration: BoxDecoration(
-                  color: ColorConstants.BUTTON_PRIMARY,
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              width: 50,
-              height: 30,
-              margin: EdgeInsets.all(10),
-            )
-          ])),
+                CircleIcon(color: ColorConstants.ICON_BRIGHTER, diameter: 10),
+                Container(
+                  child: Center(
+                      child: Text(
+                        'D${dayTrip.day.toString()}',
+                        style: TextStyle(color: ColorConstants.TEXT_WHITE),
+                      )),
+                  decoration: BoxDecoration(
+                      color: ColorConstants.BUTTON_PRIMARY,
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  width: 50,
+                  height: 30,
+                  margin: EdgeInsets.all(10),
+                )
+              ])),
           Container(
             child: Column(
               children: dayTrip.sites
-                  .map((dayTripSite) => Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(
-                                dayTripSite.site.getIcon(),
-                                color: ColorConstants.ICON_MEDIUM,
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                '${dayTripSite.site.getCategory()}:',
-                                style: TextStyle(
-                                    color: ColorConstants.TEXT_SECONDARY),
-                              ),
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                            ),
-                            Expanded(
-                              child: Text(
-                                dayTripSite.site.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            )
-                          ],
+                  .map((dayTripSite) =>
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          child: Icon(
+                            dayTripSite.site.getIcon(),
+                            color: ColorConstants.ICON_MEDIUM,
+                          ),
                         ),
-                        margin: EdgeInsets.all(10),
-                      ))
+                        Container(
+                          child: Text(
+                            '${dayTripSite.site.getCategory()}:',
+                            style: TextStyle(
+                                color: ColorConstants.TEXT_SECONDARY),
+                          ),
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                        ),
+                        Expanded(
+                          child: Text(
+                            dayTripSite.site.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.all(10),
+                  ))
                   .toList(),
             ),
             decoration: BoxDecoration(

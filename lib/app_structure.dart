@@ -38,7 +38,7 @@ class _AppStructureState extends State<AppStructure> {
   List<Widget> _pages = <Widget>[
     HomePage(),
     ProductsPage(),
-    MyItineraryPage(),
+    MyItinerariesPage(),
     Text('Journey'),
     MePage(),
   ];

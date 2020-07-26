@@ -6,7 +6,7 @@ import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:provider/provider.dart';
 
-class MyItineraryPage extends StatelessWidget {
+class MyItinerariesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
@@ -18,8 +18,8 @@ class MyItineraryPage extends StatelessWidget {
               if (snapshot.hasData) {
                 return ListView(
                   children: snapshot.data
-                      .map((itinerary) => ImageWithSeparateBottomTextCardWidget(
-                          itinerary: itinerary))
+                      .map((itinerary) =>
+                          ImageLeftTextRightWidget(itinerary: itinerary))
                       .toList(),
                 );
               } else {
@@ -27,8 +27,17 @@ class MyItineraryPage extends StatelessWidget {
               }
             });
       } else {
-        Router.push(context, Router.loginPage, {});
-        return null;
+        return Center(
+          child: MaterialButton(
+            child: Text(
+              '点击登录',
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Router.push(context, Router.loginPage, {});
+            },
+          ),
+        );
       }
     });
   }
