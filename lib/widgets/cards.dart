@@ -289,7 +289,7 @@ class ImageLeftTextRightWidget extends StatelessWidget {
                         Container(
                           child: Text(
                             itinerary.title,
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 17),
                           ),
                           margin:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -301,15 +301,16 @@ class ImageLeftTextRightWidget extends StatelessWidget {
                                 child: Icon(
                                   Icons.location_on,
                                   color: ColorConstants.TEXT_PRIMARY,
-                                  size: 15,
+                                  size: 14,
                                 ),
-                                margin: EdgeInsets.all(3),
+                                margin: EdgeInsets.all(2),
                               ),
                               Expanded(
                                   child: Text(
                                 itinerary.cities.join('  |  '),
                                 style: TextStyle(
-                                    color: ColorConstants.TEXT_SECONDARY),
+                                    color: ColorConstants.TEXT_SECONDARY,
+                                    fontSize: 12),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ))
@@ -322,10 +323,11 @@ class ImageLeftTextRightWidget extends StatelessWidget {
                     ),
                     Row(children: [
                       Text(
-                        DateFormat('yy-MM-dd')
+                        DateFormat('yyyy-MM-dd')
                             .format(itinerary.postedOn)
                             .toString(),
-                        style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
+                        style: TextStyle(
+                            color: ColorConstants.TEXT_SECONDARY, fontSize: 12),
                       ),
                       itinerary.isPublic
                           ? Text('Public',

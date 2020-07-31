@@ -76,8 +76,8 @@ class API {
         response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
   }
 
-  Future<List<Itinerary>> getMyItineraries(String accessToken) async {
-    final response = await _httpClient.get('/itinerary/?sortBy=posted_on',
+  Future<List<Itinerary>> getMyItineraries(String accessToken, String owner) async {
+    final response = await _httpClient.get('/itinerary/?owner=$owner&sortBy=posted_on',
         headers: getAuthenticationHeader(accessToken));
     return Future.value(
         response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());

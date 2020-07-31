@@ -47,7 +47,7 @@ class AppState with ChangeNotifier {
       {Key key, forceGet = false}) async {
     if (forceGet || myItinerariesList == null) {
       myItinerariesList =
-          await API().getMyItineraries(authService.currentAuth.accessToken);
+          await API().getMyItineraries(authService.currentAuth.accessToken, authService.currentAuth.userId);
     }
     return myItinerariesList;
   }
