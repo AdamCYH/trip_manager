@@ -3,7 +3,6 @@ import 'package:mobile/Router.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
-import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:provider/provider.dart';
 

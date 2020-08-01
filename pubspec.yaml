@@ -32,6 +32,7 @@ dependencies:
   http: ^0.12.1
   provider: ^3.0.0
   shared_preferences: ^0.5.8
+  flutter_svg: ^0.18.0
 
   flutter_localizations:
     sdk: flutter
@@ -83,6 +84,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/images/
+    - assets/icons/
 
   fonts:
   - family: PingFang
