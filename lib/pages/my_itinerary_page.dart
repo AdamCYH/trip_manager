@@ -7,20 +7,36 @@ import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:provider/provider.dart';
 
-class MyItinerariesPage extends StatelessWidget {
+class MyItinerariesPage extends StatefulWidget {
+  @override
+  _MyItinerariesPageState createState() => _MyItinerariesPageState();
+}
+
+class _MyItinerariesPageState extends State<MyItinerariesPage> {
+  @override
+  void initState() {
+    if (Provider.of<AppState>(context, listen: false).authService.authStatus ==
+        AuthStatus.AUTHENTICATED) {
+      Provider.of<AppState>(context, listen: false).getMyItinerariesList();
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-        return FutureBuilder<List<Itinerary>>(
-            future: appState.getMyItinerariesList(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<Itinerary>> snapshot) {
-              if (snapshot.hasData) {
-                return Stack(
+        return appState.myItinerariesList != null
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  await Provider.of<AppState>(context, listen: false)
+                      .getMyItinerariesList(forceGet: true);
+                },
+                child: Stack(
                   children: [
                     ListView(
-                      children: snapshot.data
+                      children: appState.myItinerariesList
                           .map((itinerary) =>
                               ImageLeftTextRightWidget(itinerary: itinerary))
                           .toList(),
@@ -34,11 +50,8 @@ class MyItinerariesPage extends StatelessWidget {
                         bottom: 30,
                         right: 30),
                   ],
-                );
-              } else {
-                return Container();
-              }
-            });
+                ))
+            : Container();
       } else {
         return Center(
           child: MaterialButton(
