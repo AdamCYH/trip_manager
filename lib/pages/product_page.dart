@@ -46,50 +46,73 @@ class _ProductsPageState extends State<ProductsPage>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [HotItineraryWidget(), FeaturedItineraryWidget()],
+        children: [FeaturedItineraryWidget(), HotItineraryWidget()],
       ),
     );
   }
 }
 
-class HotItineraryWidget extends StatelessWidget {
+class HotItineraryWidget extends StatefulWidget {
+  @override
+  _HotItineraryWidgetState createState() => _HotItineraryWidgetState();
+}
+
+class _HotItineraryWidgetState extends State<HotItineraryWidget> {
+  @override
+  void initState() {
+    Provider.of<AppState>(context, listen: false).getHotList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Featured>>(
-        future: Provider.of<AppState>(context, listen: false).getFeaturedList(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Featured>> snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-              children: snapshot.data
-                  .map((featured) => ImageWithCenteredTextCardWidget(
-                      itinerary: featured.itinerary))
-                  .toList(),
-            );
-          } else {
-            return Container();
-          }
-        });
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return appState.hotList != null
+          ? RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<AppState>(context, listen: false)
+                    .getHotList(forceGet: true);
+              },
+              child: ListView(
+                children: appState.hotList
+                    .map((itinerary) => ImageWithSeparateBottomTextCardWidget(
+                        itinerary: itinerary))
+                    .toList(),
+              ))
+          : Container();
+    });
   }
 }
 
-class FeaturedItineraryWidget extends StatelessWidget {
+class FeaturedItineraryWidget extends StatefulWidget {
+  @override
+  _FeaturedItineraryWidgetState createState() =>
+      _FeaturedItineraryWidgetState();
+}
+
+class _FeaturedItineraryWidgetState extends State<FeaturedItineraryWidget> {
+  @override
+  void initState() {
+    Provider.of<AppState>(context, listen: false).getFeaturedList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Itinerary>>(
-        future: Provider.of<AppState>(context, listen: false).getHotList(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Itinerary>> snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-              children: snapshot.data
-                  .map((itinerary) => ImageWithSeparateBottomTextCardWidget(
-                      itinerary: itinerary))
-                  .toList(),
-            );
-          } else {
-            return Container();
-          }
-        });
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return appState.featuredList != null
+          ? RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<AppState>(context, listen: false)
+                    .getFeaturedList(forceGet: true);
+              },
+              child: ListView(
+                children: appState.featuredList
+                    .map((featured) => ImageWithCenteredTextCardWidget(
+                        itinerary: featured.itinerary))
+                    .toList(),
+              ))
+          : Container();
+    });
   }
 }

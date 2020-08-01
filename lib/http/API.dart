@@ -95,6 +95,6 @@ class API {
   }
 
   Map<String, String> getAuthenticationHeader(String token) {
-    return {'Authorization': 'Token $token'};
+    return token == null || token.isEmpty ? {} : {'Authorization': 'Token $token'};
   }
 }

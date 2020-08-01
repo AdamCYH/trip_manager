@@ -32,6 +32,7 @@ class AppState with ChangeNotifier {
   Future<List<Featured>> getFeaturedList({Key key, forceGet = false}) async {
     if (forceGet || featuredList == null) {
       featuredList = await API().getFeaturedItineraries();
+      notifyChanges();
     }
     return featuredList;
   }
@@ -39,6 +40,7 @@ class AppState with ChangeNotifier {
   Future<List<Itinerary>> getHotList({Key key, forceGet = false}) async {
     if (forceGet || hotList == null) {
       hotList = await API().getHotItineraries();
+      notifyChanges();
     }
     return hotList;
   }
@@ -46,8 +48,9 @@ class AppState with ChangeNotifier {
   Future<List<Itinerary>> getMyItinerariesList(
       {Key key, forceGet = false}) async {
     if (forceGet || myItinerariesList == null) {
-      myItinerariesList =
-          await API().getMyItineraries(authService.currentAuth.accessToken, authService.currentAuth.userId);
+      myItinerariesList = await API().getMyItineraries(
+          authService.currentAuth.accessToken, authService.currentAuth.userId);
+      notifyChanges();
     }
     return myItinerariesList;
   }

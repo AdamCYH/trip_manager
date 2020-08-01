@@ -11,12 +11,18 @@ import 'package:provider/provider.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        AdsSliderWidget(),
-        FeaturedWidget(),
-        HomePageIntroWidget(),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Provider.of<AppState>(context, listen: false)
+            .getFeaturedList(forceGet: true);
+      },
+      child: ListView(
+        children: <Widget>[
+          AdsSliderWidget(),
+          FeaturedWidget(),
+          HomePageIntroWidget(),
+        ],
+      ),
     );
   }
 }
@@ -47,44 +53,49 @@ class AdsSliderWidget extends StatelessWidget {
   }
 }
 
-class FeaturedWidget extends StatelessWidget {
+class FeaturedWidget extends StatefulWidget {
+  @override
+  _FeaturedWidgetState createState() => _FeaturedWidgetState();
+}
+
+class _FeaturedWidgetState extends State<FeaturedWidget> {
   final double cardWidth = 160;
 
   @override
+  void initState() {
+    Provider.of<AppState>(context, listen: false).getFeaturedList();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          TitleWidget(
-            title: '热门行程',
-            size: Constants.TITLE_FONT_SIZE,
-          ),
-          Container(
-            child: FutureBuilder<List<Featured>>(
-                future: Provider.of<AppState>(context, listen: false)
-                    .getFeaturedList(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Featured>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView(
-                      children: snapshot.data
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            TitleWidget(
+              title: '热门行程',
+              size: Constants.TITLE_FONT_SIZE,
+            ),
+            Container(
+              child: appState.featuredList != null
+                  ? ListView(
+                      children: appState.featuredList
                           .map((featured) => SquareCardWidget(
                               width: cardWidth, itinerary: featured.itinerary))
                           .toList(),
                       scrollDirection: Axis.horizontal,
-                    );
-                  } else {
-                    return Container();
-                  }
-                }),
-            height: 280,
-          )
-        ],
-      ),
-      height: 350,
-      color: ColorConstants.BACKGROUND_WHITE,
-      margin: EdgeInsets.symmetric(vertical: 5),
-    );
+                    )
+                  : Container(),
+              height: 280,
+            )
+          ],
+        ),
+        height: 350,
+        color: ColorConstants.BACKGROUND_WHITE,
+        margin: EdgeInsets.symmetric(vertical: 5),
+      );
+    });
   }
 }
 
