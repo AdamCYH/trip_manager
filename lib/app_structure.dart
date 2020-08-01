@@ -60,7 +60,7 @@ class _AppStructureState extends State<AppStructure> {
 //                title: Image.asset(Constants.STATIC_IMG + 'logo-icon.png',
 //                    width: 80),
                 title: Image.asset(
-                  Constants.STATIC_IMG + 'logo.jpg',
+                  Constants.STATIC_IMG + 'logo.png',
                   width: 120,
                 ),
                 centerTitle: true,
