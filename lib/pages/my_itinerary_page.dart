@@ -14,7 +14,10 @@ class MyItinerariesPage extends StatefulWidget {
 class _MyItinerariesPageState extends State<MyItinerariesPage> {
   @override
   void initState() {
-    if (Provider.of<AppState>(context, listen: false).authService.authStatus ==
+    if (Provider
+        .of<AppState>(context, listen: false)
+        .authService
+        .authStatus ==
         AuthStatus.AUTHENTICATED) {
       Provider.of<AppState>(context, listen: false).getMyItinerariesList();
     }
@@ -28,28 +31,30 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
         return appState.myItinerariesList != null
             ? RefreshIndicator(
-                onRefresh: () async {
-                  await Provider.of<AppState>(context, listen: false)
-                      .getMyItinerariesList(forceGet: true);
-                },
-                child: Stack(
-                  children: [
-                    ListView(
-                      children: appState.myItinerariesList
-                          .map((itinerary) =>
-                              ImageLeftTextRightWidget(itinerary: itinerary))
-                          .toList(),
+            onRefresh: () async {
+              await Provider.of<AppState>(context, listen: false)
+                  .getMyItinerariesList(forceGet: true);
+            },
+            child: Stack(
+              children: [
+                ListView(
+                  children: appState.myItinerariesList
+                      .map((itinerary) =>
+                      ImageLeftTextRightWidget(itinerary: itinerary))
+                      .toList(),
+                ),
+                Positioned(
+                    child: FloatingActionButton(
+                      child: Icon(Icons.add),
+                      backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
+                      onPressed: () {
+                        Router.push(context, Router.createItineraryPage, {});
+                      },
                     ),
-                    Positioned(
-                        child: FloatingActionButton(
-                          child: Icon(Icons.add),
-                          backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
-                          onPressed: null,
-                        ),
-                        bottom: 30,
-                        right: 30),
-                  ],
-                ))
+                    bottom: 30,
+                    right: 30),
+              ],
+            ))
             : Container();
       } else {
         return Center(
@@ -67,3 +72,5 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
     });
   }
 }
+
+

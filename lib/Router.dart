@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile/pages/Itinerary_detail_page.dart';
+import 'package:mobile/pages/create_itinerary_page.dart';
 import 'package:mobile/pages/home_page.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/me_page.dart';
@@ -14,6 +15,7 @@ class Router {
   static const itineraryPage = 'app://itinerary';
   static const loginPage = 'app://login';
   static const settingPage = 'app://setting';
+  static const createItineraryPage = 'app://createItinerary';
 
   Widget _getPage(String url, dynamic params) {
     if (url.startsWith('https://') || url.startsWith('http://')) {
@@ -26,6 +28,8 @@ class Router {
           return ProductsPage();
         case itineraryPage:
           return ItineraryPage(params);
+        case createItineraryPage:
+          return CreateItineraryPage();
         case loginPage:
           return LoginPage();
         case settingPage:

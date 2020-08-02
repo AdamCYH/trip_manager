@@ -76,15 +76,18 @@ class API {
         response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
   }
 
-  Future<List<Itinerary>> getMyItineraries(String accessToken, String owner) async {
-    final response = await _httpClient.get('/itinerary/?owner=$owner&sortBy=posted_on',
+  Future<List<Itinerary>> getMyItineraries(
+      String accessToken, String owner) async {
+    final response = await _httpClient.get(
+        '/itinerary/?owner=$owner&sortBy=posted_on',
         headers: getAuthenticationHeader(accessToken));
     return Future.value(
         response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
   }
 
   Future<Itinerary> getItineraryDetail(String id, String accessToken) async {
-    final response = await _httpClient.get('/itinerary/$id', headers: getAuthenticationHeader(accessToken));
+    final response = await _httpClient.get('/itinerary/$id',
+        headers: getAuthenticationHeader(accessToken));
     return Itinerary.fromJson(response);
   }
 
@@ -95,6 +98,15 @@ class API {
   }
 
   Map<String, String> getAuthenticationHeader(String token) {
-    return token == null || token.isEmpty ? {} : {'Authorization': 'Token $token'};
+    return token == null || token.isEmpty
+        ? {}
+        : {'Authorization': 'Token $token'};
+  }
+
+  Future<void> createItinerary(
+      Map<String, String> fields, List<String> filePaths, String accessToken) async {
+    final response =
+        await _httpClient.multipartPost('/itinerary/', fields, filePaths, headers: getAuthenticationHeader(accessToken));
+    return response;
   }
 }

@@ -66,6 +66,34 @@ class MyHttpClient {
     }
   }
 
+  Future<dynamic> multipartPost(String uri, dynamic body, List<String> files,
+      {Map<String, String> headers}) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(baseUrl + uri));
+      request.headers.addAll(headers);
+      request.fields.addAll(body);
+      files.forEach((fileName) async {
+        request.files.add(await http.MultipartFile.fromPath('image', fileName));
+      });
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      final statusCode = response.statusCode;
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        return handleExceptions(response);
+      }
+      final responseBody = response.body;
+      var result = Convert.jsonDecode(responseBody);
+      print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
+      return result;
+    } on SocketException catch (e) {
+      print('[uri=$uri] exception e=${e.toString()}');
+      return '';
+    }
+  }
+
   void handleExceptions(http.Response response) {
     switch (response.statusCode) {
       case 400:
