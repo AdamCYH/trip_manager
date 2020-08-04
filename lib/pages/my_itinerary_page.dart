@@ -28,57 +28,55 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-        return appState.myItinerariesList != null
-            ? RefreshIndicator(
-                onRefresh: () async {
-                  await Provider.of<AppState>(context, listen: false)
-                      .getMyItinerariesList(forceGet: true);
-                },
-                child: Stack(
-                  children: [
-                    ListView.builder(
-                        itemCount: appState.myItinerariesList.length,
-                        itemBuilder: (context, index) {
-                          return Slidable(
-                            actionPane: SlidableDrawerActionPane(),
-                            actionExtentRatio: 0.25,
-                            key:
-                                ObjectKey(appState.myItinerariesList[index].id),
-                            child: ImageLeftTextRightWidget(
-                                itinerary: appState.myItinerariesList[index]),
-                            secondaryActions: <Widget>[
-                              IconSlideAction(
-                                caption: 'More',
-                                color: Colors.black45,
-                                icon: Icons.more_horiz,
-                                onTap: () => null,
-                              ),
-                              IconSlideAction(
-                                caption: 'Delete',
-                                color: Colors.red,
-                                icon: Icons.delete,
-                                onTap: () => {
-                                  appState.deleteItinerary(index,
-                                      appState.myItinerariesList[index].id)
-                                },
-                              ),
-                            ],
-                          );
-                        }),
-                    Positioned(
-                        child: FloatingActionButton(
-                          child: Icon(Icons.add),
-                          backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
-                          onPressed: () {
-                            Router.push(
-                                context, Router.createItineraryPage, {});
-                          },
-                        ),
-                        bottom: 30,
-                        right: 30),
-                  ],
-                ))
-            : Container();
+        return RefreshIndicator(
+            onRefresh: () async {
+              await Provider.of<AppState>(context, listen: false)
+                  .getMyItinerariesList(forceGet: true);
+            },
+            child: Stack(
+              children: [
+                ListView.builder(
+                    itemCount: appState.myItinerariesList == null
+                        ? 0
+                        : appState.myItinerariesList.length,
+                    itemBuilder: (context, index) {
+                      return Slidable(
+                        actionPane: SlidableDrawerActionPane(),
+                        actionExtentRatio: 0.25,
+                        key: ObjectKey(appState.myItinerariesList[index].id),
+                        child: ImageLeftTextRightWidget(
+                            itinerary: appState.myItinerariesList[index]),
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                            caption: 'More',
+                            color: Colors.black45,
+                            icon: Icons.more_horiz,
+                            onTap: () => null,
+                          ),
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            onTap: () => {
+                              appState.deleteItinerary(
+                                  index, appState.myItinerariesList[index].id)
+                            },
+                          ),
+                        ],
+                      );
+                    }),
+                Positioned(
+                    child: FloatingActionButton(
+                      child: Icon(Icons.add),
+                      backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
+                      onPressed: () {
+                        Router.push(context, Router.createItineraryPage, {});
+                      },
+                    ),
+                    bottom: 30,
+                    right: 30),
+              ],
+            ));
       } else {
         return Center(
           child: MaterialButton(
