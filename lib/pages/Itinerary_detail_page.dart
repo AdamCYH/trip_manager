@@ -136,6 +136,7 @@ class ItinerarySummaryWidget extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           height: 350,
+          width: ScreenUtils.screenWidth(context),
           margin: EdgeInsets.only(bottom: 20),
         ),
         Container(
