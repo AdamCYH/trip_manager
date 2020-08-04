@@ -54,4 +54,16 @@ class AppState with ChangeNotifier {
     }
     return myItinerariesList;
   }
+
+  Future<Itinerary> createItinerary(
+      Map<String, String> fields, List<String> filePaths) async {
+    try {
+      var iti = await API().createItinerary(
+          fields, filePaths, authService.currentAuth.accessToken);
+      myItinerariesList.insert(0, iti);
+      notifyChanges();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

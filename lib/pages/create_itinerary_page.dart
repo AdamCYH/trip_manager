@@ -30,87 +30,96 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView(
-        children: [
-          Container(
-            child: _image == null
-                ? MaterialButton(
-                    onPressed: chooseImage,
-                    child: Text('选择图片'),
-                  )
-                : Stack(
-                    children: [
-                      FittedBox(
-                        child: Container(
-                          child: Image.file(_image),
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.delete_outline,
-                            color: ColorConstants.TEXT_RED,
+      body: Builder(builder: (BuildContext context) {
+        return ListView(
+          children: [
+            Container(
+              child: _image == null
+                  ? MaterialButton(
+                      onPressed: chooseImage,
+                      child: Text('选择图片'),
+                    )
+                  : Stack(
+                      children: [
+                        FittedBox(
+                          child: Container(
+                            child: Image.file(_image),
                           ),
-                          onPressed: () {
-                            setState(() => _image = null);
-                          },
-                          padding: EdgeInsets.symmetric(vertical: 30),
+                          fit: BoxFit.cover,
                         ),
-                        top: 0,
-                        right: 0,
-                      )
-                    ],
-                    fit: StackFit.expand,
-                  ),
-            width: ScreenUtils.screenWidth(context),
-            height: 350,
-            decoration: BoxDecoration(color: ColorConstants.BACKGROUND_WHITE),
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          ),
-          Container(
-            child: Column(
-              children: [
-                TextField(
-                  decoration:
-                      InputDecoration(hintText: '标题', border: InputBorder.none),
-                  onChanged: (text) {
-                    _title = text;
-                  },
-                ),
-                Divider(),
-                TextField(
-                  decoration: InputDecoration(
-                      hintText: '亮点 / 简介', border: InputBorder.none),
-                  onChanged: (text) {
-                    _description = text;
-                  },
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 10,
-                ),
-              ],
+                        Positioned(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: ColorConstants.TEXT_RED,
+                            ),
+                            onPressed: () {
+                              setState(() => _image = null);
+                            },
+                            padding: EdgeInsets.symmetric(vertical: 30),
+                          ),
+                          top: 0,
+                          right: 0,
+                        )
+                      ],
+                      fit: StackFit.expand,
+                    ),
+              width: ScreenUtils.screenWidth(context),
+              height: 350,
+              decoration: BoxDecoration(color: ColorConstants.BACKGROUND_WHITE),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             ),
-            padding: EdgeInsets.all(10),
-            color: ColorConstants.BACKGROUND_WHITE,
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-          ),
-          FlatButton(
-            child: Text('创建行程'),
-            onPressed: () {
-              API().createItinerary(
-                  {'title': _title, 'description': _description},
-                  [_image.path],
-                  Provider.of<AppState>(context, listen: false)
-                      .getAccessToken());
-              return;
-            },
-            color: ColorConstants.BUTTON_PRIMARY,
-            textColor: ColorConstants.TEXT_WHITE,
-            padding: EdgeInsets.all(15),
-          )
-        ],
-      ),
+            Container(
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                        hintText: '标题', border: InputBorder.none),
+                    onChanged: (text) {
+                      _title = text;
+                    },
+                  ),
+                  Divider(),
+                  TextField(
+                    decoration: InputDecoration(
+                        hintText: '亮点 / 简介', border: InputBorder.none),
+                    onChanged: (text) {
+                      _description = text;
+                    },
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 10,
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.all(10),
+              color: ColorConstants.BACKGROUND_WHITE,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+            ),
+            FlatButton(
+              child: Text('创建行程'),
+              onPressed: () async {
+                try {
+                  await Provider.of<AppState>(context, listen: false)
+                      .createItinerary(
+                          {'title': _title, 'description': _description},
+                          [_image.path]);
+                  Navigator.pop(context);
+                } catch (e) {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          "Unable to create itinerary. Please try again later.")));
+                }
+
+                return;
+              },
+              color: ColorConstants.BUTTON_PRIMARY,
+              textColor: ColorConstants.TEXT_WHITE,
+              padding: EdgeInsets.all(15),
+            )
+          ],
+        );
+      }),
       backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
     );
   }

@@ -103,10 +103,14 @@ class API {
         : {'Authorization': 'Token $token'};
   }
 
-  Future<void> createItinerary(
-      Map<String, String> fields, List<String> filePaths, String accessToken) async {
-    final response =
-        await _httpClient.multipartPost('/itinerary/', fields, filePaths, headers: getAuthenticationHeader(accessToken));
-    return response;
+  Future<Itinerary> createItinerary(Map<String, String> fields,
+      List<String> filePaths, String accessToken) async {
+    try {
+      var response = await _httpClient.multipartPost('/itinerary/', fields, filePaths,
+          headers: getAuthenticationHeader(accessToken));
+      return Itinerary.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
