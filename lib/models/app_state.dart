@@ -55,12 +55,22 @@ class AppState with ChangeNotifier {
     return myItinerariesList;
   }
 
-  Future<Itinerary> createItinerary(
+  Future<void> createItinerary(
       Map<String, String> fields, List<String> filePaths) async {
     try {
       var iti = await API().createItinerary(
           fields, filePaths, authService.currentAuth.accessToken);
       myItinerariesList.insert(0, iti);
+      notifyChanges();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteItinerary(int index, String id) async {
+    try {
+      await API().deleteItinerary(id, authService.currentAuth.accessToken);
+      myItinerariesList.removeAt(index);
       notifyChanges();
     } catch (e) {
       rethrow;

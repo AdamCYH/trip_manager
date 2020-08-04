@@ -94,6 +94,19 @@ class MyHttpClient {
     }
   }
 
+  Future<dynamic> delete(String uri, {Map<String, String> headers}) async {
+    try {
+      http.Response response =
+          await http.delete(baseUrl + uri, headers: headers);
+      if (response.statusCode != 204) {
+        return handleExceptions(response);
+      }
+    } on SocketException catch (e) {
+      print('[uri=$uri] exception e=${e.toString()}');
+      return '';
+    }
+  }
+
   void handleExceptions(http.Response response) {
     switch (response.statusCode) {
       case 400:

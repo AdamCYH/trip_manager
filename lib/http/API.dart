@@ -106,11 +106,17 @@ class API {
   Future<Itinerary> createItinerary(Map<String, String> fields,
       List<String> filePaths, String accessToken) async {
     try {
-      var response = await _httpClient.multipartPost('/itinerary/', fields, filePaths,
+      var response = await _httpClient.multipartPost(
+          '/itinerary/', fields, filePaths,
           headers: getAuthenticationHeader(accessToken));
       return Itinerary.fromJson(response);
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> deleteItinerary(String id, String accessToken) async {
+    await _httpClient.delete('/itinerary/$id/',
+        headers: getAuthenticationHeader(accessToken));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Router.dart';
 import 'package:mobile/constants/colors.dart';
+import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/widgets/cards.dart';
@@ -56,7 +57,10 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
                                 caption: 'Delete',
                                 color: Colors.red,
                                 icon: Icons.delete,
-                                onTap: () => null,
+                                onTap: () => {
+                                  appState.deleteItinerary(index,
+                                      appState.myItinerariesList[index].id)
+                                },
                               ),
                             ],
                           );
