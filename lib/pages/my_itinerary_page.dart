@@ -36,9 +36,7 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
             child: Stack(
               children: [
                 ListView.builder(
-                    itemCount: appState.myItinerariesList == null
-                        ? 0
-                        : appState.myItinerariesList.length,
+                    itemCount: appState.myItinerariesList.length,
                     itemBuilder: (context, index) {
                       return Slidable(
                         actionPane: SlidableDrawerActionPane(),

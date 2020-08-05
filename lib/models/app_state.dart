@@ -6,11 +6,11 @@ import 'package:mobile/models/models.dart';
 class AppState with ChangeNotifier {
   AuthService authService;
 
-  List<Featured> featuredList;
+  List<Featured> featuredList = [];
 
-  List<Itinerary> hotList;
+  List<Itinerary> hotList = [];
 
-  List<Itinerary> myItinerariesList;
+  List<Itinerary> myItinerariesList = [];
 
   AppState() {
     this.authService = AuthService(this);

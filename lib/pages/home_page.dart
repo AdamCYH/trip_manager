@@ -78,15 +78,13 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
               size: Constants.TITLE_FONT_SIZE,
             ),
             Container(
-              child: appState.featuredList != null
-                  ? ListView(
+              child: ListView(
                       children: appState.featuredList
                           .map((featured) => SquareCardWidget(
                               width: cardWidth, itinerary: featured.itinerary))
                           .toList(),
                       scrollDirection: Axis.horizontal,
-                    )
-                  : Container(),
+                    ),
               height: 280,
             )
           ],
