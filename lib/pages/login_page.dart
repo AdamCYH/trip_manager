@@ -4,7 +4,14 @@ import 'package:mobile/models/app_state.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool isPasswordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     var username;
@@ -49,12 +56,25 @@ class LoginPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
+                              obscureText: isPasswordHidden,
                               decoration: InputDecoration(
                                   hintText: '请输入密码', border: InputBorder.none),
                               onChanged: (text) {
                                 password = text;
                               }),
-                        )
+                        ),
+                        Container(
+                          child: IconButton(
+                              icon: isPasswordHidden
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off),
+                              color: ColorConstants.ICON_MEDIUM,
+                              onPressed: () {
+                                setState(() {
+                                  isPasswordHidden = !isPasswordHidden;
+                                });
+                              }),
+                        ),
                       ]),
                     ],
                   ),
