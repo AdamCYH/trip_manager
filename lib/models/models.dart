@@ -17,29 +17,37 @@ class Auth {
 }
 
 class User {
-  final String userId;
+  String userId;
+  String userName;
   String firstName;
   String lastName;
+  String email;
+  String password;
   bool isStaff;
   String picture;
-  String alias;
+  String nickName;
 
-  User(this.userId, this.firstName, this.lastName, this.isStaff);
+  User(this.userId, this.userName, this.firstName, this.lastName, this.email,
+      this.password, this.isStaff, this.picture, this.nickName);
 
   User.fromJson(Map<String, dynamic> json)
       : userId = json['user_id'],
         firstName = json['first_name'],
         lastName = json['last_name'],
+        userName = json['username'],
+        email = json['email'],
         isStaff = json['is_staff'],
         picture = API.BASE_URL + (json['profile_pic'] ?? '/media/default.jpeg'),
-        alias = (json['first_name'] ?? '') + ' ' + (json['last_name'] ?? '');
+        nickName = (json['first_name'] ?? '') + ' ' + (json['last_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
-        'user_id': userId,
         'first_name': firstName,
         'last_name': lastName,
+        'username': userName,
+        'email': email,
         'profile_pic': picture,
-        'alias': alias,
+        'nick_name': nickName,
+        'password': password,
       };
 }
 

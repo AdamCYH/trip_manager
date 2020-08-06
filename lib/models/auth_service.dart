@@ -32,8 +32,8 @@ class AuthService {
 
   Future getUser({Key key, forceGet = false}) async {
     if (forceGet || currentUser == null) {
-      currentUser = await _api.getUser(
-          currentAuth.accessToken, currentAuth.refreshToken, currentAuth.userId, this);
+      currentUser = await _api.getUser(currentAuth.accessToken,
+          currentAuth.refreshToken, currentAuth.userId, this);
     }
     appState.notifyChanges();
     return currentUser;
@@ -45,7 +45,7 @@ class AuthService {
       String email,
       String password}) async {}
 
-  Future login({String username, String password}) {
+  Future login({String username, String password, bool forceGetUser = true}) {
     _api.login(username, password, (auth) async {
       if (auth != null) {
         currentAuth = auth;
@@ -55,7 +55,9 @@ class AuthService {
         _prefs.setString(USER_ID_STORAGE_KEY, auth.userId);
         authStatus = AuthStatus.AUTHENTICATED;
 
-        currentUser = await getUser(forceGet: true);
+        if (forceGetUser) {
+          currentUser = await getUser(forceGet: true);
+        }
       } else {
         authStatus = AuthStatus.UNAUTHENTICATED;
       }
@@ -89,11 +91,8 @@ class AuthService {
     var ref = _prefs.get(REFRESH_TOKEN_STORAGE_KEY);
     var uid = _prefs.get(USER_ID_STORAGE_KEY);
     if (acc != null && ref != null && uid != null) {
-      currentAuth = Auth.fromJson({
-        'access': acc,
-        'refresh': ref,
-        'user_id': uid
-      });
+      currentAuth =
+          Auth.fromJson({'access': acc, 'refresh': ref, 'user_id': uid});
     }
   }
 

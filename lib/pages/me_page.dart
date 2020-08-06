@@ -72,8 +72,7 @@ class _MePageState extends State<MePage> {
   Widget getAuthComponent(AppState appState) {
     if (appState.authService.authStatus == AuthStatus.AUTHENTICATED &&
         appState.authService.currentUser != null) {
-      return Text(
-          '${appState.authService.currentUser.firstName}  ${appState.authService.currentUser.lastName}');
+      return Text(appState.authService.currentUser.userName);
     } else {
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
         appState.authService.getUser(forceGet: true);

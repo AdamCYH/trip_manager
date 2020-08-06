@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Router.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/util/screen_utl.dart';
@@ -66,8 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           child: IconButton(
                               icon: isPasswordHidden
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off),
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
                               color: ColorConstants.ICON_MEDIUM,
                               onPressed: () {
                                 setState(() {
@@ -101,16 +102,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Container(
                   child: MaterialButton(
-                    child: Text('取消'),
+                    child: Text('注册'),
                     onPressed: () {
                       Navigator.pop(context);
+                      Router.push(context, Router.registrationPage, {});
                     },
                     color: ColorConstants.BUTTON_WHITE,
                     minWidth: ScreenUtils.screenWidth(context) - 20,
                     height: 40,
                   ),
                   margin: EdgeInsets.all(5),
-                )
+                ),
               ],
             ),
           ),

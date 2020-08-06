@@ -45,6 +45,11 @@ class API {
     }
   }
 
+  Future<User> createUser(User user) async {
+    final response = await _httpClient.post('/user/', user.toJson(), headers: {});
+    return Future.value(User.fromJson(response));
+  }
+
   Future<User> getUser(String accessToken, String refreshToken, String userId,
       AuthService authService) async {
     try {

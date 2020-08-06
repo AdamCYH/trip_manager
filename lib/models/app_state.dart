@@ -29,6 +29,22 @@ class AppState with ChangeNotifier {
         : authService.currentAuth.accessToken;
   }
 
+  ///###########
+  /// API CALLS
+  ///###########
+
+  Future<User> createUser(User user) async {
+    var userName = user.userName;
+    var password = user.password;
+    try {
+      authService.currentUser = await API().createUser(user);
+      authService.login(username: userName, password: password);
+      notifyChanges();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Featured>> getFeaturedList({Key key, forceGet = false}) async {
     if (forceGet || featuredList.isEmpty) {
       featuredList = await API().getFeaturedItineraries();

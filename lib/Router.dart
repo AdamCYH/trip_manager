@@ -6,6 +6,7 @@ import 'package:mobile/pages/home_page.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/me_page.dart';
 import 'package:mobile/pages/product_page.dart';
+import 'package:mobile/pages/registration_page.dart';
 
 ///https://www.jianshu.com/p/b9d6ec92926f
 
@@ -16,6 +17,7 @@ class Router {
   static const loginPage = 'app://login';
   static const settingPage = 'app://setting';
   static const createItineraryPage = 'app://createItinerary';
+  static const registrationPage = 'app://registration';
 
   Widget _getPage(String url, dynamic params) {
     if (url.startsWith('https://') || url.startsWith('http://')) {
@@ -32,6 +34,8 @@ class Router {
           return CreateItineraryPage();
         case loginPage:
           return LoginPage();
+        case registrationPage:
+          return RegistrationPage();
         case settingPage:
           return SettingPage();
       }

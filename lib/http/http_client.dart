@@ -53,7 +53,7 @@ class MyHttpClient {
       http.Response response =
           await http.post(baseUrl + uri, body: body, headers: headers);
       final statusCode = response.statusCode;
-      if (response.statusCode != 200) {
+      if (response.statusCode != 200 && response.statusCode != 201) {
         return handleExceptions(response);
       }
       final responseBody = response.body;
