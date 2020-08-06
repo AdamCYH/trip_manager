@@ -7,6 +7,7 @@ import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/me_page.dart';
 import 'package:mobile/pages/product_page.dart';
 import 'package:mobile/pages/registration_page.dart';
+import 'package:mobile/pages/site_detail_page.dart';
 
 ///https://www.jianshu.com/p/b9d6ec92926f
 
@@ -14,6 +15,7 @@ class Router {
   static const homePage = 'app://';
   static const productsPage = 'app://products';
   static const itineraryPage = 'app://itinerary';
+  static const sitePage = 'app://site';
   static const loginPage = 'app://login';
   static const settingPage = 'app://setting';
   static const createItineraryPage = 'app://createItinerary';
@@ -24,20 +26,22 @@ class Router {
       return Container();
     } else {
       switch (url) {
-        case homePage:
-          return HomePage();
-        case productsPage:
-          return ProductsPage();
-        case itineraryPage:
-          return ItineraryPage(params);
         case createItineraryPage:
           return CreateItineraryPage();
+        case homePage:
+          return HomePage();
+        case itineraryPage:
+          return ItineraryPage(params);
         case loginPage:
           return LoginPage();
+        case productsPage:
+          return ProductsPage();
         case registrationPage:
           return RegistrationPage();
         case settingPage:
           return SettingPage();
+        case sitePage:
+          return SiteDetailPage(params);
       }
     }
     return null;

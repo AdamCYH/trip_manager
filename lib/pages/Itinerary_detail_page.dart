@@ -344,33 +344,38 @@ class DayTripCard extends StatelessWidget {
           Container(
             child: Column(
               children: dayTrip.sites
-                  .map((dayTripSite) => Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(
-                                dayTripSite.site.getIcon(),
-                                color: ColorConstants.ICON_MEDIUM,
+                  .map((dayTripSite) => InkWell(
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  dayTripSite.site.getIcon(),
+                                  color: ColorConstants.ICON_MEDIUM,
+                                ),
                               ),
-                            ),
-                            Container(
-                              child: Text(
-                                '${dayTripSite.site.getCategory()}:',
-                                style: TextStyle(
-                                    color: ColorConstants.TEXT_SECONDARY),
+                              Container(
+                                child: Text(
+                                  '${dayTripSite.site.getCategory()}:',
+                                  style: TextStyle(
+                                      color: ColorConstants.TEXT_SECONDARY),
+                                ),
+                                margin: EdgeInsets.symmetric(horizontal: 10),
                               ),
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                            ),
-                            Expanded(
-                              child: Text(
-                                dayTripSite.site.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            )
-                          ],
+                              Expanded(
+                                child: Text(
+                                  dayTripSite.site.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              )
+                            ],
+                          ),
+                          margin: EdgeInsets.all(10),
                         ),
-                        margin: EdgeInsets.all(10),
+                        onTap: () {
+                          Router.push(context, Router.sitePage, dayTripSite.site);
+                        },
                       ))
                   .toList(),
             ),
