@@ -57,7 +57,7 @@ class MyHttpClient {
         return handleExceptions(response);
       }
       final responseBody = response.body;
-      var result = Convert.jsonDecode(responseBody);
+      var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
       print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
     } on SocketException catch (e) {
@@ -85,7 +85,7 @@ class MyHttpClient {
         return handleExceptions(response);
       }
       final responseBody = response.body;
-      var result = Convert.jsonDecode(responseBody);
+      var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
       print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
     } on SocketException catch (e) {
