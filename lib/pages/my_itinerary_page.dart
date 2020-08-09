@@ -16,6 +16,7 @@ class MyItinerariesPage extends StatefulWidget {
 class _MyItinerariesPageState extends State<MyItinerariesPage> {
   @override
   void initState() {
+    print('init itinerary page');
     if (Provider.of<AppState>(context, listen: false).authService.authStatus ==
         AuthStatus.AUTHENTICATED) {
       Provider.of<AppState>(context, listen: false).getMyItinerariesList();
@@ -27,6 +28,9 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
+      if (appState.myItinerariesList.isEmpty) {
+        Provider.of<AppState>(context, listen: false).getMyItinerariesList();
+      }
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
         return RefreshIndicator(
             onRefresh: () async {

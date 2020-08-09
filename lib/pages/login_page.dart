@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
                                 hintText: '请输入用户名', border: InputBorder.none),
                             onChanged: (text) {
                               username = text;
-                              print(username);
                             },
                           ),
                         )
