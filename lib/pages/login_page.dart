@@ -12,11 +12,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isPasswordHidden = true;
-
+  var username = '';
+  var password = '';
+  
   @override
   Widget build(BuildContext context) {
-    var username;
-    var password;
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return Scaffold(
@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                                 hintText: '请输入用户名', border: InputBorder.none),
                             onChanged: (text) {
                               username = text;
+                              print(username);
                             },
                           ),
                         )
