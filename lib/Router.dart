@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/Itinerary_detail_page.dart';
 import 'package:mobile/pages/create_itinerary_page.dart';
+import 'package:mobile/pages/edit_itinerary_page.dart';
 import 'package:mobile/pages/home_page.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/me_page.dart';
@@ -19,6 +20,7 @@ class Router {
   static const loginPage = 'app://login';
   static const settingPage = 'app://setting';
   static const createItineraryPage = 'app://createItinerary';
+  static const editItineraryPage = 'app://editItinerary';
   static const registrationPage = 'app://registration';
 
   Widget _getPage(String url, dynamic params) {
@@ -28,6 +30,8 @@ class Router {
       switch (url) {
         case createItineraryPage:
           return CreateItineraryPage();
+        case editItineraryPage:
+          return EditItineraryPage(params);
         case homePage:
           return HomePage();
         case itineraryPage:

@@ -40,7 +40,7 @@ class _ProductsPageState extends State<ProductsPage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TabBar(
-        indicatorColor: ColorConstants.TEXT_BRIGHT,
+        indicatorColor: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
         controller: _tabController,
         tabs: tabs,
       ),

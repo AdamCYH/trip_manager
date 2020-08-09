@@ -4,6 +4,7 @@ import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
+import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:mobile/widgets/icons.dart';
@@ -22,6 +23,7 @@ class ItineraryPage extends StatefulWidget {
 class _ItineraryPageState extends State<ItineraryPage> {
   Itinerary itinerary;
   List<DayTrip> dayTripsList;
+  bool isMyItinerary;
 
   @override
   void initState() {
@@ -86,15 +88,43 @@ class _ItineraryPageState extends State<ItineraryPage> {
                 Positioned(
                   bottom: 0,
                   width: ScreenUtils.screenWidth(context),
-                  child: FlatButton(
-                    child: Text('开始行程'),
-                    onPressed: () {
-                      Router.push(context, Router.loginPage, {});
-                    },
-                    color: ColorConstants.BUTTON_PRIMARY,
-                    textColor: ColorConstants.TEXT_WHITE,
-                    padding: EdgeInsets.all(15),
+                  child: Container(
+                      child: Row(
+                    children: [
+                      Expanded(
+                          child: InkWell(
+                        child: Container(
+                          child: Center(
+                              child: Text(
+                            '开始行程',
+                            style: TextStyle(color: ColorConstants.TEXT_WHITE),
+                          )),
+                          color: ColorConstants.BUTTON_PRIMARY,
+                          padding: EdgeInsets.all(15),
+                        ),
+                        onTap: () {
+                          Router.push(context, Router.loginPage, {});
+                        },
+                      )),
+                      isMyItinerary
+                          ? InkWell(
+                              child: Container(
+                                child: Center(
+                                    child: Icon(
+                                  Icons.edit,
+                                  color: ColorConstants.BUTTON_WHITE,
+                                )),
+                                color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
+                                padding: EdgeInsets.all(15),
+                              ),
+                              onTap: () {
+                                Router.push(context, Router.editItineraryPage, itinerary);
+                              },
+                            )
+                          : Container()
+                    ],
                   ),
+                  height: 50,),
                 )
               ],
             ),
@@ -104,8 +134,20 @@ class _ItineraryPageState extends State<ItineraryPage> {
   void getItineraryDetail() async {
     var data = await API().getItineraryDetail(widget.itineraryId,
         Provider.of<AppState>(context, listen: false).getAccessToken());
+
     setState(() {
       itinerary = data;
+
+      // Check if the itinerary belongs to current user.
+      isMyItinerary = Provider.of<AppState>(context, listen: false)
+                  .authService
+                  .authStatus ==
+              AuthStatus.AUTHENTICATED &&
+          itinerary.ownerId ==
+              Provider.of<AppState>(context, listen: false)
+                  .authService
+                  .currentUser
+                  .userId;
     });
   }
 
@@ -374,7 +416,8 @@ class DayTripCard extends StatelessWidget {
                           margin: EdgeInsets.all(10),
                         ),
                         onTap: () {
-                          Router.push(context, Router.sitePage, dayTripSite.site);
+                          Router.push(
+                              context, Router.sitePage, dayTripSite.site);
                         },
                       ))
                   .toList(),

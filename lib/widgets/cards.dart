@@ -50,13 +50,13 @@ class SquareCardWidget extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: SquareIcon(
-                          color: ColorConstants.TEXT_BRIGHT, width: 10),
+                          color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE, width: 10),
                       margin: EdgeInsets.only(left: 3, top: 5, right: 5),
                     ),
                     Expanded(
                         child: Text(
                       itinerary.cities.join(' / '),
-                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT),
+                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ))
@@ -332,7 +332,7 @@ class ImageLeftTextRightWidget extends StatelessWidget {
                       itinerary.isPublic
                           ? Text('Public',
                               style:
-                                  TextStyle(color: ColorConstants.TEXT_BRIGHT))
+                                  TextStyle(color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE))
                           : Text('Private',
                               style: TextStyle(color: ColorConstants.TEXT_RED))
                     ], mainAxisAlignment: MainAxisAlignment.spaceBetween)

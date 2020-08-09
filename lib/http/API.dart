@@ -46,7 +46,8 @@ class API {
   }
 
   Future<User> createUser(User user) async {
-    final response = await _httpClient.post('/user/', user.toJson(), headers: {});
+    final response =
+        await _httpClient.post('/user/', user.toJson(), headers: {});
     return Future.value(User.fromJson(response));
   }
 
@@ -113,6 +114,21 @@ class API {
     try {
       var response = await _httpClient.multipartPost(
           '/itinerary/', fields, filePaths,
+          headers: getAuthenticationHeader(accessToken));
+      return Itinerary.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Itinerary> editItinerary(
+      String itineraryId,
+      Map<String, String> fields,
+      List<String> filePaths,
+      String accessToken) async {
+    try {
+      var response = await _httpClient.multipartPut(
+          '/itinerary/$itineraryId/', fields, filePaths,
           headers: getAuthenticationHeader(accessToken));
       return Itinerary.fromJson(response);
     } catch (e) {

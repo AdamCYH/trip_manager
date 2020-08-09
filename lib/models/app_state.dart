@@ -12,6 +12,7 @@ class AppState with ChangeNotifier {
 
   List<Itinerary> myItinerariesList = [];
 
+
   AppState() {
     this.authService = AuthService(this);
   }
@@ -77,6 +78,17 @@ class AppState with ChangeNotifier {
       var iti = await API().createItinerary(
           fields, filePaths, authService.currentAuth.accessToken);
       myItinerariesList.insert(0, iti);
+      notifyChanges();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> editItinerary(String itineraryId, Map<String, String> fields,
+      List<String> filePaths) async {
+    try {
+      await API().editItinerary(
+          itineraryId, fields, filePaths, authService.currentAuth.accessToken);
       notifyChanges();
     } catch (e) {
       rethrow;

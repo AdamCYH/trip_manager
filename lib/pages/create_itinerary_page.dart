@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/constants/colors.dart';
-import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
-import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:provider/provider.dart';
 
@@ -127,7 +125,9 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
   chooseImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      _image = File(pickedFile.path);
+      if (pickedFile != null){
+        _image = File(pickedFile.path);
+      }
     });
   }
 }
