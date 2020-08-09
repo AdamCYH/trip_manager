@@ -14,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordHidden = true;
   var username = '';
   var password = '';
-  
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(
@@ -91,8 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: ColorConstants.TEXT_WHITE),
                     ),
                     onPressed: () {
-                      appState.authService
-                          .login(username: username, password: password);
+                      appState.authService.login(
+                          username: username,
+                          password: password,
+                          forceGetUser: true);
                       Navigator.pop(context);
                     },
                     color: ColorConstants.BUTTON_PRIMARY,

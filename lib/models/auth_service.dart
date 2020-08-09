@@ -45,7 +45,10 @@ class AuthService {
       String email,
       String password}) async {}
 
-  Future login({String username, String password, bool forceGetUser = true}) {
+  Future login(
+      {String username,
+      String password,
+      bool forceGetUser = false}) {
     _api.login(username, password, (auth) async {
       if (auth != null) {
         currentAuth = auth;
