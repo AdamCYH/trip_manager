@@ -146,7 +146,7 @@ class _ItineraryPageState extends State<ItineraryPage> {
           itinerary.ownerId ==
               Provider.of<AppState>(context, listen: false)
                   .authService
-                  .currentUser
+                  .currentAuth
                   .userId;
     });
   }
