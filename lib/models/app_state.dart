@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/http/API.dart';
 import 'package:mobile/models/auth_service.dart';
@@ -6,12 +8,14 @@ import 'package:mobile/models/models.dart';
 class AppState with ChangeNotifier {
   AuthService authService;
 
-  List<Featured> featuredList = [];
+  Map<String, Featured> featuredItinerariesMap =
+      new LinkedHashMap<String, Featured>();
 
-  List<Itinerary> hotList = [];
+  Map<String, Itinerary> hotItinerariesMap =
+      new LinkedHashMap<String, Itinerary>();
 
-  List<Itinerary> myItinerariesList = [];
-
+  Map<String, Itinerary> myItinerariesMap =
+      new LinkedHashMap<String, Itinerary>();
 
   AppState() {
     this.authService = AuthService(this);
@@ -46,38 +50,42 @@ class AppState with ChangeNotifier {
     }
   }
 
-  Future<List<Featured>> getFeaturedList({Key key, forceGet = false}) async {
-    if (forceGet || featuredList.isEmpty) {
-      featuredList = await API().getFeaturedItineraries();
-      notifyChanges();
-    }
-    return featuredList;
-  }
-
-  Future<List<Itinerary>> getHotList({Key key, forceGet = false}) async {
-    if (forceGet || hotList.isEmpty) {
-      hotList = await API().getHotItineraries();
-      notifyChanges();
-    }
-    return hotList;
-  }
-
-  Future<List<Itinerary>> getMyItinerariesList(
+  Future<Map<String, Featured>> getFeaturedList(
       {Key key, forceGet = false}) async {
-    if (forceGet || myItinerariesList.isEmpty) {
-      myItinerariesList = await API().getMyItineraries(
+    if (forceGet || featuredItinerariesMap.isEmpty) {
+      featuredItinerariesMap = await API().getFeaturedItineraries();
+      notifyChanges();
+    }
+    return featuredItinerariesMap;
+  }
+
+  Future<Map<String, Itinerary>> getHotList({Key key, forceGet = false}) async {
+    if (forceGet || hotItinerariesMap.isEmpty) {
+      hotItinerariesMap = await API().getHotItineraries();
+      notifyChanges();
+    }
+    return hotItinerariesMap;
+  }
+
+  Future<Map<String, Itinerary>> getMyItinerariesList(
+      {Key key, forceGet = false}) async {
+    if (forceGet || myItinerariesMap.isEmpty) {
+      myItinerariesMap = await API().getMyItineraries(
           authService.currentAuth.accessToken, authService.currentAuth.userId);
       notifyChanges();
     }
-    return myItinerariesList;
+    return myItinerariesMap;
   }
 
   Future<void> createItinerary(
       Map<String, String> fields, List<String> filePaths) async {
     try {
-      var iti = await API().createItinerary(
+      var itinerary = await API().createItinerary(
           fields, filePaths, authService.currentAuth.accessToken);
-      myItinerariesList.insert(0, iti);
+      var tempMap = myItinerariesMap;
+      myItinerariesMap.clear();
+      myItinerariesMap[itinerary.id] = itinerary;
+      myItinerariesMap.addAll(tempMap);
       notifyChanges();
     } catch (e) {
       rethrow;
@@ -95,10 +103,10 @@ class AppState with ChangeNotifier {
     }
   }
 
-  Future<void> deleteItinerary(int index, String id) async {
+  Future<void> deleteItinerary(String id) async {
     try {
       await API().deleteItinerary(id, authService.currentAuth.accessToken);
-      myItinerariesList.removeAt(index);
+      myItinerariesMap.remove(id);
       notifyChanges();
     } catch (e) {
       rethrow;

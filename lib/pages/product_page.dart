@@ -67,16 +67,16 @@ class _HotItineraryWidgetState extends State<HotItineraryWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-      return appState.hotList != null
+      return appState.hotItinerariesMap != null
           ? RefreshIndicator(
               onRefresh: () async {
                 await Provider.of<AppState>(context, listen: false)
                     .getHotList(forceGet: true);
               },
               child: ListView(
-                children: appState.hotList
-                    .map((itinerary) => ImageWithSeparateBottomTextCardWidget(
-                        itinerary: itinerary))
+                children: appState.hotItinerariesMap.entries
+                    .map((entry) => ImageWithSeparateBottomTextCardWidget(
+                        itinerary: entry.value))
                     .toList(),
               ))
           : Container();
@@ -100,16 +100,16 @@ class _FeaturedItineraryWidgetState extends State<FeaturedItineraryWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-      return appState.featuredList != null
+      return appState.featuredItinerariesMap != null
           ? RefreshIndicator(
               onRefresh: () async {
                 await Provider.of<AppState>(context, listen: false)
                     .getFeaturedList(forceGet: true);
               },
               child: ListView(
-                children: appState.featuredList
-                    .map((featured) => ImageWithCenteredTextCardWidget(
-                        itinerary: featured.itinerary))
+                children: appState.featuredItinerariesMap.entries
+                    .map((entry) => ImageWithCenteredTextCardWidget(
+                        itinerary: entry.value.itinerary))
                     .toList(),
               ))
           : Container();

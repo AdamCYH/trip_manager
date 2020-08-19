@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:mobile/models/auth_service.dart';
@@ -69,26 +70,38 @@ class API {
     }
   }
 
-  Future<List<Featured>> getFeaturedItineraries() async {
+  Future<Map<String, Featured>> getFeaturedItineraries() async {
     final response = await _httpClient.get('/featured/');
-    return Future.value(
-        response.map<Featured>((json) => Featured.fromJson(json)).toList());
+    var featuredMap = new LinkedHashMap<String, Featured>();
+    response.forEach((json) {
+      var featured = Featured.fromJson(json);
+      featuredMap[featured.itinerary.id] = featured;
+    });
+    return Future.value(featuredMap);
   }
 
-  Future<List<Itinerary>> getHotItineraries() async {
+  Future<Map<String, Itinerary>> getHotItineraries() async {
     final response =
         await _httpClient.get('/itinerary/?allPublic=true&sortBy=view');
-    return Future.value(
-        response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
+    var hotMap = new LinkedHashMap<String, Itinerary>();
+    response.forEach((json) {
+      var hot = Itinerary.fromJson(json);
+      hotMap[hot.id] = hot;
+    });
+    return Future.value(hotMap);
   }
 
-  Future<List<Itinerary>> getMyItineraries(
+  Future<Map<String, Itinerary>> getMyItineraries(
       String accessToken, String owner) async {
     final response = await _httpClient.get(
         '/itinerary/?owner=$owner&sortBy=posted_on',
         headers: getAuthenticationHeader(accessToken));
-    return Future.value(
-        response.map<Itinerary>((json) => Itinerary.fromJson(json)).toList());
+    var itineraryMap = new LinkedHashMap<String, Itinerary>();
+    response.forEach((json) {
+      var itinerary = Itinerary.fromJson(json);
+      itineraryMap[itinerary.id] = itinerary;
+    });
+    return Future.value(itineraryMap);
   }
 
   Future<Itinerary> getItineraryDetail(String id, String accessToken) async {

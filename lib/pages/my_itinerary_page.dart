@@ -28,7 +28,7 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-      if (appState.myItinerariesList.isEmpty) {
+      if (appState.myItinerariesMap.isEmpty) {
         Provider.of<AppState>(context, listen: false).getMyItinerariesList();
       }
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
@@ -39,34 +39,65 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
             },
             child: Stack(
               children: [
-                ListView.builder(
-                    itemCount: appState.myItinerariesList.length,
-                    itemBuilder: (context, index) {
-                      return Slidable(
-                        actionPane: SlidableDrawerActionPane(),
-                        actionExtentRatio: 0.25,
-                        key: ObjectKey(appState.myItinerariesList[index].id),
-                        child: ImageLeftTextRightWidget(
-                            itinerary: appState.myItinerariesList[index]),
-                        secondaryActions: <Widget>[
-                          IconSlideAction(
-                            caption: 'More',
-                            color: Colors.black45,
-                            icon: Icons.more_horiz,
-                            onTap: () => null,
-                          ),
-                          IconSlideAction(
-                            caption: 'Delete',
-                            color: Colors.red,
-                            icon: Icons.delete,
-                            onTap: () => {
-                              appState.deleteItinerary(
-                                  index, appState.myItinerariesList[index].id)
-                            },
-                          ),
-                        ],
-                      );
-                    }),
+                ListView(
+                  children: appState.myItinerariesMap.entries
+                      .map((entry) => Slidable(
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.25,
+                            key:
+                                ObjectKey(appState.myItinerariesMap[entry.key]),
+                            child: ImageLeftTextRightWidget(
+                                itinerary:
+                                    appState.myItinerariesMap[entry.key]),
+                            secondaryActions: <Widget>[
+                              IconSlideAction(
+                                caption: 'More',
+                                color: Colors.black45,
+                                icon: Icons.more_horiz,
+                                onTap: () => null,
+                              ),
+                              IconSlideAction(
+                                caption: 'Delete',
+                                color: Colors.red,
+                                icon: Icons.delete,
+                                onTap: () => {
+                                  appState.deleteItinerary(
+                                      appState.myItinerariesMap[entry.key].id)
+                                },
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                ),
+
+//                ListView.builder(
+//                    itemCount: appState.myItinerariesMap.length,
+//                    itemBuilder: (context, index) {
+//                      return Slidable(
+//                        actionPane: SlidableDrawerActionPane(),
+//                        actionExtentRatio: 0.25,
+//                        key: ObjectKey(appState.myItinerariesMap[index].id),
+//                        child: ImageLeftTextRightWidget(
+//                            itinerary: appState.myItinerariesMap[index]),
+//                        secondaryActions: <Widget>[
+//                          IconSlideAction(
+//                            caption: 'More',
+//                            color: Colors.black45,
+//                            icon: Icons.more_horiz,
+//                            onTap: () => null,
+//                          ),
+//                          IconSlideAction(
+//                            caption: 'Delete',
+//                            color: Colors.red,
+//                            icon: Icons.delete,
+//                            onTap: () => {
+//                              appState.deleteItinerary(
+//                                  appState.myItinerariesMap[index].id)
+//                            },
+//                          ),
+//                        ],
+//                      );
+//                    }),
                 Positioned(
                     child: FloatingActionButton(
                       child: Icon(Icons.add),
