@@ -82,10 +82,12 @@ class AppState with ChangeNotifier {
     try {
       var itinerary = await API().createItinerary(
           fields, filePaths, authService.currentAuth.accessToken);
-      var tempMap = myItinerariesMap;
+      var tempMap = new Map.from(myItinerariesMap);
       myItinerariesMap.clear();
       myItinerariesMap[itinerary.id] = itinerary;
-      myItinerariesMap.addAll(tempMap);
+      tempMap.forEach((key, value) {
+        myItinerariesMap[key] = value;
+      });
       notifyChanges();
     } catch (e) {
       rethrow;
@@ -95,8 +97,9 @@ class AppState with ChangeNotifier {
   Future<void> editItinerary(String itineraryId, Map<String, String> fields,
       List<String> filePaths) async {
     try {
-      await API().editItinerary(
+      var itinerary = await API().editItinerary(
           itineraryId, fields, filePaths, authService.currentAuth.accessToken);
+      myItinerariesMap[itineraryId] = itinerary;
       notifyChanges();
     } catch (e) {
       rethrow;
