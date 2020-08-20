@@ -74,7 +74,8 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
                       child: Icon(Icons.add),
                       backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
                       onPressed: () {
-                        Router.push(context, Router.createItineraryPage, {});
+                        Router.pushNoParams(
+                            context, Router.createItineraryPage);
                       },
                     ),
                     bottom: 30,
@@ -89,7 +90,7 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () {
-              Router.push(context, Router.loginPage, {});
+              Router.pushNoParams(context, Router.loginPage);
             },
           ),
         );

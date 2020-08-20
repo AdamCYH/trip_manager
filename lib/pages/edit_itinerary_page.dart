@@ -89,12 +89,13 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
               child: Text('修改'),
               onPressed: () async {
                 try {
-                  await Provider.of<AppState>(context, listen: false)
-                      .editItinerary(
-                      widget.itinerary.id,
-                      {'title': _title, 'description': _description},
-                      _image == null ? [] : [_image.path]);
-                  Navigator.pop(context);
+                  Itinerary itienrary =
+                      await Provider.of<AppState>(context, listen: false)
+                          .editItinerary(
+                              widget.itinerary.id,
+                              {'title': _title, 'description': _description},
+                              _image == null ? [] : [_image.path]);
+                  Navigator.pop(context, itienrary);
                 } catch (e) {
                   Scaffold.of(context).showSnackBar(
                       SnackBar(content: Text("暂时无法修改行程哦，请稍后再试一试呀。")));

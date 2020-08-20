@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('注册'),
                     onPressed: () {
                       Navigator.pop(context);
-                      Router.push(context, Router.registrationPage, {});
+                      Router.pushNoParams(context, Router.registrationPage);
                     },
                     color: ColorConstants.BUTTON_WHITE,
                     minWidth: ScreenUtils.screenWidth(context) - 20,

@@ -83,7 +83,7 @@ class _MePageState extends State<MePage> {
           style: TextStyle(fontSize: 16),
         ),
         onPressed: () {
-          Router.push(context, Router.loginPage, {});
+          Router.pushNoParams(context, Router.loginPage);
         },
       );
     }
@@ -137,12 +137,12 @@ class OptionRow extends StatelessWidget {
         onTap: () {
           if (requireLogin) {
             if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-              Router.push(context, toPage, {});
+              Router.pushNoParams(context, toPage);
             } else {
-              Router.push(context, Router.loginPage, {});
+              Router.pushNoParams(context, Router.loginPage);
             }
           } else {
-            Router.push(context, toPage, {});
+            Router.pushNoParams(context, toPage);
           }
         },
       );

@@ -89,42 +89,50 @@ class _ItineraryPageState extends State<ItineraryPage> {
                   bottom: 0,
                   width: ScreenUtils.screenWidth(context),
                   child: Container(
-                      child: Row(
-                    children: [
-                      Expanded(
-                          child: InkWell(
-                        child: Container(
-                          child: Center(
-                              child: Text(
-                            '开始行程',
-                            style: TextStyle(color: ColorConstants.TEXT_WHITE),
-                          )),
-                          color: ColorConstants.BUTTON_PRIMARY,
-                          padding: EdgeInsets.all(15),
-                        ),
-                        onTap: () {
-                          Router.push(context, Router.loginPage, {});
-                        },
-                      )),
-                      isMyItinerary
-                          ? InkWell(
-                              child: Container(
-                                child: Center(
-                                    child: Icon(
-                                  Icons.edit,
-                                  color: ColorConstants.BUTTON_WHITE,
-                                )),
-                                color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
-                                padding: EdgeInsets.all(15),
-                              ),
-                              onTap: () {
-                                Router.push(context, Router.editItineraryPage, itinerary);
-                              },
-                            )
-                          : Container()
-                    ],
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: InkWell(
+                          child: Container(
+                            child: Center(
+                                child: Text(
+                              '开始行程',
+                              style:
+                                  TextStyle(color: ColorConstants.TEXT_WHITE),
+                            )),
+                            color: ColorConstants.BUTTON_PRIMARY,
+                            padding: EdgeInsets.all(15),
+                          ),
+                          onTap: () {
+                            Router.push(context, Router.loginPage, {});
+                          },
+                        )),
+                        isMyItinerary
+                            ? InkWell(
+                                child: Container(
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.edit,
+                                    color: ColorConstants.BUTTON_WHITE,
+                                  )),
+                                  color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
+                                  padding: EdgeInsets.all(15),
+                                ),
+                                onTap: () async {
+                                  final updatedItinerary = await Router().push(
+                                      context,
+                                      Router.editItineraryPage,
+                                      itinerary);
+                                  setState(() {
+                                    itinerary = updatedItinerary;
+                                  });
+                                },
+                              )
+                            : Container()
+                      ],
+                    ),
+                    height: 50,
                   ),
-                  height: 50,),
                 )
               ],
             ),

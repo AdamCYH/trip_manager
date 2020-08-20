@@ -51,6 +51,8 @@ class Router {
     return null;
   }
 
+  Router();
+
   Router.pushNoParams(BuildContext context, String url) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, null);
@@ -59,6 +61,12 @@ class Router {
 
   Router.push(BuildContext context, String url, dynamic params) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return _getPage(url, params);
+    }));
+  }
+
+  push(BuildContext context, String url, dynamic params) {
+    return Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, params);
     }));
   }
