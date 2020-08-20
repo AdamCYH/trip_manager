@@ -123,9 +123,11 @@ class _ItineraryPageState extends State<ItineraryPage> {
                                       context,
                                       Router.editItineraryPage,
                                       itinerary);
-                                  setState(() {
-                                    itinerary = updatedItinerary;
-                                  });
+                                  if (updatedItinerary != null) {
+                                    setState(() {
+                                      itinerary = updatedItinerary;
+                                    });
+                                  }
                                 },
                               )
                             : Container()
