@@ -69,35 +69,6 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
                           ))
                       .toList(),
                 ),
-
-//                ListView.builder(
-//                    itemCount: appState.myItinerariesMap.length,
-//                    itemBuilder: (context, index) {
-//                      return Slidable(
-//                        actionPane: SlidableDrawerActionPane(),
-//                        actionExtentRatio: 0.25,
-//                        key: ObjectKey(appState.myItinerariesMap[index].id),
-//                        child: ImageLeftTextRightWidget(
-//                            itinerary: appState.myItinerariesMap[index]),
-//                        secondaryActions: <Widget>[
-//                          IconSlideAction(
-//                            caption: 'More',
-//                            color: Colors.black45,
-//                            icon: Icons.more_horiz,
-//                            onTap: () => null,
-//                          ),
-//                          IconSlideAction(
-//                            caption: 'Delete',
-//                            color: Colors.red,
-//                            icon: Icons.delete,
-//                            onTap: () => {
-//                              appState.deleteItinerary(
-//                                  appState.myItinerariesMap[index].id)
-//                            },
-//                          ),
-//                        ],
-//                      );
-//                    }),
                 Positioned(
                     child: FloatingActionButton(
                       child: Icon(Icons.add),
