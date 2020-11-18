@@ -21,8 +21,6 @@ class AppState with ChangeNotifier {
     this.authService = AuthService(this);
   }
 
-  bool _isErrorMessageShown = false;
-
   void notifyChanges() {
     notifyListeners();
   }
@@ -45,6 +43,7 @@ class AppState with ChangeNotifier {
       authService.currentUser = await API().createUser(user);
       authService.login(username: userName, password: password);
       notifyChanges();
+      return authService.currentUser;
     } catch (e) {
       rethrow;
     }
@@ -94,8 +93,8 @@ class AppState with ChangeNotifier {
     }
   }
 
-  Future<Itinerary> editItinerary(String itineraryId, Map<String, String> fields,
-      List<String> filePaths) async {
+  Future<Itinerary> editItinerary(String itineraryId,
+      Map<String, String> fields, List<String> filePaths) async {
     try {
       var itinerary = await API().editItinerary(
           itineraryId, fields, filePaths, authService.currentAuth.accessToken);

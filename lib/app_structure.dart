@@ -30,7 +30,7 @@ class _AppStructureState extends State<AppStructure> {
     return itemNames
         .map((item) => BottomNavigationBarItem(
             icon: Icon(item.icon, color: ColorConstants.NORMAL),
-            title: Text(item.name),
+            label: item.name,
             activeIcon: Icon(item.icon, color: ColorConstants.ACTIVE)))
         .toList();
   }
