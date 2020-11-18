@@ -83,7 +83,8 @@ class _MePageState extends State<MePage> {
           style: TextStyle(fontSize: 16),
         ),
         onPressed: () {
-          RoutingService.pushNoParams(context, RoutingService.loginPage);
+          appState.routingService
+              .pushNoParams(context, RoutingService.loginPage);
         },
       );
     }
@@ -137,12 +138,13 @@ class OptionRow extends StatelessWidget {
         onTap: () {
           if (requireLogin) {
             if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-              RoutingService.pushNoParams(context, toPage);
+              appState.routingService.pushNoParams(context, toPage);
             } else {
-              RoutingService.pushNoParams(context, RoutingService.loginPage);
+              appState.routingService
+                  .pushNoParams(context, RoutingService.loginPage);
             }
           } else {
-            RoutingService.pushNoParams(context, toPage);
+            appState.routingService.pushNoParams(context, toPage);
           }
         },
       );

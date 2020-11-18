@@ -34,113 +34,116 @@ class _ItineraryPageState extends State<ItineraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          "套餐详情",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 4,
-        centerTitle: true,
-        brightness: Brightness.dark,
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: [
-          Container(
-            child: Icon(Icons.favorite_border),
-            margin: EdgeInsets.symmetric(horizontal: 10),
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text(
+            "套餐详情",
+            style: TextStyle(color: Colors.white),
           ),
-          Container(
-            child: SvgPicture.asset(Constants.STATIC_ICON + 'thumb_up.svg',
-                color: Colors.white, semanticsLabel: 'thumb up'),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-          )
-        ],
-      ),
-      body: itinerary == null
-          ? Container()
-          : Stack(
-              children: [
-                ListView(
-                  children: [
-                    ItinerarySummaryWidget(
-                      itinerary: itinerary,
-                    ),
-                    Divider(
-                      thickness: 5,
-                      color: ColorConstants.BACKGROUND_PRIMARY,
-                    ),
-                    ItineraryHighlightWidget(
-                      itinerary: itinerary,
-                    ),
-                    Divider(
-                      thickness: 5,
-                      color: ColorConstants.BACKGROUND_PRIMARY,
-                    ),
-                    ItineraryDetailsWidget(
-                      itinerary: itinerary,
-                      dayTripsList: dayTripsList,
-                    )
-                  ],
-                  padding: EdgeInsets.only(bottom: 100),
-                ),
-                Positioned(
-                  bottom: 0,
-                  width: ScreenUtils.screenWidth(context),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: InkWell(
-                          child: Container(
-                            child: Center(
-                                child: Text(
-                              '开始行程',
-                              style:
-                                  TextStyle(color: ColorConstants.TEXT_WHITE),
-                            )),
-                            color: ColorConstants.BUTTON_PRIMARY,
-                            padding: EdgeInsets.all(15),
-                          ),
-                          onTap: () {
-                            RoutingService.push(
-                                context, RoutingService.loginPage, {});
-                          },
-                        )),
-                        isMyItinerary
-                            ? InkWell(
-                                child: Container(
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.edit,
-                                    color: ColorConstants.BUTTON_WHITE,
-                                  )),
-                                  color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
-                                  padding: EdgeInsets.all(15),
-                                ),
-                                onTap: () async {
-                                  final updatedItinerary =
-                                      await RoutingService().push(
-                                          context,
-                                          RoutingService.editItineraryPage,
-                                          itinerary);
-                                  if (updatedItinerary != null) {
-                                    setState(() {
-                                      itinerary = updatedItinerary;
-                                    });
-                                  }
-                                },
-                              )
-                            : Container()
-                      ],
-                    ),
-                    height: 50,
-                  ),
-                )
-              ],
+          backgroundColor: Colors.transparent,
+          elevation: 4,
+          centerTitle: true,
+          brightness: Brightness.dark,
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: [
+            Container(
+              child: Icon(Icons.favorite_border),
+              margin: EdgeInsets.symmetric(horizontal: 10),
             ),
-    );
+            Container(
+              child: SvgPicture.asset(Constants.STATIC_ICON + 'thumb_up.svg',
+                  color: Colors.white, semanticsLabel: 'thumb up'),
+              margin: EdgeInsets.symmetric(horizontal: 20),
+            )
+          ],
+        ),
+        body: itinerary == null
+            ? Container()
+            : Stack(
+                children: [
+                  ListView(
+                    children: [
+                      ItinerarySummaryWidget(
+                        itinerary: itinerary,
+                      ),
+                      Divider(
+                        thickness: 5,
+                        color: ColorConstants.BACKGROUND_PRIMARY,
+                      ),
+                      ItineraryHighlightWidget(
+                        itinerary: itinerary,
+                      ),
+                      Divider(
+                        thickness: 5,
+                        color: ColorConstants.BACKGROUND_PRIMARY,
+                      ),
+                      ItineraryDetailsWidget(
+                        itinerary: itinerary,
+                        dayTripsList: dayTripsList,
+                      )
+                    ],
+                    padding: EdgeInsets.only(bottom: 100),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    width: ScreenUtils.screenWidth(context),
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: InkWell(
+                            child: Container(
+                              child: Center(
+                                  child: Text(
+                                '开始行程',
+                                style:
+                                    TextStyle(color: ColorConstants.TEXT_WHITE),
+                              )),
+                              color: ColorConstants.BUTTON_PRIMARY,
+                              padding: EdgeInsets.all(15),
+                            ),
+                            onTap: () {
+                              appState.routingService
+                                  .push(context, RoutingService.loginPage, {});
+                            },
+                          )),
+                          isMyItinerary
+                              ? InkWell(
+                                  child: Container(
+                                    child: Center(
+                                        child: Icon(
+                                      Icons.edit,
+                                      color: ColorConstants.BUTTON_WHITE,
+                                    )),
+                                    color:
+                                        ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
+                                    padding: EdgeInsets.all(15),
+                                  ),
+                                  onTap: () async {
+                                    final updatedItinerary =
+                                        appState.routingService.push(
+                                            context,
+                                            RoutingService.editItineraryPage,
+                                            itinerary);
+                                    if (updatedItinerary != null) {
+                                      setState(() {
+                                        itinerary = updatedItinerary;
+                                      });
+                                    }
+                                  },
+                                )
+                              : Container()
+                        ],
+                      ),
+                      height: 50,
+                    ),
+                  )
+                ],
+              ),
+      );
+    });
   }
 
   void getItineraryDetail() async {
@@ -428,8 +431,10 @@ class DayTripCard extends StatelessWidget {
                           margin: EdgeInsets.all(10),
                         ),
                         onTap: () {
-                          RoutingService.push(context, RoutingService.sitePage,
-                              dayTripSite.site);
+                          Provider.of<AppState>(context, listen: false)
+                              .routingService
+                              .push(context, RoutingService.sitePage,
+                                  dayTripSite.site);
                         },
                       ))
                   .toList(),

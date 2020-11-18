@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/services/routing_service.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/services/app_state.dart';
+import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/utils/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class SquareCardWidget extends StatelessWidget {
   const SquareCardWidget(
@@ -71,8 +73,9 @@ class SquareCardWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 15),
       ),
       onTap: () {
-        RoutingService.push(
-            context, RoutingService.itineraryPage, itinerary.id);
+        Provider.of<AppState>(context, listen: false)
+            .routingService
+            .push(context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -144,8 +147,9 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
           height: 250,
           width: ScreenUtils.screenWidth(context)),
       onTap: () {
-        RoutingService.push(
-            context, RoutingService.itineraryPage, itinerary.id);
+        Provider.of<AppState>(context, listen: false)
+            .routingService
+            .push(context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -251,8 +255,9 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
         ),
       ),
       onTap: () {
-        RoutingService.push(
-            context, RoutingService.itineraryPage, itinerary.id);
+        Provider.of<AppState>(context, listen: false)
+            .routingService
+            .push(context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -354,8 +359,9 @@ class ImageLeftTextRightWidget extends StatelessWidget {
           height: 170,
         ),
         onTap: () {
-          RoutingService.push(
-              context, RoutingService.itineraryPage, itinerary.id);
+          Provider.of<AppState>(context, listen: false)
+              .routingService
+              .push(context, RoutingService.itineraryPage, itinerary.id);
         });
   }
 }

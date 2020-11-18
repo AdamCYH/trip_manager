@@ -6,7 +6,6 @@ import 'package:mobile/services/auth_service.dart';
 import 'package:mobile/models/exceptions.dart';
 import 'package:mobile/models/models.dart';
 
-
 typedef RequestCallBack<T> = void Function(T value);
 
 class ApiService {
@@ -19,7 +18,11 @@ class ApiService {
   static const LOG_IN = '/token-auth/';
   static const REFRESH_TOKEN = '/token-auth/refresh/';
 
-  var _httpClient = HttpService('$BASE_URL/api');
+  var _httpClient;
+
+  ApiService() {
+    _httpClient = HttpService('$BASE_URL/api');
+  }
 
   void login(
       String username, String password, RequestCallBack requestCallBack) async {
@@ -49,7 +52,7 @@ class ApiService {
   Future<User> createUser(User user) async {
     final response =
         await _httpClient.post('/user/', user.toJson(), headers: {});
-    return Future.value(User.fromJson(response));
+    return User.fromJson(response);
   }
 
   Future<User> getUser(String accessToken, String refreshToken, String userId,
@@ -77,7 +80,7 @@ class ApiService {
       var featured = Featured.fromJson(json);
       featuredMap[featured.itinerary.id] = featured;
     });
-    return Future.value(featuredMap);
+    return featuredMap;
   }
 
   Future<Map<String, Itinerary>> getHotItineraries() async {
@@ -88,7 +91,7 @@ class ApiService {
       var hot = Itinerary.fromJson(json);
       hotMap[hot.id] = hot;
     });
-    return Future.value(hotMap);
+    return hotMap;
   }
 
   Future<Map<String, Itinerary>> getMyItineraries(
@@ -101,7 +104,7 @@ class ApiService {
       var itinerary = Itinerary.fromJson(json);
       itineraryMap[itinerary.id] = itinerary;
     });
-    return Future.value(itineraryMap);
+    return itineraryMap;
   }
 
   Future<Itinerary> getItineraryDetail(String id, String accessToken) async {
@@ -112,8 +115,7 @@ class ApiService {
 
   Future<List<DayTrip>> getDayTrips(String id) async {
     final response = await _httpClient.get('/day-trip/?itinerary=$id');
-    return Future.value(
-        response.map<DayTrip>((json) => DayTrip.fromJson(json)).toList());
+    return response.map<DayTrip>((json) => DayTrip.fromJson(json)).toList();
   }
 
   Map<String, String> getAuthenticationHeader(String token) {

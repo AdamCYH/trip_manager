@@ -10,7 +10,6 @@ import 'package:mobile/screens/community/product_page.dart';
 import 'package:mobile/screens/me/registration_page.dart';
 import 'package:mobile/screens/itinerary_details/site_detail_page.dart';
 
-
 class RoutingService {
   static const homePage = 'app://';
   static const productsPage = 'app://products';
@@ -52,21 +51,27 @@ class RoutingService {
 
   RoutingService();
 
-  RoutingService.pushNoParams(BuildContext context, String url) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return _getPage(url, null);
-    }));
-  }
-
-  RoutingService.push(BuildContext context, String url, dynamic params) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return _getPage(url, params);
-    }));
-  }
+//  RoutingService.pushNoParams(BuildContext context, String url) {
+//    Navigator.push(context, MaterialPageRoute(builder: (context) {
+//      return _getPage(url, null);
+//    }));
+//  }
+//
+//  RoutingService.push(BuildContext context, String url, dynamic params) {
+//    Navigator.push(context, MaterialPageRoute(builder: (context) {
+//      return _getPage(url, params);
+//    }));
+//  }
 
   push(BuildContext context, String url, dynamic params) {
     return Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, params);
+    }));
+  }
+
+  pushNoParams(BuildContext context, String url) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return _getPage(url, null);
     }));
   }
 }

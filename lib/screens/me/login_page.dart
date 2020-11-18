@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('注册'),
                     onPressed: () {
                       Navigator.pop(context);
-                      RoutingService.pushNoParams(
+                      appState.routingService.pushNoParams(
                           context, RoutingService.registrationPage);
                     },
                     color: ColorConstants.BUTTON_WHITE,

@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/services/auth_service.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/services/routing_service.dart';
 
 class AppState with ChangeNotifier {
   AuthService authService;
+  ApiService apiService;
+  RoutingService routingService;
 
   Map<String, Featured> featuredItinerariesMap =
       new LinkedHashMap<String, Featured>();
@@ -19,6 +22,8 @@ class AppState with ChangeNotifier {
 
   AppState() {
     this.authService = AuthService(this);
+    this.apiService = ApiService();
+    this.routingService = RoutingService();
   }
 
   void notifyChanges() {
@@ -40,7 +45,7 @@ class AppState with ChangeNotifier {
     var userName = user.userName;
     var password = user.password;
     try {
-      authService.currentUser = await ApiService().createUser(user);
+      authService.currentUser = await apiService.createUser(user);
       authService.login(username: userName, password: password);
       notifyChanges();
       return authService.currentUser;
@@ -52,7 +57,7 @@ class AppState with ChangeNotifier {
   Future<Map<String, Featured>> getFeaturedList(
       {Key key, forceGet = false}) async {
     if (forceGet || featuredItinerariesMap.isEmpty) {
-      featuredItinerariesMap = await ApiService().getFeaturedItineraries();
+      featuredItinerariesMap = await apiService.getFeaturedItineraries();
       notifyChanges();
     }
     return featuredItinerariesMap;
@@ -60,7 +65,7 @@ class AppState with ChangeNotifier {
 
   Future<Map<String, Itinerary>> getHotList({Key key, forceGet = false}) async {
     if (forceGet || hotItinerariesMap.isEmpty) {
-      hotItinerariesMap = await ApiService().getHotItineraries();
+      hotItinerariesMap = await apiService.getHotItineraries();
       notifyChanges();
     }
     return hotItinerariesMap;
@@ -69,7 +74,7 @@ class AppState with ChangeNotifier {
   Future<Map<String, Itinerary>> getMyItinerariesList(
       {Key key, forceGet = false}) async {
     if (forceGet || myItinerariesMap.isEmpty) {
-      myItinerariesMap = await ApiService().getMyItineraries(
+      myItinerariesMap = await apiService.getMyItineraries(
           authService.currentAuth.accessToken, authService.currentAuth.userId);
       notifyChanges();
     }
@@ -79,7 +84,7 @@ class AppState with ChangeNotifier {
   Future<void> createItinerary(
       Map<String, String> fields, List<String> filePaths) async {
     try {
-      var itinerary = await ApiService().createItinerary(
+      var itinerary = await apiService.createItinerary(
           fields, filePaths, authService.currentAuth.accessToken);
       var tempMap = new Map.from(myItinerariesMap);
       myItinerariesMap.clear();
@@ -96,7 +101,7 @@ class AppState with ChangeNotifier {
   Future<Itinerary> editItinerary(String itineraryId,
       Map<String, String> fields, List<String> filePaths) async {
     try {
-      var itinerary = await ApiService().editItinerary(
+      var itinerary = await apiService.editItinerary(
           itineraryId, fields, filePaths, authService.currentAuth.accessToken);
       myItinerariesMap[itineraryId] = itinerary;
       notifyChanges();
@@ -108,7 +113,7 @@ class AppState with ChangeNotifier {
 
   Future<void> deleteItinerary(String id) async {
     try {
-      await ApiService().deleteItinerary(id, authService.currentAuth.accessToken);
+      await apiService.deleteItinerary(id, authService.currentAuth.accessToken);
       myItinerariesMap.remove(id);
       notifyChanges();
     } catch (e) {

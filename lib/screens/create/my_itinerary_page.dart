@@ -73,7 +73,7 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
                       child: Icon(Icons.add),
                       backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
                       onPressed: () {
-                        RoutingService.pushNoParams(
+                        appState.routingService.pushNoParams(
                             context, RoutingService.createItineraryPage);
                       },
                     ),
@@ -89,7 +89,8 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () {
-              RoutingService.pushNoParams(context, RoutingService.loginPage);
+              appState.routingService
+                  .pushNoParams(context, RoutingService.loginPage);
             },
           ),
         );
