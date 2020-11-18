@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Router.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:mobile/RoutingService.dart';
 import 'package:mobile/constants/colors.dart';
-import 'package:mobile/http/API.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/widgets/cards.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MyItinerariesPage extends StatefulWidget {
   @override
@@ -74,8 +73,8 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
                       child: Icon(Icons.add),
                       backgroundColor: ColorConstants.BACKGROUND_DARK_BLUE,
                       onPressed: () {
-                        Router.pushNoParams(
-                            context, Router.createItineraryPage);
+                        RoutingService.pushNoParams(
+                            context, RoutingService.createItineraryPage);
                       },
                     ),
                     bottom: 30,
@@ -90,7 +89,7 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () {
-              Router.pushNoParams(context, Router.loginPage);
+              RoutingService.pushNoParams(context, RoutingService.loginPage);
             },
           ),
         );

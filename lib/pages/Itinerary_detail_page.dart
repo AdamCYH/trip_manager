@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Router.dart';
+import 'package:mobile/RoutingService.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/http/API.dart';
@@ -104,7 +104,8 @@ class _ItineraryPageState extends State<ItineraryPage> {
                             padding: EdgeInsets.all(15),
                           ),
                           onTap: () {
-                            Router.push(context, Router.loginPage, {});
+                            RoutingService.push(
+                                context, RoutingService.loginPage, {});
                           },
                         )),
                         isMyItinerary
@@ -119,10 +120,11 @@ class _ItineraryPageState extends State<ItineraryPage> {
                                   padding: EdgeInsets.all(15),
                                 ),
                                 onTap: () async {
-                                  final updatedItinerary = await Router().push(
-                                      context,
-                                      Router.editItineraryPage,
-                                      itinerary);
+                                  final updatedItinerary =
+                                      await RoutingService().push(
+                                          context,
+                                          RoutingService.editItineraryPage,
+                                          itinerary);
                                   if (updatedItinerary != null) {
                                     setState(() {
                                       itinerary = updatedItinerary;
@@ -426,8 +428,8 @@ class DayTripCard extends StatelessWidget {
                           margin: EdgeInsets.all(10),
                         ),
                         onTap: () {
-                          Router.push(
-                              context, Router.sitePage, dayTripSite.site);
+                          RoutingService.push(context, RoutingService.sitePage,
+                              dayTripSite.site);
                         },
                       ))
                   .toList(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Router.dart';
+import 'package:mobile/RoutingService.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/app_state.dart';
@@ -51,12 +51,12 @@ class _MePageState extends State<MePage> {
               OptionRow(
                 icon: Icons.bookmark_border,
                 text: '我的收藏',
-                toPage: Router.settingPage,
+                toPage: RoutingService.settingPage,
               ),
               OptionRow(
                 icon: Icons.settings,
                 text: '设置',
-                toPage: Router.settingPage,
+                toPage: RoutingService.settingPage,
                 requireLogin: true,
               ),
             ],
@@ -83,7 +83,7 @@ class _MePageState extends State<MePage> {
           style: TextStyle(fontSize: 16),
         ),
         onPressed: () {
-          Router.pushNoParams(context, Router.loginPage);
+          RoutingService.pushNoParams(context, RoutingService.loginPage);
         },
       );
     }
@@ -137,12 +137,12 @@ class OptionRow extends StatelessWidget {
         onTap: () {
           if (requireLogin) {
             if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
-              Router.pushNoParams(context, toPage);
+              RoutingService.pushNoParams(context, toPage);
             } else {
-              Router.pushNoParams(context, Router.loginPage);
+              RoutingService.pushNoParams(context, RoutingService.loginPage);
             }
           } else {
-            Router.pushNoParams(context, toPage);
+            RoutingService.pushNoParams(context, toPage);
           }
         },
       );

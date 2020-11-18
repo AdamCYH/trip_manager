@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Router.dart';
+import 'package:mobile/RoutingService.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/util/screen_utl.dart';
@@ -107,7 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('注册'),
                     onPressed: () {
                       Navigator.pop(context);
-                      Router.pushNoParams(context, Router.registrationPage);
+                      RoutingService.pushNoParams(
+                          context, RoutingService.registrationPage);
                     },
                     color: ColorConstants.BUTTON_WHITE,
                     minWidth: ScreenUtils.screenWidth(context) - 20,

@@ -10,9 +10,8 @@ import 'package:mobile/pages/product_page.dart';
 import 'package:mobile/pages/registration_page.dart';
 import 'package:mobile/pages/site_detail_page.dart';
 
-///https://www.jianshu.com/p/b9d6ec92926f
 
-class Router {
+class RoutingService {
   static const homePage = 'app://';
   static const productsPage = 'app://products';
   static const itineraryPage = 'app://itinerary';
@@ -51,15 +50,15 @@ class Router {
     return null;
   }
 
-  Router();
+  RoutingService();
 
-  Router.pushNoParams(BuildContext context, String url) {
+  RoutingService.pushNoParams(BuildContext context, String url) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, null);
     }));
   }
 
-  Router.push(BuildContext context, String url, dynamic params) {
+  RoutingService.push(BuildContext context, String url, dynamic params) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, params);
     }));

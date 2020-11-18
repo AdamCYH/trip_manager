@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/RoutingService.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/util/screen_utl.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:intl/intl.dart';
-
-import '../Router.dart';
 
 class SquareCardWidget extends StatelessWidget {
   const SquareCardWidget(
@@ -50,13 +49,15 @@ class SquareCardWidget extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: SquareIcon(
-                          color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE, width: 10),
+                          color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
+                          width: 10),
                       margin: EdgeInsets.only(left: 3, top: 5, right: 5),
                     ),
                     Expanded(
                         child: Text(
                       itinerary.cities.join(' / '),
-                      style: TextStyle(color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE),
+                      style: TextStyle(
+                          color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ))
@@ -70,7 +71,8 @@ class SquareCardWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 15),
       ),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.id);
+        RoutingService.push(
+            context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -142,7 +144,8 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
           height: 250,
           width: ScreenUtils.screenWidth(context)),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.id);
+        RoutingService.push(
+            context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -248,7 +251,8 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Router.push(context, Router.itineraryPage, itinerary.id);
+        RoutingService.push(
+            context, RoutingService.itineraryPage, itinerary.id);
       },
     );
   }
@@ -331,8 +335,8 @@ class ImageLeftTextRightWidget extends StatelessWidget {
                       ),
                       itinerary.isPublic
                           ? Text('Public',
-                              style:
-                                  TextStyle(color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE))
+                              style: TextStyle(
+                                  color: ColorConstants.TEXT_BRIGHT_GREEN_BLUE))
                           : Text('Private',
                               style: TextStyle(color: ColorConstants.TEXT_RED))
                     ], mainAxisAlignment: MainAxisAlignment.spaceBetween)
@@ -350,7 +354,8 @@ class ImageLeftTextRightWidget extends StatelessWidget {
           height: 170,
         ),
         onTap: () {
-          Router.push(context, Router.itineraryPage, itinerary.id);
+          RoutingService.push(
+              context, RoutingService.itineraryPage, itinerary.id);
         });
   }
 }
