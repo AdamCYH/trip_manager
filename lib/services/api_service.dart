@@ -1,15 +1,15 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:mobile/services/http_service.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/models/exceptions.dart';
 import 'package:mobile/models/models.dart';
 
-import 'http_client.dart';
 
 typedef RequestCallBack<T> = void Function(T value);
 
-class API {
+class ApiService {
   static const DEFAULT_JSON_CONTENT_TYPE = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -19,7 +19,7 @@ class API {
   static const LOG_IN = '/token-auth/';
   static const REFRESH_TOKEN = '/token-auth/refresh/';
 
-  var _httpClient = MyHttpClient('$BASE_URL/api');
+  var _httpClient = HttpService('$BASE_URL/api');
 
   void login(
       String username, String password, RequestCallBack requestCallBack) async {

@@ -7,7 +7,7 @@ import 'package:mobile/models/exceptions.dart';
 
 typedef RequestCallBack = void Function(Map data);
 
-class MyHttpClient {
+class HttpService {
   Utf8Decoder decode = new Utf8Decoder();
 
   static requestGET(
@@ -28,7 +28,7 @@ class MyHttpClient {
 
   final baseUrl;
 
-  MyHttpClient(this.baseUrl);
+  HttpService(this.baseUrl);
 
   Future<dynamic> get(String uri, {Map<String, String> headers}) async {
     try {

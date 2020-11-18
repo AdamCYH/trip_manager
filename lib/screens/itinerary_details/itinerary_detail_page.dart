@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/RoutingService.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
-import 'package:mobile/http/API.dart';
+import 'package:mobile/services/api_service.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/auth_service.dart';
 import 'package:mobile/models/models.dart';
-import 'package:mobile/util/screen_utl.dart';
+import 'package:mobile/services/routing_service.dart';
+import 'package:mobile/util/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ItineraryPage extends StatefulWidget {
   ItineraryPage(this.itineraryId, {Key key}) : super(key: key);
@@ -144,7 +144,7 @@ class _ItineraryPageState extends State<ItineraryPage> {
   }
 
   void getItineraryDetail() async {
-    var data = await API().getItineraryDetail(widget.itineraryId,
+    var data = await ApiService().getItineraryDetail(widget.itineraryId,
         Provider.of<AppState>(context, listen: false).getAccessToken());
 
     setState(() {
@@ -164,7 +164,7 @@ class _ItineraryPageState extends State<ItineraryPage> {
   }
 
   void getDayTripsList() async {
-    var data = await API().getDayTrips(widget.itineraryId);
+    var data = await ApiService().getDayTrips(widget.itineraryId);
     setState(() {
       dayTripsList = data;
     });

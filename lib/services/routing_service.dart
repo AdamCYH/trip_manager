@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/Itinerary_detail_page.dart';
-import 'package:mobile/pages/create_itinerary_page.dart';
-import 'package:mobile/pages/edit_itinerary_page.dart';
-import 'package:mobile/pages/home_page.dart';
-import 'package:mobile/pages/login_page.dart';
-import 'package:mobile/pages/me_page.dart';
-import 'package:mobile/pages/product_page.dart';
-import 'package:mobile/pages/registration_page.dart';
-import 'package:mobile/pages/site_detail_page.dart';
+import 'package:mobile/screens/itinerary_details/Itinerary_detail_page.dart';
+import 'package:mobile/screens/create/create_itinerary_page.dart';
+import 'package:mobile/screens/create/edit_itinerary_page.dart';
+import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/me/login_page.dart';
+import 'package:mobile/screens/me/me_page.dart';
+import 'package:mobile/screens/community/product_page.dart';
+import 'package:mobile/screens/me/registration_page.dart';
+import 'package:mobile/screens/itinerary_details/site_detail_page.dart';
 
 
 class RoutingService {

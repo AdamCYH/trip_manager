@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/RoutingService.dart';
+import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
-import 'package:mobile/util/screen_utl.dart';
+import 'package:mobile/util/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:intl/intl.dart';
 

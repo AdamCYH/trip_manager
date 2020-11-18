@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/http/API.dart';
+import 'package:mobile/services/api_service.dart';
 
 enum SiteCategory { Restaurant, Attraction, Hotel }
 
@@ -37,7 +37,7 @@ class User {
         userName = json['username'],
         email = json['email'],
         isStaff = json['is_staff'],
-        picture = API.BASE_URL + (json['profile_pic'] ?? '/media/default.jpeg'),
+        picture = ApiService.BASE_URL + (json['profile_pic'] ?? '/media/default.jpeg'),
         nickName = (json['first_name'] ?? '') + ' ' + (json['last_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
@@ -149,7 +149,7 @@ class Site {
         url = json['url'],
         address = json['address'],
         description = json['description'],
-        photo = API.BASE_URL + (json['photo'] ?? '/media/default.jpeg');
+        photo = ApiService.BASE_URL + (json['photo'] ?? '/media/default.jpeg');
 
   getCategory() {
     switch (siteCategory) {

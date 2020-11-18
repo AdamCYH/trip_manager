@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/http/API.dart';
+import 'package:mobile/services/api_service.dart';
 import 'package:mobile/models/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +15,7 @@ class AuthService {
   User currentUser;
   Auth currentAuth;
 
-  final API _api = API();
+  final ApiService _api = ApiService();
   final AppState appState;
 
   AuthStatus authStatus = AuthStatus.UNAUTHENTICATED;
