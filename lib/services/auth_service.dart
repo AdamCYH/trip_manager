@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/services/api_service.dart';
-import 'package:mobile/models/app_state.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

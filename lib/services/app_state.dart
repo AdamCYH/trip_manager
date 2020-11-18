@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/services/api_service.dart';
-import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/services/auth_service.dart';
 import 'package:mobile/models/models.dart';
 
 class AppState with ChangeNotifier {

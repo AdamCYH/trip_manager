@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:mobile/services/http_service.dart';
-import 'package:mobile/models/auth_service.dart';
+import 'package:mobile/services/auth_service.dart';
 import 'package:mobile/models/exceptions.dart';
 import 'package:mobile/models/models.dart';
 

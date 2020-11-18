@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/models.dart';
-import 'package:mobile/util/screen_utils.dart';
+import 'package:mobile/utils/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 
 class SiteDetailPage extends StatelessWidget {

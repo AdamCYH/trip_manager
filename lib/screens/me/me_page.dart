@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
-import 'package:mobile/models/app_state.dart';
-import 'package:mobile/models/auth_service.dart';
-import 'package:mobile/util/screen_utils.dart';
+import 'package:mobile/services/app_state.dart';
+import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/utils/screen_utils.dart';
 import 'package:provider/provider.dart';
 
 class MePage extends StatefulWidget {

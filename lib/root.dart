@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
-import 'package:mobile/models/app_state.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/screens/me/me_page.dart';
 import 'package:mobile/screens/create/my_itinerary_page.dart';
 import 'package:mobile/screens/community/product_page.dart';
-import 'package:mobile/util/screen_utils.dart';
+import 'package:mobile/utils/screen_utils.dart';
 import 'package:provider/provider.dart';
 
-class AppStructure extends StatefulWidget {
+class Root extends StatefulWidget {
   @override
-  _AppStructureState createState() => _AppStructureState();
+  _RootState createState() => _RootState();
 }
 
-class _AppStructureState extends State<AppStructure> {
+class _RootState extends State<Root> {
   int _selectedIndex = 0;
   bool isWelcomePageShown = true;
 

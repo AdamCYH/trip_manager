@@ -7,8 +7,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mobile/app_structure.dart';
-import 'package:mobile/models/app_state.dart';
+import 'package:mobile/root.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Triphub',
-      home: Scaffold(body: AppStructure()),
+      home: Scaffold(body: Root()),
       theme: ThemeData(
           // Add the 3 lines from here...
           primaryColor: Colors.white,
