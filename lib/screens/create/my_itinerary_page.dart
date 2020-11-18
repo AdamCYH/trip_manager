@@ -27,7 +27,8 @@ class _MyItinerariesPageState extends State<MyItinerariesPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-      if (appState.myItinerariesMap.isEmpty) {
+      if (appState.authService.authStatus == AuthStatus.AUTHENTICATED &&
+          appState.myItinerariesMap.isEmpty) {
         Provider.of<AppState>(context, listen: false).getMyItinerariesList();
       }
       if (appState.authService.authStatus == AuthStatus.AUTHENTICATED) {
