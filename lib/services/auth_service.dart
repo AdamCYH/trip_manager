@@ -30,7 +30,7 @@ class AuthService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future getUser({Key key, forceGet = false}) async {
+  Future<User> getUser({Key key, forceGet = false}) async {
     if (forceGet || currentUser == null) {
       currentUser = await _api.getUser(currentAuth.accessToken,
           currentAuth.refreshToken, currentAuth.userId, this);
@@ -45,10 +45,11 @@ class AuthService {
       String email,
       String password}) async {}
 
-  Future login(
+  User login(
       {String username,
       String password,
-      bool forceGetUser = false}) {
+      bool forceGetUser = false,
+      BuildContext context}) {
     _api.login(username, password, (auth) async {
       if (auth != null) {
         currentAuth = auth;
@@ -57,25 +58,26 @@ class AuthService {
         _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, auth.refreshToken);
         _prefs.setString(USER_ID_STORAGE_KEY, auth.userId);
         authStatus = AuthStatus.AUTHENTICATED;
+        Navigator.pop(context);
 
         if (forceGetUser) {
           currentUser = await getUser(forceGet: true);
         }
       } else {
         authStatus = AuthStatus.UNAUTHENTICATED;
+        appState.notificationService.showSnackBar(context, '登录失败，请重新尝试。');
       }
       appState.notifyChanges();
     });
-
-    return Future.value(currentUser);
+    return currentUser;
   }
 
-  Future logout() async {
+  User logout() {
     this.currentUser = null;
     _removeAuth();
     authStatus = AuthStatus.UNAUTHENTICATED;
     appState.notifyChanges();
-    return Future.value(currentUser);
+    return currentUser;
   }
 
   Future refreshNewToken() async {
@@ -88,6 +90,8 @@ class AuthService {
       });
     }
   }
+
+  bool get isUserLoggedIn => authStatus == AuthStatus.AUTHENTICATED;
 
   void _getAuthFromStorage() {
     var acc = _prefs.get(ACCESS_TOKEN_STORAGE_KEY);
