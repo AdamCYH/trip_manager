@@ -50,8 +50,8 @@ class ApiService {
   }
 
   Future<User> createUser(User user) async {
-    final response =
-        await _httpClient.post('/user/', user.toJson(), headers: {});
+    final response = await _httpClient
+        .post('/user/', user.toJson(), headers: <String, String>{});
     return User.fromJson(response);
   }
 

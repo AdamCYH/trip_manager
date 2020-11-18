@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/services/auth_service.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/services/routing_service.dart';
 
 class AppState with ChangeNotifier {
   AuthService authService;
   ApiService apiService;
   RoutingService routingService;
+  NotificationService notificationService;
 
   Map<String, Featured> featuredItinerariesMap =
       new LinkedHashMap<String, Featured>();
@@ -24,6 +26,7 @@ class AppState with ChangeNotifier {
     this.authService = AuthService(this);
     this.apiService = ApiService();
     this.routingService = RoutingService();
+    this.notificationService = NotificationService();
   }
 
   void notifyChanges() {

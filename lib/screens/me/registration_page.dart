@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
-import 'package:mobile/services/app_state.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:mobile/utils/screen_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -111,14 +111,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         style: TextStyle(color: ColorConstants.TEXT_WHITE),
                       ),
                       onPressed: () {
-                        if (validateInputs(context)) {
+                        if (validateInputs(context, appState)) {
                           try {
                             appState.createUser(User('', username, '', '',
                                 email, password, false, '', ''));
                             Navigator.pop(context);
                           } catch (e) {
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text("暂时有些问题哦，请稍后再试。")));
+                            appState.notificationService
+                                .showSnackBar(context, '暂时有些问题哦，请稍后再试。');
                           }
                         }
                       },
@@ -135,15 +135,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
   }
 
-  bool validateInputs(BuildContext context) {
+  bool validateInputs(BuildContext context, AppState appState) {
     if (username == '') {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("请输入用户名。")));
+      appState.notificationService.showSnackBar(context, '请输入用户名');
       return false;
     } else if (email == '') {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("请输入邮箱。")));
+      appState.notificationService.showSnackBar(context, '请输入邮箱');
       return false;
     } else if (password == '') {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("请输入有效的密码。")));
+      appState.notificationService.showSnackBar(context, '请输入有效的密码');
       return false;
     }
     return true;

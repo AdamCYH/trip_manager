@@ -30,8 +30,9 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
   @override
   void initState() {
     if (widget.itinerary == null) {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text("暂时无法获取行程，请稍后再试一试呀！")));
+      Provider.of<AppState>(context, listen: false)
+          .notificationService
+          .showSnackBar(context, '暂时无法获取行程，请稍后再试一试呀！');
     }
     _title = widget.itinerary.title;
     _description = widget.itinerary.description;
@@ -40,78 +41,79 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('修改行程'),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Builder(builder: (BuildContext context) {
-        return ListView(
-          children: [
-            Container(
-              child: getImageBox(),
-              width: ScreenUtils.screenWidth(context),
-              height: 350,
-              decoration: BoxDecoration(color: ColorConstants.BACKGROUND_WHITE),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            ),
-            Container(
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                        hintText: '标题', border: InputBorder.none),
-                    onChanged: (text) {
-                      _title = text;
-                    },
-                    initialValue: widget.itinerary.title,
-                  ),
-                  Divider(),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        hintText: '亮点 / 简介', border: InputBorder.none),
-                    onChanged: (text) {
-                      _description = text;
-                    },
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 10,
-                    initialValue: widget.itinerary.description,
-                  ),
-                ],
+    return Consumer<AppState>(builder: (context, appState, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('修改行程'),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: Builder(builder: (BuildContext context) {
+          return ListView(
+            children: [
+              Container(
+                child: getImageBox(),
+                width: ScreenUtils.screenWidth(context),
+                height: 350,
+                decoration:
+                    BoxDecoration(color: ColorConstants.BACKGROUND_WHITE),
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               ),
-              padding: EdgeInsets.all(10),
-              color: ColorConstants.BACKGROUND_WHITE,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-            ),
-            FlatButton(
-              child: Text('修改'),
-              onPressed: () async {
-                try {
-                  Itinerary itienrary =
-                      await Provider.of<AppState>(context, listen: false)
-                          .editItinerary(
-                              widget.itinerary.id,
-                              {'title': _title, 'description': _description},
-                              _image == null ? [] : [_image.path]);
-                  Navigator.pop(context, itienrary);
-                } catch (e) {
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("暂时无法修改行程哦，请稍后再试一试呀。")));
-                }
+              Container(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                          hintText: '标题', border: InputBorder.none),
+                      onChanged: (text) {
+                        _title = text;
+                      },
+                      initialValue: widget.itinerary.title,
+                    ),
+                    Divider(),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          hintText: '亮点 / 简介', border: InputBorder.none),
+                      onChanged: (text) {
+                        _description = text;
+                      },
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 10,
+                      initialValue: widget.itinerary.description,
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(10),
+                color: ColorConstants.BACKGROUND_WHITE,
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              ),
+              FlatButton(
+                child: Text('修改'),
+                onPressed: () async {
+                  try {
+                    Itinerary itinerary = await appState.editItinerary(
+                        widget.itinerary.id,
+                        {'title': _title, 'description': _description},
+                        _image == null ? [] : [_image.path]);
+                    Navigator.pop(context, itinerary);
+                  } catch (e) {
+                    appState.notificationService
+                        .showSnackBar(context, '暂时无法修改行程哦，请稍后再试一试呀。');
+                  }
 
-                return;
-              },
-              color: ColorConstants.BUTTON_PRIMARY,
-              textColor: ColorConstants.TEXT_WHITE,
-              padding: EdgeInsets.all(15),
-            )
-          ],
-        );
-      }),
-      backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
-    );
+                  return;
+                },
+                color: ColorConstants.BUTTON_PRIMARY,
+                textColor: ColorConstants.TEXT_WHITE,
+                padding: EdgeInsets.all(15),
+              )
+            ],
+          );
+        }),
+        backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
+      );
+    });
   }
 
   Widget getImageBox() {
