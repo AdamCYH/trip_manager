@@ -83,15 +83,13 @@ class _RootState extends State<Root> {
             child: Container(
               child: Stack(
                 children: <Widget>[
-                  OverflowBox(
-                      maxWidth: ScreenUtils.screenWidth(context) * 2,
-                      child: FittedBox(
-                          child: Image.asset(
-                            Constants.STATIC_IMG + 'splash-1.png',
-                            width: ScreenUtils.screenWidth(context) * 2,
-                            height: ScreenUtils.screenHeight(context),
-                          ),
-                          fit: BoxFit.fill)),
+                  Image.asset(
+                    Constants.STATIC_IMG + 'splash-1.png',
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                  ),
                   IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
