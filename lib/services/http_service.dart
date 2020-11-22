@@ -16,8 +16,7 @@ class HttpService {
 
   HttpService(this.baseUrl, this._httpClient);
 
-  Future<Map<String, dynamic>> get(String uri,
-      {Map<String, String> headers}) async {
+  Future<dynamic> get(String uri, {Map<String, String> headers}) async {
     try {
       http.Response response =
           await _httpClient.get(baseUrl + uri, headers: headers);
@@ -35,7 +34,7 @@ class HttpService {
     }
   }
 
-  Future<Map<String, dynamic>> post(String uri, dynamic body,
+  Future<dynamic> post(String uri, dynamic body,
       {Map<String, String> headers}) async {
     try {
       http.Response response =
@@ -54,8 +53,7 @@ class HttpService {
     }
   }
 
-  Future<Map<String, dynamic>> multipartPost(
-      String uri, dynamic body, List<String> files,
+  Future<dynamic> multipartPost(String uri, dynamic body, List<String> files,
       {Map<String, String> headers}) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(baseUrl + uri));
@@ -83,8 +81,7 @@ class HttpService {
     }
   }
 
-  Future<Map<String, dynamic>> multipartPut(
-      String uri, dynamic body, List<String> files,
+  Future<dynamic> multipartPut(String uri, dynamic body, List<String> files,
       {Map<String, String> headers}) async {
     try {
       var request = http.MultipartRequest('PUT', Uri.parse(baseUrl + uri));
@@ -112,8 +109,7 @@ class HttpService {
     }
   }
 
-  Future<Map<String, dynamic>> delete(String uri,
-      {Map<String, String> headers}) async {
+  Future<dynamic> delete(String uri, {Map<String, String> headers}) async {
     try {
       http.Response response =
           await _httpClient.delete(baseUrl + uri, headers: headers);
