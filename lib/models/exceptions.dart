@@ -18,6 +18,10 @@ class BadRequestException extends AppException {
   BadRequestException([message]) : super(message, "Invalid Request: ");
 }
 
+class NotFoundException extends AppException {
+  NotFoundException([message]) : super(message, "Resource Not Found: ");
+}
+
 class UnauthorisedException extends AppException {
   UnauthorisedException([message]) : super(message, "Unauthorised: ");
 }
