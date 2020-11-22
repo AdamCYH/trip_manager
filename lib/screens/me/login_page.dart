@@ -97,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                           appState.authService.login(
                               username: username,
                               password: password,
+                              closeCurrentScreen: true,
                               forceGetUser: true,
                               context: context);
                         },

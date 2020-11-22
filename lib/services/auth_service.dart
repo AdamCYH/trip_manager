@@ -46,8 +46,9 @@ class AuthService {
       String password}) async {}
 
   User login(
-      {String username,
-      String password,
+      {@required String username,
+      @required String password,
+      bool closeCurrentScreen = false,
       bool forceGetUser = false,
       BuildContext context}) {
     _api.login(username, password, (auth) async {
@@ -58,14 +59,19 @@ class AuthService {
         _prefs.setString(REFRESH_TOKEN_STORAGE_KEY, auth.refreshToken);
         _prefs.setString(USER_ID_STORAGE_KEY, auth.userId);
         authStatus = AuthStatus.AUTHENTICATED;
-        Navigator.pop(context);
 
         if (forceGetUser) {
           currentUser = await getUser(forceGet: true);
         }
+
+        if (closeCurrentScreen) {
+          Navigator.pop(context);
+        }
       } else {
         authStatus = AuthStatus.UNAUTHENTICATED;
-        appState.notificationService.showSnackBar(context, '登录失败，请重新尝试。');
+        if (context != null) {
+          appState.notificationService.showSnackBar(context, '登录失败，请重新尝试。');
+        }
       }
       appState.notifyChanges();
     });
