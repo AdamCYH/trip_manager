@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/exceptions.dart';
@@ -37,7 +38,7 @@ class ApiService {
           headers: DEFAULT_JSON_CONTENT_TYPE);
       requestCallBack(Auth.fromJson(response));
     } on Exception catch (e) {
-      print(e);
+      log(e.toString());
       requestCallBack(null);
     }
   }
@@ -53,7 +54,7 @@ class ApiService {
           headers: DEFAULT_JSON_CONTENT_TYPE);
       requestCallBack(response['access']);
     } on Exception catch (e) {
-      print(e);
+      log(e.toString());
       requestCallBack(null);
     }
   }
@@ -74,11 +75,11 @@ class ApiService {
       authService.authStatus = AuthStatus.AUTHENTICATED;
       return User.fromJson(response);
     } on UnauthorisedException catch (e) {
-      print(e);
+      log(e.toString());
       authService.authStatus = AuthStatus.UNAUTHENTICATED;
       return null;
     } on Exception catch (e) {
-      print(e);
+      log(e.toString());
       return null;
     }
   }

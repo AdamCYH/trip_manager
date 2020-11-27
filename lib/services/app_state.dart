@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/services/api_service.dart';
@@ -23,7 +24,7 @@ class AppState with ChangeNotifier {
       new LinkedHashMap<String, Itinerary>();
 
   AppState() {
-    print('Init app state');
+    log('Init app state');
     this.authService = AuthService(this);
     this.apiService = ApiService();
     this.routingService = RoutingService();
