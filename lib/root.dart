@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
-import 'package:mobile/services/app_state.dart';
+import 'package:mobile/screens/community/product_page.dart';
+import 'package:mobile/screens/create/my_itinerary_page.dart';
 import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/screens/me/me_page.dart';
-import 'package:mobile/screens/create/my_itinerary_page.dart';
-import 'package:mobile/screens/community/product_page.dart';
-import 'package:mobile/utils/screen_utils.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:provider/provider.dart';
 
 class Root extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/services/api_service.dart';
-import 'package:mobile/services/app_state.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/services/app_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -15,10 +14,17 @@ class AuthService {
   User currentUser;
   Auth currentAuth;
 
-  final ApiService _api = ApiService();
   final AppState appState;
 
-  AuthStatus authStatus = AuthStatus.UNAUTHENTICATED;
+  AuthStatus _authStatus = AuthStatus.UNAUTHENTICATED;
+
+  /// Sets the value of authStatus and triggers a change notification.
+  set authStatus(AuthStatus status) {
+    _authStatus = status;
+    appState.notifyChanges();
+  }
+
+  get authStatus => _authStatus;
 
   AuthService(this.appState) {
     _getStorage()
@@ -32,7 +38,7 @@ class AuthService {
 
   Future<User> getUser({Key key, forceGet = false}) async {
     if (forceGet || currentUser == null) {
-      currentUser = await _api.getUser(currentAuth.accessToken,
+      currentUser = await appState.apiService.getUser(currentAuth.accessToken,
           currentAuth.refreshToken, currentAuth.userId, this);
     }
     appState.notifyChanges();
@@ -51,7 +57,7 @@ class AuthService {
       bool closeCurrentScreen = false,
       bool forceGetUser = false,
       BuildContext context}) {
-    _api.login(username, password, (auth) async {
+    appState.apiService.login(username, password, (auth) async {
       if (auth != null) {
         currentAuth = auth;
 
@@ -88,7 +94,7 @@ class AuthService {
 
   Future refreshNewToken() async {
     if (currentAuth != null) {
-      _api.refreshToken(currentAuth.refreshToken, (token) {
+      appState.apiService.refreshToken(currentAuth.refreshToken, (token) {
         token == null
             ? authStatus = AuthStatus.UNAUTHENTICATED
             : authStatus = AuthStatus.AUTHENTICATED;

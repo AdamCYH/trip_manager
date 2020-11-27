@@ -23,6 +23,7 @@ class AppState with ChangeNotifier {
       new LinkedHashMap<String, Itinerary>();
 
   AppState() {
+    print('Init app state');
     this.authService = AuthService(this);
     this.apiService = ApiService();
     this.routingService = RoutingService();

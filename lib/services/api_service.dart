@@ -19,12 +19,16 @@ class ApiService {
   static const LOG_IN = '/token-auth/';
   static const REFRESH_TOKEN = '/token-auth/refresh/';
 
-  var _httpService;
+  HttpService _httpService;
 
-  ApiService() {
-    _httpService = HttpService('$BASE_URL/api', http.Client());
+  ApiService({client}) {
+    client = client ?? http.Client();
+    _httpService = HttpService('$BASE_URL/api', client);
   }
 
+  /// Logs in a user with a request call back.
+  ///
+  /// An auth object will be provided as a parameter in the call back function.
   void login(
       String username, String password, RequestCallBack requestCallBack) async {
     try {
@@ -38,6 +42,10 @@ class ApiService {
     }
   }
 
+  /// Refreshes an access token with refresh token.
+  ///
+  /// An access token string will be provided as a parameter in the call back
+  /// function.
   void refreshToken(String token, RequestCallBack requestCallBack) async {
     try {
       final response = await _httpService.post(
@@ -50,12 +58,14 @@ class ApiService {
     }
   }
 
+  /// Creates a user by calling user api.
   Future<User> createUser(User user) async {
     final response = await _httpService
         .post('/user/', user.toJson(), headers: <String, String>{});
     return User.fromJson(response);
   }
 
+  /// Retrieves a user.
   Future<User> getUser(String accessToken, String refreshToken, String userId,
       AuthService authService) async {
     try {
@@ -68,7 +78,6 @@ class ApiService {
       authService.authStatus = AuthStatus.UNAUTHENTICATED;
       return null;
     } on Exception catch (e) {
-      authService.authStatus = AuthStatus.UNAUTHENTICATED;
       print(e);
       return null;
     }
