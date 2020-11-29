@@ -185,18 +185,18 @@ class ItinerarySummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(children: [
-        Container(
+        AspectRatio(
+          aspectRatio: 6 / 5,
           child: FittedBox(
             child: Image.network(
               itinerary.image,
             ),
             fit: BoxFit.cover,
           ),
-          height: 350,
-          width: ScreenUtils.screenWidth(context),
-          margin: EdgeInsets.only(bottom: 20),
+//          margin: EdgeInsets.only(bottom: 20),
         ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(children: [
             Text(
               itinerary.title,
@@ -236,7 +236,6 @@ class ItinerarySummaryWidget extends StatelessWidget {
               children: [],
             )
           ], crossAxisAlignment: CrossAxisAlignment.start),
-          padding: EdgeInsets.symmetric(horizontal: 10),
         )
       ], crossAxisAlignment: CrossAxisAlignment.start),
       width: ScreenUtils.screenWidth(context),

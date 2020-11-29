@@ -5,7 +5,6 @@ import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/routing_service.dart';
-import 'package:mobile/utils/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +90,8 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Container(
+      child: AspectRatio(
+          aspectRatio: 3 / 2,
           child: Stack(
             children: <Widget>[
               FittedBox(
@@ -143,9 +143,7 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
               )
             ],
             fit: StackFit.expand,
-          ),
-          height: 250,
-          width: ScreenUtils.screenWidth(context)),
+          )),
       onTap: () {
         Provider.of<AppState>(context, listen: false)
             .routingService
@@ -169,15 +167,14 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
       child: Container(
         child: Column(
           children: [
-            Container(
+            AspectRatio(
               child: FittedBox(
                 child: Image.network(
                   itinerary.image,
                 ),
                 fit: BoxFit.cover,
               ),
-              height: 230,
-              width: ScreenUtils.screenWidth(context),
+              aspectRatio: 3 / 2,
             ),
             Container(
               child: Column(

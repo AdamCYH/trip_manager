@@ -29,26 +29,28 @@ class HomePage extends StatelessWidget {
 class AdsSliderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-          viewportFraction: 1, enableInfiniteScroll: false, height: 240),
-      items: [1, 2, 3, 4].map((i) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.all(5),
-              child: FittedBox(
-                child: Image(
-                    image: AssetImage(
-                        Constants.STATIC_IMG + i.toString() + '.jpg')),
-                fit: BoxFit.cover,
-              ),
+    return AspectRatio(
+        aspectRatio: 3 / 2,
+        child: CarouselSlider(
+          options:
+              CarouselOptions(viewportFraction: 1, enableInfiniteScroll: false),
+          items: [1, 2, 3, 4].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.all(5),
+                  child: FittedBox(
+                    child: Image(
+                        image: AssetImage(
+                            Constants.STATIC_IMG + i.toString() + '.jpg')),
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             );
-          },
-        );
-      }).toList(),
-    );
+          }).toList(),
+        ));
   }
 }
 

@@ -60,18 +60,17 @@ class SiteSummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(children: [
-        Container(
+        AspectRatio(
+          aspectRatio: 6 / 4,
           child: FittedBox(
             child: Image.network(
               site.photo,
             ),
             fit: BoxFit.cover,
           ),
-          height: 350,
-          width: ScreenUtils.screenWidth(context),
-          margin: EdgeInsets.only(bottom: 20),
         ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(children: [
             Text(
               site.name,
@@ -111,7 +110,6 @@ class SiteSummaryWidget extends StatelessWidget {
               children: [],
             )
           ], crossAxisAlignment: CrossAxisAlignment.start),
-          padding: EdgeInsets.symmetric(horizontal: 10),
         )
       ], crossAxisAlignment: CrossAxisAlignment.start),
       width: ScreenUtils.screenWidth(context),
