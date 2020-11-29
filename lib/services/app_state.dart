@@ -103,8 +103,10 @@ class AppState with ChangeNotifier {
     }
   }
 
-  Future<Itinerary> editItinerary(String itineraryId,
-      Map<String, String> fields, List<String> filePaths) async {
+  Future<Itinerary> editItinerary(
+      {String itineraryId,
+      Map<String, String> fields,
+      List<String> filePaths}) async {
     try {
       var itinerary = await apiService.editItinerary(
           itineraryId, fields, filePaths, authService.currentAuth.accessToken);

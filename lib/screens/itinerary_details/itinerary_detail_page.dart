@@ -93,6 +93,38 @@ class _ItineraryPageState extends State<ItineraryPage> {
                     child: Container(
                       child: Row(
                         children: [
+                          isMyItinerary
+                              ? InkWell(
+                                  child: Container(
+                                    child: Center(
+                                        child: Icon(
+                                      itinerary.isPublic
+                                          ? Icons.public
+                                          : Icons.public_off,
+                                      color: ColorConstants.BUTTON_WHITE,
+                                    )),
+                                    color: itinerary.isPublic
+                                        ? ColorConstants.TEXT_BRIGHT_GREEN_BLUE
+                                        : ColorConstants.ICON_MEDIUM,
+                                    padding: EdgeInsets.all(15),
+                                  ),
+                                  onTap: () async {
+                                    var updatedItinerary = await appState
+                                        .editItinerary(
+                                            itineraryId: itinerary.id,
+                                            fields: (itinerary
+                                                  ..isPublic =
+                                                      !itinerary.isPublic)
+                                                .toJson(),
+                                            filePaths: []);
+                                    if (updatedItinerary != null) {
+                                      setState(() {
+                                        itinerary = updatedItinerary;
+                                      });
+                                    }
+                                  },
+                                )
+                              : Container(),
                           Expanded(
                               child: InkWell(
                             child: Container(

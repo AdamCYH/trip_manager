@@ -93,9 +93,9 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
                 onPressed: () async {
                   try {
                     Itinerary itinerary = await appState.editItinerary(
-                        widget.itinerary.id,
-                        {'title': _title, 'description': _description},
-                        _image == null ? [] : [_image.path]);
+                        itineraryId: widget.itinerary.id,
+                        fields: {'title': _title, 'description': _description},
+                        filePaths: _image == null ? [] : [_image.path]);
                     Navigator.pop(context, itinerary);
                   } catch (e) {
                     appState.notificationService

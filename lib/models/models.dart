@@ -37,7 +37,8 @@ class User {
         userName = json['username'],
         email = json['email'],
         isStaff = json['is_staff'],
-        picture = ApiService.BASE_URL + (json['profile_pic'] ?? '/media/default.jpeg'),
+        picture = ApiService.BASE_URL +
+            (json['profile_pic'] ?? '/media/default.jpeg'),
         nickName = (json['first_name'] ?? '') + ' ' + (json['last_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
@@ -58,7 +59,7 @@ class Itinerary {
   final String title;
   final DateTime postedOn;
   final int view;
-  final bool isPublic;
+  bool isPublic;
   final String description;
   final int like;
   final String ownerId;
@@ -89,6 +90,12 @@ class Itinerary {
         like = json['like'],
         ownerId = json['owner'],
         cities = json['locations'];
+
+  Map<String, String> toJson() => {
+        'title': title,
+        'is_public': isPublic.toString(),
+        'description': description,
+      };
 }
 
 class DayTrip {
