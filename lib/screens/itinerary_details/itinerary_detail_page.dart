@@ -188,12 +188,13 @@ class ItinerarySummaryWidget extends StatelessWidget {
       child: Column(children: [
         AspectRatio(
           aspectRatio: 6 / 5,
-          child: FittedBox(
+          child: ClipRRect(
+              child: FittedBox(
             child: Image.network(
               itinerary.image,
             ),
             fit: BoxFit.cover,
-          ),
+          )),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

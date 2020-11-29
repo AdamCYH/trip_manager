@@ -5,6 +5,7 @@ import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/routing_service.dart';
+import 'package:mobile/utils/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:provider/provider.dart';
 
@@ -91,59 +92,61 @@ class ImageWithCenteredTextCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: AspectRatio(
-          aspectRatio: 3 / 2,
-          child: Stack(
-            children: <Widget>[
-              FittedBox(
-                child: Image.network(
-                  itinerary.image,
-                ),
-                fit: BoxFit.cover,
+        aspectRatio: 3 / 2,
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+                child: FittedBox(
+              child: Image.network(
+                itinerary.image,
               ),
-              Container(
-                color: ColorConstants.OVERLAY,
-              ),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      itinerary.title,
+              fit: BoxFit.cover,
+            )),
+            Container(
+              color: ColorConstants.OVERLAY,
+            ),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    itinerary.title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w100),
+                  ),
+                  Container(
+                    decoration:
+                        BoxDecoration(boxShadow: kElevationToShadow[24]),
+                    child: Icon(
+                      Icons.location_on,
+                      color: Colors.white,
+                    ),
+                    margin: EdgeInsets.all(3),
+                  ),
+                  Container(
+                    child: Text(
+                      itinerary.cities.join(' / '),
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30,
+                          fontSize: 12,
                           fontWeight: FontWeight.w100),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                    Container(
-                      decoration:
-                          BoxDecoration(boxShadow: kElevationToShadow[24]),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                      ),
-                      margin: EdgeInsets.all(3),
-                    ),
-                    Container(
-                      child: Text(
-                        itinerary.cities.join(' / '),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w100),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      constraints: BoxConstraints(maxWidth: 200),
-                    )
-                  ],
-                  mainAxisSize: MainAxisSize.min,
-                ),
-              )
-            ],
-            fit: StackFit.expand,
-          )),
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.white)),
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    constraints: BoxConstraints(maxWidth: 200),
+                  )
+                ],
+                mainAxisSize: MainAxisSize.min,
+              ),
+            )
+          ],
+          fit: StackFit.expand,
+        ),
+      ),
       onTap: () {
         Provider.of<AppState>(context, listen: false)
             .routingService
@@ -168,13 +171,15 @@ class ImageWithSeparateBottomTextCardWidget extends StatelessWidget {
         child: Column(
           children: [
             AspectRatio(
-              child: FittedBox(
-                child: Image.network(
-                  itinerary.image,
-                ),
-                fit: BoxFit.cover,
-              ),
               aspectRatio: 3 / 2,
+              child: ClipRRect(
+                child: FittedBox(
+                  child: Image.network(
+                    itinerary.image,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             Container(
               child: Column(

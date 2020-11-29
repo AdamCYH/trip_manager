@@ -30,7 +30,7 @@ class AdsSliderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-        aspectRatio: 3 / 2,
+        aspectRatio: 5 / 3,
         child: CarouselSlider(
           options:
               CarouselOptions(viewportFraction: 1, enableInfiniteScroll: false),

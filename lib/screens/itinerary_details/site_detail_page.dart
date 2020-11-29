@@ -62,11 +62,13 @@ class SiteSummaryWidget extends StatelessWidget {
       child: Column(children: [
         AspectRatio(
           aspectRatio: 6 / 4,
-          child: FittedBox(
-            child: Image.network(
-              site.photo,
+          child: ClipRRect(
+            child: FittedBox(
+              child: Image.network(
+                site.photo,
+              ),
+              fit: BoxFit.cover,
             ),
-            fit: BoxFit.cover,
           ),
         ),
         Container(
