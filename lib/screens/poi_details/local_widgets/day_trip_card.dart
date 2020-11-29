@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/models.dart';
-import 'package:mobile/screens/itinerary_details/local_widgets/vertical_line.dart';
+import 'package:mobile/widgets/vertical_line.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/widgets/icons.dart';

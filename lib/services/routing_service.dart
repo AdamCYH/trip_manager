@@ -8,7 +8,7 @@ import 'package:mobile/screens/me/login_page.dart';
 import 'package:mobile/screens/me/me_page.dart';
 import 'package:mobile/screens/community/product_page.dart';
 import 'package:mobile/screens/me/registration_page.dart';
-import 'package:mobile/screens/itinerary_details/site_detail_page.dart';
+import 'package:mobile/screens/poi_details/site_detail_page.dart';
 
 class RoutingService {
   static const homePage = 'app://';
