@@ -1,0 +1,143 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/constants/colors.dart';
+import 'package:mobile/models/models.dart';
+import 'package:mobile/screens/itinerary_details/local_widgets/vertical_line.dart';
+import 'package:mobile/services/app_state.dart';
+import 'package:mobile/services/routing_service.dart';
+import 'package:mobile/widgets/icons.dart';
+import 'package:provider/provider.dart';
+
+class DayTripCard extends StatelessWidget {
+  // Day box height 30
+  // Top padding 10
+  // Icon radius 5
+  static const double CIRCLE_ICON_OFFSET = 30 / 2 + 10 - 5;
+
+  // Day box height 30
+  // Day box vertical padding 20
+  // Day trips vertical padding 20
+  // Subtract icon offset
+  // Some padding 10
+  static const double DAY_TRIP_VERTICAL_WHITE_SPACE =
+      70 - CIRCLE_ICON_OFFSET - 5 + 10;
+
+  // Line height 24
+  // Padding 20
+  static const double DAY_TRIP_HEIGHT = 44;
+
+  final DayTrip dayTrip;
+  final int dayNumber;
+  final int totalDays;
+
+  const DayTripCard({Key key, this.dayTrip, this.dayNumber, this.totalDays})
+      : assert(dayTrip != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                Container(
+                    child: dayNumber == 1
+                        ? Container(
+                            height: CIRCLE_ICON_OFFSET,
+                          )
+                        : VerticalLine(
+                            height: CIRCLE_ICON_OFFSET,
+                            lineWidth: 0.5,
+                          )),
+                CircleIcon(color: ColorConstants.ICON_BRIGHTER, diameter: 10),
+                Container(
+                    child: dayNumber == totalDays
+                        ? Container()
+                        : VerticalLine(
+                            height: DAY_TRIP_VERTICAL_WHITE_SPACE +
+                                DAY_TRIP_HEIGHT * dayTrip.sites.length,
+                            lineWidth: 0.5,
+                          )),
+              ],
+            ),
+          ),
+          Expanded(
+              flex: 25,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      child: Container(
+                    child: Center(
+                        child: Text(
+                      'D${dayTrip.day.toString()}',
+                      style: TextStyle(color: ColorConstants.TEXT_WHITE),
+                    )),
+                    decoration: BoxDecoration(
+                        color: ColorConstants.BUTTON_PRIMARY,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    width: 50,
+                    height: 30,
+                    margin: EdgeInsets.all(10),
+                  )),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: ColorConstants.BACKGROUND_LIGHT_BLUE),
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: dayTrip.sites
+                          .map((dayTripSite) => InkWell(
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        child: Icon(
+                                          dayTripSite.site.getIcon(),
+                                          color: ColorConstants.ICON_MEDIUM,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Text(
+                                          '${dayTripSite.site.getCategory()}:',
+                                          style: TextStyle(
+                                              color: ColorConstants
+                                                  .TEXT_SECONDARY),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          dayTripSite.site.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  Provider.of<AppState>(context, listen: false)
+                                      .routingService
+                                      .push(context, RoutingService.sitePage,
+                                          dayTripSite.site);
+                                },
+                              ))
+                          .toList(),
+                    ),
+                  )
+                ],
+              ))
+        ],
+      ),
+    );
+  }
+}

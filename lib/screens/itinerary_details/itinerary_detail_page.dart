@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
+import 'package:mobile/models/models.dart';
+import 'package:mobile/screens/itinerary_details/local_widgets/day_trip_card.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/auth_service.dart';
-import 'package:mobile/models/models.dart';
 import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/utils/screen_utils.dart';
 import 'package:mobile/widgets/icons.dart';
@@ -193,7 +194,6 @@ class ItinerarySummaryWidget extends StatelessWidget {
             ),
             fit: BoxFit.cover,
           ),
-//          margin: EdgeInsets.only(bottom: 20),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -359,95 +359,14 @@ class DayTripsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: dayTripsList.map((dayTrip) {
-        return DayTripCard(
-          dayTrip: dayTrip,
-        );
-      }).toList(),
-    );
-  }
-}
-
-class DayTripCard extends StatelessWidget {
-  final DayTrip dayTrip;
-
-  const DayTripCard({Key key, this.dayTrip})
-      : assert(dayTrip != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              child: Row(children: [
-            CircleIcon(color: ColorConstants.ICON_BRIGHTER, diameter: 10),
-            Container(
-              child: Center(
-                  child: Text(
-                'D${dayTrip.day.toString()}',
-                style: TextStyle(color: ColorConstants.TEXT_WHITE),
-              )),
-              decoration: BoxDecoration(
-                  color: ColorConstants.BUTTON_PRIMARY,
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              width: 50,
-              height: 30,
-              margin: EdgeInsets.all(10),
-            )
-          ])),
-          Container(
-            child: Column(
-              children: dayTrip.sites
-                  .map((dayTripSite) => InkWell(
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Icon(
-                                  dayTripSite.site.getIcon(),
-                                  color: ColorConstants.ICON_MEDIUM,
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  '${dayTripSite.site.getCategory()}:',
-                                  style: TextStyle(
-                                      color: ColorConstants.TEXT_SECONDARY),
-                                ),
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  dayTripSite.site.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              )
-                            ],
-                          ),
-                          margin: EdgeInsets.all(10),
-                        ),
-                        onTap: () {
-                          Provider.of<AppState>(context, listen: false)
-                              .routingService
-                              .push(context, RoutingService.sitePage,
-                                  dayTripSite.site);
-                        },
-                      ))
-                  .toList(),
-            ),
-            decoration: BoxDecoration(
-                border: Border.all(color: ColorConstants.BACKGROUND_LIGHT_BLUE),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            padding: EdgeInsets.all(10),
-          )
-        ],
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      padding: EdgeInsets.all(10),
+      children: dayTripsList
+          .asMap()
+          .entries
+          .map((entry) => DayTripCard(
+              dayTrip: entry.value,
+              dayNumber: entry.key + 1,
+              totalDays: dayTripsList.length))
+          .toList(),
     );
   }
 }
