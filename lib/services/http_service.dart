@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as Convert;
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -26,11 +25,11 @@ class HttpService {
         handleHttpError(response);
       }
       final body = response.body;
-      log('[uri=$uri][statusCode=$statusCode][response=$body]');
+      print('[uri=$uri][statusCode=$statusCode][response=$body]');
       var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
       return result;
     } on SocketException catch (e) {
-      log('[uri=$uri] exception e=${e.toString()}');
+      print('[uri=$uri] exception e=${e.toString()}');
       return {'Status': 'Error'};
     }
   }
@@ -46,10 +45,10 @@ class HttpService {
       }
       final responseBody = response.body;
       var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
-      log('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
+      print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
     } on SocketException catch (e) {
-      log('[uri=$uri] exception e=${e.toString()}');
+      print('[uri=$uri] exception e=${e.toString()}');
       return {'Status': 'Error'};
     }
   }
@@ -74,10 +73,10 @@ class HttpService {
       }
       final responseBody = response.body;
       var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
-      log('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
+      print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
     } on SocketException catch (e) {
-      log('[uri=$uri] exception e=${e.toString()}');
+      print('[uri=$uri] exception e=${e.toString()}');
       return {'Status': 'Error'};
     }
   }
@@ -102,10 +101,10 @@ class HttpService {
       }
       final responseBody = response.body;
       var result = Convert.jsonDecode(decode.convert(response.bodyBytes));
-      log('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
+      print('[uri=$uri][statusCode=$statusCode][response=$responseBody]');
       return result;
     } on SocketException catch (e) {
-      log('[uri=$uri] exception e=${e.toString()}');
+      print('[uri=$uri] exception e=${e.toString()}');
       return {'Status': 'Error'};
     }
   }
@@ -119,7 +118,7 @@ class HttpService {
       }
       return {'Status': 'Delete successful.'};
     } on SocketException catch (e) {
-      log('[uri=$uri] exception e=${e.toString()}');
+      print('[uri=$uri] exception e=${e.toString()}');
       return {'Status': 'Error'};
     }
   }
@@ -135,7 +134,7 @@ class HttpService {
         throw NotFoundException(response.body.toString());
       case 500:
       default:
-        log(response.body);
+      print(response.body);
         throw FetchDataException(
             'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }
