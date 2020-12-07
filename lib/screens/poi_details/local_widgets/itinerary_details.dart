@@ -7,8 +7,10 @@ import 'package:mobile/screens/poi_details/local_widgets/day_trip_card.dart';
 class ItineraryDetailsWidget extends StatefulWidget {
   final Itinerary itinerary;
   final List<DayTrip> dayTripsList;
+  final bool isMyItinerary;
 
-  const ItineraryDetailsWidget({Key key, this.itinerary, this.dayTripsList})
+  const ItineraryDetailsWidget(
+      {Key key, this.itinerary, this.dayTripsList, this.isMyItinerary = false})
       : assert(itinerary != null),
         super(key: key);
 
@@ -66,6 +68,7 @@ class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
                 ? Container()
                 : DayTripsListWidget(
                     dayTripsList: widget.dayTripsList,
+                    isMyItinerary: widget.isMyItinerary,
                   ),
             CommentWidget(),
           ][_tabIndex],
@@ -77,8 +80,10 @@ class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
 
 class DayTripsListWidget extends StatelessWidget {
   final List<DayTrip> dayTripsList;
+  final bool isMyItinerary;
 
-  const DayTripsListWidget({Key key, this.dayTripsList})
+  const DayTripsListWidget(
+      {Key key, this.dayTripsList, this.isMyItinerary = false})
       : assert(dayTripsList != null),
         super(key: key);
 
@@ -88,10 +93,14 @@ class DayTripsListWidget extends StatelessWidget {
       children: dayTripsList
           .asMap()
           .entries
-          .map((entry) => DayTripCard(
+          .map(
+            (entry) => DayTripCard(
               dayTrip: entry.value,
               dayNumber: entry.key + 1,
-              totalDays: dayTripsList.length))
+              totalDays: dayTripsList.length,
+              isMyItinerary: isMyItinerary,
+            ),
+          )
           .toList(),
     );
   }

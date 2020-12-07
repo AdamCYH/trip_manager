@@ -84,6 +84,7 @@ class _ItineraryPageState extends State<ItineraryPage> {
                       ItineraryDetailsWidget(
                         itinerary: itinerary,
                         dayTripsList: dayTripsList,
+                        isMyItinerary: isMyItinerary,
                       )
                     ],
                     padding: EdgeInsets.only(bottom: 100),

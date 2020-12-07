@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/widgets/vertical_line.dart';
@@ -21,15 +22,24 @@ class DayTripCard extends StatelessWidget {
   static const double DAY_TRIP_VERTICAL_WHITE_SPACE =
       70 - CIRCLE_ICON_OFFSET - 5 + 10;
 
+  static const double LINE_HEIGHT = 24;
+
   // Line height 24
   // Padding 20
-  static const double DAY_TRIP_HEIGHT = 44;
+  static const double DAY_TRIP_HEIGHT = LINE_HEIGHT + 20;
 
   final DayTrip dayTrip;
   final int dayNumber;
   final int totalDays;
 
-  const DayTripCard({Key key, this.dayTrip, this.dayNumber, this.totalDays})
+  final bool isMyItinerary;
+
+  const DayTripCard(
+      {Key key,
+      this.dayTrip,
+      this.dayNumber,
+      this.totalDays,
+      this.isMyItinerary = false})
       : assert(dayTrip != null),
         super(key: key);
 
@@ -58,8 +68,9 @@ class DayTripCard extends StatelessWidget {
                     child: dayNumber == totalDays
                         ? Container()
                         : VerticalLine(
-                            height: DAY_TRIP_VERTICAL_WHITE_SPACE +
-                                DAY_TRIP_HEIGHT * dayTrip.sites.length,
+                            height: isMyItinerary
+                                ? dayTripSitesHeight + LINE_HEIGHT
+                                : dayTripSitesHeight,
                             lineWidth: 0.5,
                           )),
               ],
@@ -92,47 +103,10 @@ class DayTripCard extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     padding: EdgeInsets.all(10),
                     child: Column(
-                      children: dayTrip.sites
-                          .map((dayTripSite) => InkWell(
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Icon(
-                                          dayTripSite.site.getIcon(),
-                                          color: ColorConstants.ICON_MEDIUM,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Text(
-                                          '${dayTripSite.site.getCategory()}:',
-                                          style: TextStyle(
-                                              color: ColorConstants
-                                                  .TEXT_SECONDARY),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          dayTripSite.site.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                onTap: () {
-                                  Provider.of<AppState>(context, listen: false)
-                                      .routingService
-                                      .push(context, RoutingService.sitePage,
-                                          dayTripSite.site);
-                                },
-                              ))
-                          .toList(),
-                    ),
+                        children: isMyItinerary
+                            ? (dayTripSiteRows(dayTrip, context)
+                              ..add(addSiteRow()))
+                            : dayTripSiteRows(dayTrip, context)),
                   )
                 ],
               ))
@@ -140,4 +114,54 @@ class DayTripCard extends StatelessWidget {
       ),
     );
   }
+
+  List<InkWell> dayTripSiteRows(DayTrip dayTrip, BuildContext context) {
+    return dayTrip.sites
+        .map((dayTripSite) => InkWell(
+              child: Container(
+                margin: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        dayTripSite.site.getIcon(),
+                        color: ColorConstants.ICON_MEDIUM,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        '${dayTripSite.site.getCategory()}:',
+                        style: TextStyle(color: ColorConstants.TEXT_SECONDARY),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        dayTripSite.site.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              onTap: () {
+                Provider.of<AppState>(context, listen: false)
+                    .routingService
+                    .push(context, RoutingService.sitePage, dayTripSite.site);
+              },
+            ))
+        .toList();
+  }
+
+  InkWell addSiteRow() => InkWell(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          alignment: Alignment.topRight,
+          child: Icon(Icons.add, color: ColorConstants.ICON_MEDIUM),
+        ),
+      );
+
+  double get dayTripSitesHeight =>
+      DAY_TRIP_VERTICAL_WHITE_SPACE + DAY_TRIP_HEIGHT * dayTrip.sites.length;
 }
