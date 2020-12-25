@@ -124,8 +124,9 @@ class ApiService {
     return Itinerary.fromJson(response);
   }
 
-  Future<List<DayTrip>> getDayTrips(String id) async {
-    final response = await _httpService.get('/day-trip/?itinerary=$id');
+  Future<List<DayTrip>> getDayTrips(String id, String accessToken) async {
+    final response = await _httpService.get('/day-trip/?itinerary=$id',
+        headers: getAuthenticationHeader(accessToken));
     return response.map<DayTrip>((json) => DayTrip.fromJson(json)).toList();
   }
 

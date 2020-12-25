@@ -202,7 +202,8 @@ class _ItineraryPageState extends State<ItineraryPage> {
   }
 
   void getDayTripsList() async {
-    var data = await ApiService().getDayTrips(widget.itineraryId);
+    var data = await ApiService().getDayTrips(widget.itineraryId,
+        Provider.of<AppState>(context, listen: false).getAccessToken());
     setState(() {
       dayTripsList = data;
     });
