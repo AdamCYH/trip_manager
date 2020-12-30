@@ -3,13 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/constants/constants.dart';
 import 'package:mobile/models/models.dart';
+import 'package:mobile/screens/poi_details/local_widgets/itinerary_action_bar.dart';
 import 'package:mobile/screens/poi_details/local_widgets/itinerary_details.dart';
 import 'package:mobile/screens/poi_details/local_widgets/itinerary_highlight.dart';
 import 'package:mobile/screens/poi_details/local_widgets/itinerary_summary.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/auth_service.dart';
-import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/utils/screen_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -90,91 +90,18 @@ class _ItineraryPageState extends State<ItineraryPage> {
                     padding: EdgeInsets.only(bottom: 100),
                   ),
                   Positioned(
-                    bottom: 0,
-                    width: ScreenUtils.screenWidth(context),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          isMyItinerary
-                              ? InkWell(
-                                  child: Container(
-                                    child: Center(
-                                        child: Icon(
-                                      itinerary.isPublic
-                                          ? Icons.public
-                                          : Icons.public_off,
-                                      color: ColorConstants.BUTTON_WHITE,
-                                    )),
-                                    color: itinerary.isPublic
-                                        ? ColorConstants.TEXT_BRIGHT_GREEN_BLUE
-                                        : ColorConstants.ICON_MEDIUM,
-                                    padding: EdgeInsets.all(15),
-                                  ),
-                                  onTap: () async {
-                                    var updatedItinerary = await appState
-                                        .editItinerary(
-                                            itineraryId: itinerary.id,
-                                            fields: (itinerary
-                                                  ..isPublic =
-                                                      !itinerary.isPublic)
-                                                .toJson(),
-                                            filePaths: []);
-                                    if (updatedItinerary != null) {
-                                      setState(() {
-                                        itinerary = updatedItinerary;
-                                      });
-                                    }
-                                  },
-                                )
-                              : Container(),
-                          Expanded(
-                              child: InkWell(
-                            child: Container(
-                              child: Center(
-                                  child: Text(
-                                '开始行程',
-                                style:
-                                    TextStyle(color: ColorConstants.TEXT_WHITE),
-                              )),
-                              color: ColorConstants.BUTTON_PRIMARY,
-                              padding: EdgeInsets.all(15),
-                            ),
-                            onTap: () {
-                              appState.routingService
-                                  .push(context, RoutingService.loginPage, {});
-                            },
-                          )),
-                          isMyItinerary
-                              ? InkWell(
-                                  child: Container(
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.edit,
-                                      color: ColorConstants.BUTTON_WHITE,
-                                    )),
-                                    color:
-                                        ColorConstants.TEXT_BRIGHT_GREEN_BLUE,
-                                    padding: EdgeInsets.all(15),
-                                  ),
-                                  onTap: () async {
-                                    final updatedItinerary =
-                                        appState.routingService.push(
-                                            context,
-                                            RoutingService.editItineraryPage,
-                                            itinerary);
-                                    if (updatedItinerary != null) {
-                                      setState(() {
-                                        itinerary = updatedItinerary;
-                                      });
-                                    }
-                                  },
-                                )
-                              : Container()
-                        ],
-                      ),
-                      height: 50,
-                    ),
-                  )
+                      bottom: 0,
+                      width: ScreenUtils.screenWidth(context),
+                      child: ItineraryActionBar(
+                        itinerary: itinerary,
+                        isPublic: itinerary.isPublic,
+                        isMyItinerary: isMyItinerary,
+                        onUpdateItinerary: (Itinerary updatedItinerary) {
+                          setState(() {
+                            itinerary = updatedItinerary;
+                          });
+                        },
+                      ))
                 ],
               ),
       );
