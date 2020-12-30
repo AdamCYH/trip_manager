@@ -105,7 +105,12 @@ class DayTripCard extends StatelessWidget {
                     child: Column(
                         children: isMyItinerary
                             ? (dayTripSiteRows(dayTrip, context)
-                              ..add(addSiteRow()))
+                              ..add(addSiteRow(onTap: () {
+                                Provider.of<AppState>(context, listen: false)
+                                    .routingService
+                                    .pushNoParams(
+                                        context, RoutingService.poiSearchPage);
+                              })))
                             : dayTripSiteRows(dayTrip, context)),
                   )
                 ],
@@ -154,11 +159,14 @@ class DayTripCard extends StatelessWidget {
         .toList();
   }
 
-  InkWell addSiteRow() => InkWell(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          alignment: Alignment.topRight,
-          child: Icon(Icons.add, color: ColorConstants.ICON_MEDIUM),
+  InkWell addSiteRow({Function() onTap}) => InkWell(
+        child: InkWell(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            alignment: Alignment.topRight,
+            child: Icon(Icons.add, color: ColorConstants.ICON_MEDIUM),
+          ),
+          onTap: onTap,
         ),
       );
 

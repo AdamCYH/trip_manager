@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/utils/screen_utils.dart';
+import 'package:mobile/widgets/app_scaffold.dart';
 import 'package:provider/provider.dart';
 
 class CreateItineraryPage extends StatefulWidget {
@@ -23,12 +24,8 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(builder: (context, appState, child) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('创建行程'),
-          centerTitle: true,
-          elevation: 0,
-        ),
+      return AppScaffoldDefault(
+        title: '创建行程',
         body: Builder(builder: (BuildContext context) {
           return ListView(
             children: [
@@ -118,7 +115,6 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
             ],
           );
         }),
-        backgroundColor: ColorConstants.BACKGROUND_PRIMARY,
       );
     });
   }

@@ -9,17 +9,19 @@ import 'package:mobile/screens/community/product_page.dart';
 import 'package:mobile/screens/me/registration_page.dart';
 import 'package:mobile/screens/poi_details/itinerary_detail_page.dart';
 import 'package:mobile/screens/poi_details/site_detail_page.dart';
+import 'package:mobile/screens/search/poi_search.dart';
 
 class RoutingService {
-  static const homePage = 'app://';
-  static const productsPage = 'app://products';
-  static const itineraryPage = 'app://itinerary';
-  static const sitePage = 'app://site';
-  static const loginPage = 'app://login';
-  static const settingPage = 'app://setting';
   static const createItineraryPage = 'app://createItinerary';
   static const editItineraryPage = 'app://editItinerary';
+  static const homePage = 'app://';
+  static const itineraryPage = 'app://itinerary';
+  static const loginPage = 'app://login';
+  static const poiSearchPage = 'app://poiSearch';
+  static const productsPage = 'app://products';
   static const registrationPage = 'app://registration';
+  static const settingPage = 'app://setting';
+  static const sitePage = 'app://site';
 
   Widget _getPage(String url, dynamic params) {
     if (url.startsWith('https://') || url.startsWith('http://')) {
@@ -36,6 +38,8 @@ class RoutingService {
           return ItineraryPage(params);
         case loginPage:
           return LoginPage();
+        case poiSearchPage:
+          return PoiSearchPage();
         case productsPage:
           return ProductsPage();
         case registrationPage:
