@@ -4,7 +4,7 @@ import 'package:mobile/services/routing_service.dart';
 import 'package:mobile/constants/colors.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/auth_service.dart';
-import 'package:mobile/widgets/cards.dart';
+import 'package:mobile/widgets/itinerary_cards.dart';
 import 'package:provider/provider.dart';
 
 class MyItinerariesPage extends StatefulWidget {

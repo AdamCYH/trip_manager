@@ -38,7 +38,7 @@ class _PoiSearchPageState extends State<PoiSearchPage>
   @override
   Widget build(BuildContext context) {
     return AppScaffoldDefault(
-      title: "搜索地点",
+      title: "添加地点",
       body: Scaffold(
         backgroundColor: Colors.white,
         appBar: TabBar(

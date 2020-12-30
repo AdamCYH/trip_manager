@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/services/app_state.dart';
-import 'package:mobile/widgets/cards.dart';
+import 'package:mobile/widgets/itinerary_cards.dart';
 import 'package:provider/provider.dart';
 
 class HotItineraryWidget extends StatefulWidget {
