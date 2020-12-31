@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
+import 'package:mobile/screens/search/activity_list.dart';
+import 'package:mobile/screens/search/hotel_list.dart';
+import 'package:mobile/screens/search/restaurant_list.dart';
 import 'package:mobile/widgets/app_scaffold.dart';
 
 class PoiSearchPage extends StatefulWidget {
@@ -48,7 +51,7 @@ class _PoiSearchPageState extends State<PoiSearchPage>
         ),
         body: TabBarView(
           controller: _tabController,
-          children: [Text('a'), Text('b'), Text('c')],
+          children: [AttractionsList(), HotelsList(), RestaurantsList()],
         ),
       ),
     );

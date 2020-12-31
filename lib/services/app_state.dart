@@ -2,9 +2,9 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/models/models.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/services/auth_service.dart';
-import 'package:mobile/models/models.dart';
 import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/services/routing_service.dart';
 
@@ -123,6 +123,32 @@ class AppState with ChangeNotifier {
       await apiService.deleteItinerary(id, authService.currentAuth.accessToken);
       myItinerariesMap.remove(id);
       notifyChanges();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Site>> listAttractionSites() async {
+    try {
+      return await apiService
+          .listAttractions(authService.currentAuth.accessToken);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Site>> listHotelSites() async {
+    try {
+      return await apiService.listHotels(authService.currentAuth.accessToken);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Site>> listRestaurantSites() async {
+    try {
+      return await apiService
+          .listRestaurants(authService.currentAuth.accessToken);
     } catch (e) {
       rethrow;
     }

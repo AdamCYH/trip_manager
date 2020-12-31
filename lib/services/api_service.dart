@@ -167,4 +167,31 @@ class ApiService {
     await _httpService.delete('/itinerary/$id/',
         headers: getAuthenticationHeader(accessToken));
   }
+
+  /// Gets a list of attractions from backend.
+  ///
+  /// An access token is required.
+  Future<List<Site>> listAttractions(String accessToken) async {
+    final response = await _httpService.get('/attraction/',
+        headers: getAuthenticationHeader(accessToken));
+    return response.map<Site>((json) => Site.fromJson(json['site'])).toList();
+  }
+
+  /// Gets a list of hotels from backend.
+  ///
+  /// An access token is required.
+  Future<List<Site>> listHotels(String accessToken) async {
+    final response = await _httpService.get('/hotel/',
+        headers: getAuthenticationHeader(accessToken));
+    return response.map<Site>((json) => Site.fromJson(json['site'])).toList();
+  }
+
+  /// Gets a list of restaurants from backend.
+  ///
+  /// An access token is required.
+  Future<List<Site>> listRestaurants(String accessToken) async {
+    final response = await _httpService.get('/restaurant/',
+        headers: getAuthenticationHeader(accessToken));
+    return response.map<Site>((json) => Site.fromJson(json['site'])).toList();
+  }
 }
