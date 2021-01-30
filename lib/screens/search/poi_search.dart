@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/colors.dart';
+import 'package:mobile/models/models.dart';
 import 'package:mobile/screens/search/activity_list.dart';
 import 'package:mobile/screens/search/hotel_list.dart';
 import 'package:mobile/screens/search/restaurant_list.dart';
@@ -12,6 +13,10 @@ class PoiSearchPage extends StatefulWidget {
 
 class _PoiSearchPageState extends State<PoiSearchPage>
     with SingleTickerProviderStateMixin {
+  List<Site> attractionsCache;
+  List<Site> hotelsCache;
+  List<Site> restaurantCache;
+
   final List<Tab> tabs = <Tab>[
     Tab(
       text: '活动',
@@ -51,7 +56,32 @@ class _PoiSearchPageState extends State<PoiSearchPage>
         ),
         body: TabBarView(
           controller: _tabController,
-          children: [AttractionsList(), HotelsList(), RestaurantsList()],
+          children: [
+            AttractionsList(
+              attractionCache: this.attractionsCache,
+              onUpdate: (fetchedAttractions) {
+                setState(() {
+                  this.attractionsCache = fetchedAttractions;
+                });
+              },
+            ),
+            HotelsList(
+              hotelsCache: this.hotelsCache,
+              onUpdate: (fetchedHotels) {
+                setState(() {
+                  this.hotelsCache = fetchedHotels;
+                });
+              },
+            ),
+            RestaurantsList(
+              restaurantCache: this.restaurantCache,
+              onUpdate: (fetchedRestaurants) {
+                setState(() {
+                  this.restaurantCache = fetchedRestaurants;
+                });
+              },
+            )
+          ],
         ),
       ),
     );

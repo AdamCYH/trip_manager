@@ -5,6 +5,13 @@ import 'package:mobile/widgets/general_cards.dart';
 import 'package:provider/provider.dart';
 
 class AttractionsList extends StatefulWidget {
+  final List<Site> attractionCache;
+  final Function(List<Site>) onUpdate;
+
+  const AttractionsList({Key key, this.attractionCache, this.onUpdate})
+      : assert(onUpdate != null),
+        super(key: key);
+
   @override
   _AttractionsListState createState() => _AttractionsListState();
 }
@@ -15,8 +22,12 @@ class _AttractionsListState extends State<AttractionsList> {
   @override
   void initState() {
     super.initState();
-    attractions =
-        Provider.of<AppState>(context, listen: false).listAttractionSites();
+    if (this.widget.attractionCache != null) {
+      attractions = Future.value(this.widget.attractionCache);
+    } else {
+      attractions =
+          Provider.of<AppState>(context, listen: false).listAttractionSites();
+    }
   }
 
   @override
@@ -27,23 +38,36 @@ class _AttractionsListState extends State<AttractionsList> {
           future: attractions,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView(
-                children: snapshot.data
-                    .map((attraction) => ImageLeftTextRightWidget(
-                          image: Image.network(attraction.photo),
-                          title: attraction.name,
-                          locations: [attraction.city.name],
-                        ))
-                    .toList(),
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                this.widget.onUpdate(snapshot.data);
+              });
+              return attractionsList(snapshot.data);
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Provider.of<AppState>(context, listen: false)
+                    .notificationService
+                    .showSnackBar(context, "暂时无法获取活动列表哦，请稍后再试！");
+              });
+              print("${snapshot.error}");
+              return Container();
             }
             // By default, show a loading spinner.
             return CircularProgressIndicator();
           },
         ),
       ),
+    );
+  }
+
+  Widget attractionsList(List<Site> attractions) {
+    return ListView(
+      children: attractions
+          .map((attraction) => ImageLeftTextRightWidget(
+                image: Image.network(attraction.photo),
+                title: attraction.name,
+                locations: [attraction.city.name],
+              ))
+          .toList(),
     );
   }
 }
