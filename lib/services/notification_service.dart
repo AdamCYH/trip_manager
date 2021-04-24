@@ -4,6 +4,7 @@ class NotificationService {
   NotificationService();
 
   void showSnackBar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }

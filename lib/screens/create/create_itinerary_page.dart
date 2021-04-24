@@ -93,7 +93,7 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
                 color: ColorConstants.BACKGROUND_WHITE,
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
               ),
-              FlatButton(
+              TextButton(
                 child: Text('创建行程'),
                 onPressed: () async {
                   try {
@@ -108,9 +108,13 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
 
                   return;
                 },
-                color: ColorConstants.BUTTON_PRIMARY,
-                textColor: ColorConstants.TEXT_WHITE,
-                padding: EdgeInsets.all(15),
+                style: TextButton.styleFrom(
+                    backgroundColor: ColorConstants.BUTTON_PRIMARY,
+                    primary: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    )),
               )
             ],
           );

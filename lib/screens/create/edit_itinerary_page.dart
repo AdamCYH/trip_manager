@@ -88,7 +88,7 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
                 color: ColorConstants.BACKGROUND_WHITE,
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
               ),
-              FlatButton(
+              TextButton(
                 child: Text('修改'),
                 onPressed: () async {
                   try {
@@ -104,9 +104,13 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
 
                   return;
                 },
-                color: ColorConstants.BUTTON_PRIMARY,
-                textColor: ColorConstants.TEXT_WHITE,
-                padding: EdgeInsets.all(15),
+                style: TextButton.styleFrom(
+                    backgroundColor: ColorConstants.BUTTON_PRIMARY,
+                    primary: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    )),
               )
             ],
           );

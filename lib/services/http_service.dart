@@ -19,7 +19,7 @@ class HttpService {
   Future<dynamic> get(String uri, {Map<String, String> headers}) async {
     try {
       http.Response response =
-          await _httpClient.get(baseUrl + uri, headers: headers);
+          await _httpClient.get(Uri.parse(baseUrl + uri), headers: headers);
       final statusCode = response.statusCode;
       if (response.statusCode != 200) {
         handleHttpError(response);
@@ -37,8 +37,8 @@ class HttpService {
   Future<dynamic> post(String uri, dynamic body,
       {Map<String, String> headers}) async {
     try {
-      http.Response response =
-          await _httpClient.post(baseUrl + uri, body: body, headers: headers);
+      http.Response response = await _httpClient.post(Uri.parse(baseUrl + uri),
+          body: body, headers: headers);
       final statusCode = response.statusCode;
       if (response.statusCode != 200 && response.statusCode != 201) {
         handleHttpError(response);
@@ -112,7 +112,7 @@ class HttpService {
   Future<dynamic> delete(String uri, {Map<String, String> headers}) async {
     try {
       http.Response response =
-          await _httpClient.delete(baseUrl + uri, headers: headers);
+          await _httpClient.delete(Uri.parse(baseUrl + uri), headers: headers);
       if (response.statusCode != 204) {
         handleHttpError(response);
       }
@@ -134,7 +134,7 @@ class HttpService {
         throw NotFoundException(response.body.toString());
       case 500:
       default:
-      print(response.body);
+        print(response.body);
         throw FetchDataException(
             'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }
