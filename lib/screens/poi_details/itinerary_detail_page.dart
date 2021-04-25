@@ -44,7 +44,9 @@ class _ItineraryPageState extends State<ItineraryPage> {
             "套餐详情",
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: ScreenUtils.isMobilePlatform()
+              ? Colors.transparent
+              : ColorConstants.APP_BAR_DARK_TRANSPARENT,
           elevation: 4,
           centerTitle: true,
           brightness: Brightness.dark,

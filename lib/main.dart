@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/root.dart';
 import 'package:mobile/services/app_state.dart';
+import 'package:mobile/utils/screen_utils.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,7 +19,7 @@ void main() {
       child: MyApp(),
     ),
   );
-  if (Platform.isAndroid) {
+  if (ScreenUtils.isMobilePlatform()) {
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);

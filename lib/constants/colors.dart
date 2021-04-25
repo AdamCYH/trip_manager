@@ -24,4 +24,6 @@ class ColorConstants {
   static const Color DIVIDER_PRIMARY = Color.fromRGBO(239, 239, 239, 1);
 
   static const Color OVERLAY = Color.fromRGBO(0, 0, 0, 0.2);
+
+  static const Color APP_BAR_DARK_TRANSPARENT = Color.fromRGBO(0, 0, 0, 0.3);
 }
