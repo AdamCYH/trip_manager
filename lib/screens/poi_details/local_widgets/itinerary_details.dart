@@ -65,6 +65,7 @@ class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
           ),
           [
             DayTripsListWidget(
+              itineraryId: widget.itinerary.id,
               dayTripsList: widget.dayTripsList,
               isMyItinerary: widget.isMyItinerary,
             ),
@@ -76,33 +77,55 @@ class _ItineraryDetailsWidgetState extends State<ItineraryDetailsWidget>
   }
 }
 
-class DayTripsListWidget extends StatelessWidget {
+class DayTripsListWidget extends StatefulWidget {
   final List<DayTrip> dayTripsList;
   final bool isMyItinerary;
+  final String itineraryId;
 
-  const DayTripsListWidget(
-      {Key key, this.dayTripsList, this.isMyItinerary = false})
+  List<DayTripCard> dayTripCards;
+
+  DayTripsListWidget(
+      {Key key,
+      this.dayTripsList,
+      this.itineraryId,
+      this.isMyItinerary = false})
       : assert(dayTripsList != null),
+        assert(itineraryId != null),
         super(key: key);
 
   @override
+  _DayTripsListWidgetState createState() => _DayTripsListWidgetState();
+}
+
+class _DayTripsListWidgetState extends State<DayTripsListWidget> {
+  @override
   Widget build(BuildContext context) {
-    var dayTripCards = dayTripsList
+    var dayTripCards = widget.dayTripsList
         .asMap()
         .entries
         .map(
           (entry) => DayTripCard(
             dayTrip: entry.value,
             dayNumber: entry.key + 1,
-            totalDays: dayTripsList.length,
-            isMyItinerary: isMyItinerary,
+            totalDays: widget.dayTripsList.length,
+            isMyItinerary: widget.isMyItinerary,
           ),
         )
         .toList();
+
     var dayTripWidgets = <Widget>[];
     dayTripWidgets.addAll(dayTripCards);
-    if (isMyItinerary) {
-      dayTripWidgets.add(AddDayWidget());
+    if (widget.isMyItinerary) {
+      var nextAvailableDay = dayTripCards.length + 1;
+      dayTripWidgets.add(AddDayWidget(
+        itineraryId: widget.itineraryId,
+        nextAvailableDay: nextAvailableDay,
+        addDayCallBack: (dayTrip) {
+          setState(() {
+            widget.dayTripsList.add(dayTrip);
+          });
+        },
+      ));
     }
     return Column(
       children: dayTripWidgets,

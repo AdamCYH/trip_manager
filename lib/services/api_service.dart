@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/exceptions.dart';
 import 'package:mobile/models/models.dart';
@@ -166,6 +167,21 @@ class ApiService {
   Future<void> deleteItinerary(String id, String accessToken) async {
     await _httpService.delete('/itinerary/$id/',
         headers: getAuthenticationHeader(accessToken));
+  }
+
+  void createDayTrip(
+      {@required String itineraryId,
+      @required int day,
+      @required String accessToken,
+      RequestCallBack callBack}) async {
+    try {
+      var response = await _httpService.post(
+          '/day-trip/', {'itinerary': itineraryId, 'day': day.toString()},
+          headers: getAuthenticationHeader(accessToken));
+      callBack(DayTrip.fromJson(response));
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Gets a list of attractions from backend.

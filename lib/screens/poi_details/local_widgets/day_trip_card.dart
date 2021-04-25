@@ -3,6 +3,7 @@ import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
 import 'package:mobile/services/routing_service.dart';
+import 'package:mobile/utils/provider_utils.dart';
 import 'package:mobile/widgets/icons.dart';
 import 'package:mobile/widgets/vertical_line.dart';
 import 'package:provider/provider.dart';
@@ -183,6 +184,15 @@ class DayTagWidget extends StatelessWidget {
 }
 
 class AddDayWidget extends StatelessWidget {
+  final String itineraryId;
+  final int nextAvailableDay;
+  final Function addDayCallBack;
+
+  const AddDayWidget(
+      {@required this.itineraryId,
+      @required this.nextAvailableDay,
+      this.addDayCallBack});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,13 +215,21 @@ class AddDayWidget extends StatelessWidget {
             Expanded(
               flex: 25,
               child: Row(children: [
-                DayTagWidget(
-                  widget: Icon(
-                    Icons.add,
-                    color: ColorConstants.TEXT_WHITE,
-                    size: 18,
-                  ),
-                ),
+                InkWell(
+                    child: DayTagWidget(
+                      widget: Icon(
+                        Icons.add,
+                        color: ColorConstants.TEXT_WHITE,
+                        size: 18,
+                      ),
+                    ),
+                    onTap: () {
+                      ServiceProvider.apiService(context).createDayTrip(
+                          itineraryId: itineraryId,
+                          day: nextAvailableDay,
+                          accessToken: AuthProvider.accessToken(context),
+                          callBack: addDayCallBack);
+                    }),
                 Container()
               ]),
             ),
