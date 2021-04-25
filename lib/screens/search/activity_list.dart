@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
+import 'package:mobile/utils/provider_utils.dart';
 import 'package:mobile/widgets/general_cards.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +26,8 @@ class _AttractionsListState extends State<AttractionsList> {
     if (this.widget.attractionCache != null) {
       attractions = Future.value(this.widget.attractionCache);
     } else {
-      attractions =
-          Provider.of<AppState>(context, listen: false).listAttractionSites();
+      attractions = ServiceProvider.apiService(context)
+          .listAttractions(AuthProvider.accessToken(context));
     }
   }
 

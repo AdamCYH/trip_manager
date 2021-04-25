@@ -44,6 +44,7 @@ class AppState with ChangeNotifier {
 
   ///###########
   /// API CALLS
+  /// The following API calls requires APP level state and cache change.
   ///###########
 
   Future<User> createUser(User user) async {
@@ -123,32 +124,6 @@ class AppState with ChangeNotifier {
       await apiService.deleteItinerary(id, authService.currentAuth.accessToken);
       myItinerariesMap.remove(id);
       notifyChanges();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<Site>> listAttractionSites() async {
-    try {
-      return await apiService
-          .listAttractions(authService.currentAuth.accessToken);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<Site>> listHotelSites() async {
-    try {
-      return await apiService.listHotels(authService.currentAuth.accessToken);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<Site>> listRestaurantSites() async {
-    try {
-      return await apiService
-          .listRestaurants(authService.currentAuth.accessToken);
     } catch (e) {
       rethrow;
     }

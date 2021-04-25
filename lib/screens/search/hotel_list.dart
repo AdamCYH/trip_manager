@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
+import 'package:mobile/utils/provider_utils.dart';
 import 'package:mobile/widgets/general_cards.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,8 @@ class _HotelsListState extends State<HotelsList> {
     if (this.widget.hotelsCache != null) {
       hotels = Future.value(this.widget.hotelsCache);
     } else {
-      hotels = Provider.of<AppState>(context, listen: false).listHotelSites();
+      hotels = ServiceProvider.apiService(context)
+          .listHotels(AuthProvider.accessToken(context));
     }
   }
 

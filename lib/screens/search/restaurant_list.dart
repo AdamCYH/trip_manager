@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/services/app_state.dart';
+import 'package:mobile/utils/provider_utils.dart';
 import 'package:mobile/widgets/general_cards.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,8 @@ class _RestaurantsListState extends State<RestaurantsList> {
     if (this.widget.restaurantCache != null) {
       restaurants = Future.value(this.widget.restaurantCache);
     } else {
-      restaurants =
-          Provider.of<AppState>(context, listen: false).listRestaurantSites();
+      restaurants = ServiceProvider.apiService(context)
+          .listRestaurants(AuthProvider.accessToken(context));
     }
   }
 
