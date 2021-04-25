@@ -3,8 +3,6 @@ import 'package:mobile/constants/colors.dart';
 import 'package:mobile/models/models.dart';
 import 'package:mobile/screens/poi_details/itinerary_detail_page.dart';
 import 'package:mobile/screens/poi_details/local_widgets/day_trip_card.dart';
-import 'package:mobile/widgets/icons.dart';
-import 'package:mobile/widgets/vertical_line.dart';
 
 class ItineraryDetailsWidget extends StatefulWidget {
   final Itinerary itinerary;
@@ -104,39 +102,7 @@ class DayTripsListWidget extends StatelessWidget {
     var dayTripWidgets = <Widget>[];
     dayTripWidgets.addAll(dayTripCards);
     if (isMyItinerary) {
-      dayTripWidgets.add(Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Column(
-                  children: [
-                    VerticalLine(
-                      height: DayTripCard.CIRCLE_ICON_OFFSET,
-                      lineWidth: 0.5,
-                    ),
-                    CircleIcon(
-                        color: ColorConstants.ICON_BRIGHTER, diameter: 10),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 25,
-                child: Row(children: [
-                  DayTagWidget(
-                    widget: Icon(
-                      Icons.add,
-                      color: ColorConstants.TEXT_WHITE,
-                      size: 20,
-                    ),
-                  ),
-                  Container()
-                ]),
-              ),
-            ],
-          )));
+      dayTripWidgets.add(AddDayWidget());
     }
     return Column(
       children: dayTripWidgets,
