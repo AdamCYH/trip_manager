@@ -64,7 +64,7 @@ class DayTripCard extends StatelessWidget {
                           )),
                 CircleIcon(color: ColorConstants.ICON_BRIGHTER, diameter: 10),
                 Container(
-                    child: dayNumber == totalDays
+                    child: dayNumber == totalDays && !isMyItinerary
                         ? Container()
                         : VerticalLine(
                             height: isMyItinerary
@@ -80,19 +80,10 @@ class DayTripCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      child: Container(
-                    child: Center(
-                        child: Text(
-                      'D${dayTrip.day.toString()}',
-                      style: TextStyle(color: ColorConstants.TEXT_WHITE),
-                    )),
-                    decoration: BoxDecoration(
-                        color: ColorConstants.BUTTON_PRIMARY,
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    width: 50,
-                    height: 30,
-                    margin: EdgeInsets.all(10),
+                  DayTagWidget(
+                      widget: Text(
+                    'D${dayTrip.day.toString()}',
+                    style: TextStyle(color: ColorConstants.TEXT_WHITE),
                   )),
                   Container(
                     decoration: BoxDecoration(
@@ -171,4 +162,23 @@ class DayTripCard extends StatelessWidget {
 
   double get dayTripSitesHeight =>
       DAY_TRIP_VERTICAL_WHITE_SPACE + DAY_TRIP_HEIGHT * dayTrip.sites.length;
+}
+
+class DayTagWidget extends StatelessWidget {
+  final Widget widget;
+
+  const DayTagWidget({Key key, this.widget}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(child: widget),
+      decoration: BoxDecoration(
+          color: ColorConstants.BUTTON_PRIMARY,
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      width: 50,
+      height: 30,
+      margin: EdgeInsets.all(10),
+    );
+  }
 }
